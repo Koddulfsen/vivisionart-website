@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-palette="splatter3" data-style="scrapbook" data-texture="artpaper" data-book-color="charcoal" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="mint">
+<html lang="en" data-palette="splatter3" data-style="scrapbook" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="mint">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vi.Vision ART</title>
   <link rel="icon" type="image/png" href="images/favicon-easel.png">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -78,7 +78,7 @@
       What I Do
     </h2>
 
-    <p class="events-sub fade-in">Jedes Buch ist eine Event-Kategorie &mdash; bl&auml;ttere durch, um Bilder zu sehen</p>
+    <p class="events-sub fade-in">Bl&auml;ttere durch die Seiten f&uuml;r mehr Infos und Bilder</p>
 
     <div class="event-grid">
 
@@ -86,8 +86,8 @@
     <div class="book fade-in" data-book="birthday" tabindex="0">
       <div class="book__rings"></div>
       
-      <!-- Page 0: Cover (event info) -->
-      <div class="book__page book__page--cover" style="z-index: 4;">
+      <!-- Page 0: Cover -->
+      <div class="book__page book__page--cover" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -95,125 +95,75 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
               <ul class="event-spread__includes">
                 <li>Alle Materialien inklusive</li>
                 <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
                 <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
                 <li>F&uuml;r bis zu 10 Kinder</li>
               </ul>
-              <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
-              <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
+              <div class="cover-polaroid" style="--rot: 2deg;">
+                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 1: Dschungel -->
-      <div class="book__page" style="z-index: 3;">
+      <!-- Page 1: Details -->
+      <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Dschungel</h3>
+          <div class="book__details-page">
+            <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
+            <div class="cover-polaroid" style="--rot: -1.5deg;">
+              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
+          
+        </div>
+      </div>
+      <!-- Page 2: Photos -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
           <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 8%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-1.jpg" alt="Dschungel Thema" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy"></div>
               <p class="polaroid-caption">Kleine K&uuml;nstler</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 52%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-4.jpg" alt="Dschungel Thema" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy"></div>
               <p class="polaroid-caption">Farbenfroh</p>
             </div>
-            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 55%;">
+            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 42%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-3.jpg" alt="Dschungel Details" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy"></div>
               <p class="polaroid-caption">Dschungel-Welt</p>
             </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 2: Regenbogen -->
-      <div class="book__page" style="z-index: 2;">
-        <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Regenbogen</h3>
-          <div class="scrapbook__photo-cluster">
-            <div class="scrapbook__polaroid" style="--rot: 2deg; --x: 6%; --y: 8%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-2.jpg" alt="Regenbogen Thema" loading="lazy"></div>
-              <p class="polaroid-caption">Bunt &amp; wild</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 50%; --y: 10%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-5.jpg" alt="Regenbogen Thema" loading="lazy"></div>
-              <p class="polaroid-caption">Regenbogen-Magie</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 24%; --y: 54%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-6.jpg" alt="Regenbogen Details" loading="lazy"></div>
-              <p class="polaroid-caption">Leuchtende Farben</p>
-            </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
-          </div>
-          <span class="book__hint">Bilder ansehen</span>
-        </div>
-        <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
-        </div>
-      </div>
-      <!-- Page 3: Universum -->
-      <div class="book__page" style="z-index: 1;">
-        <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Universum</h3>
-          <div class="scrapbook__photo-cluster">
-            <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 8%; --y: 8%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-3.jpg" alt="Universum Thema" loading="lazy"></div>
-              <p class="polaroid-caption">Galaxie</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 6%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-6.jpg" alt="Universum Thema" loading="lazy"></div>
-              <p class="polaroid-caption">Sternenhimmel</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 52%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-1.jpg" alt="Universum Details" loading="lazy"></div>
-              <p class="polaroid-caption">Unendlich</p>
-            </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
-          </div>
-          <span class="book__hint">Bilder ansehen</span>
-        </div>
-        <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
-        </div>
-      </div>
-      <!-- CTA page -->
-      <div class="book__page" style="z-index: 0;">
-        <div class="book__page-front book__cover-front book__cta-page">
-          <div class="scrapbook__back-cta">
-            <p class="scrapbook__back-note">Lust bekommen?</p>
-            <a href="#booking" class="scrapbook__book-btn">Buche jetzt dein Event &rarr;</a>
-          </div>
-        </div>
-        <div class="book__page-back">
-        </div>
-      </div>
-      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">5</span></div>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
     </div>
 
     <!-- EVENT 2: Bachelorette — Book -->
     <div class="book fade-in" data-book="bachelorette" tabindex="0">
       <div class="book__rings"></div>
-      
+
       <!-- Page 0: Cover -->
       <div class="book__page book__page--cover" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
@@ -223,7 +173,6 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
               <ul class="event-spread__includes">
                 <li>Alle Materialien inklusive</li>
                 <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
@@ -231,90 +180,69 @@
                 <li>F&uuml;r Gruppen bis zu 10 Personen</li>
                 <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
               </ul>
-              <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
-              <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
+              <div class="cover-polaroid" style="--rot: -2deg;">
+                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 1: Gemeinsam kreativ -->
+      <!-- Page 1: Details -->
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Gemeinsam kreativ</h3>
-          <div class="scrapbook__photo-cluster">
+          <div class="book__details-page">
+            <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
+            <div class="cover-polaroid" style="--rot: 2deg;">
+              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
+          
+        </div>
+      </div>
+      <!-- Page 2: Gemeinsam kreativ -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
+                    <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-2.jpg" alt="Gemeinsam malen" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy"></div>
               <p class="polaroid-caption">Cheers!</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 50%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-5.jpg" alt="Kunstwerke" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy"></div>
               <p class="polaroid-caption">Gemeinsam</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-4.jpg" alt="Kreatives Erlebnis" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy"></div>
               <p class="polaroid-caption">Unvergesslich</p>
             </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 2: Eure Kunstwerke -->
-      <div class="book__page" style="z-index: 1;">
-        <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Eure Kunstwerke</h3>
-          <div class="scrapbook__photo-cluster">
-            <div class="scrapbook__polaroid" style="--rot: 2deg; --x: 8%; --y: 8%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-1.jpg" alt="Einzelwerk" loading="lazy"></div>
-              <p class="polaroid-caption">Meisterwerk</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 52%; --y: 10%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-3.jpg" alt="Einzelwerk" loading="lazy"></div>
-              <p class="polaroid-caption">Einzigartig</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: 1deg; --x: 28%; --y: 54%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-6.jpg" alt="Gruppenwerk" loading="lazy"></div>
-              <p class="polaroid-caption">Zusammen stark</p>
-            </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
-          </div>
-          <span class="book__hint">Bilder ansehen</span>
-        </div>
-        <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
-        </div>
-      </div>
-      <!-- CTA page -->
-      <div class="book__page" style="z-index: 0;">
-        <div class="book__page-front book__cover-front book__cta-page">
-          <div class="scrapbook__back-cta">
-            <p class="scrapbook__back-note">Lust bekommen?</p>
-            <a href="#booking" class="scrapbook__book-btn">Buche jetzt dein Event &rarr;</a>
-          </div>
-        </div>
-        <div class="book__page-back">
-        </div>
-      </div>
-      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">4</span></div>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
     </div>
 
     <!-- EVENT 3: Workshop — Book -->
     <div class="book fade-in" data-book="workshop" tabindex="0">
       <div class="book__rings"></div>
-      
+
       <!-- Page 0: Cover -->
       <div class="book__page book__page--cover" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
@@ -324,92 +252,70 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
-              <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
               <ul class="event-spread__includes">
                 <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
                 <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
                 <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
                 <li>Gruppen bis 30 Personen m&ouml;glich</li>
               </ul>
-              <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
-              <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
+              <div class="cover-polaroid" style="--rot: 1.5deg;">
+                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 1: Teamwork -->
+      <!-- Page 1: Details -->
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Teamwork</h3>
-          <div class="scrapbook__photo-cluster">
+          <div class="book__details-page">
+            <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
+            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
+            <div class="cover-polaroid" style="--rot: -1deg;">
+              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
+          
+        </div>
+      </div>
+      <!-- Page 2: Teamwork -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
+                    <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-3.jpg" alt="Workshop Teamwork" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy"></div>
               <p class="polaroid-caption">Gemeinsam</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 10%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-6.jpg" alt="Workshop Ergebnis" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy"></div>
               <p class="polaroid-caption">Kreativ-Power</p>
             </div>
-            <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 54%;">
+            <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 41%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-2.jpg" alt="Workshop Details" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy"></div>
               <p class="polaroid-caption">Inspiration</p>
             </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
           </div>
-          <span class="book__hint">Bilder ansehen</span>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
+          
         </div>
       </div>
-      <!-- Page 2: Mixed Media -->
-      <div class="book__page" style="z-index: 1;">
-        <div class="book__page-front book__cover-front">
-          <h3 class="scrapbook__title">Mixed Media</h3>
-          <div class="scrapbook__photo-cluster">
-            <div class="scrapbook__polaroid" style="--rot: 2deg; --x: 8%; --y: 8%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-4.jpg" alt="Mixed Media" loading="lazy"></div>
-              <p class="polaroid-caption">Strukturpaste</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 50%; --y: 12%;">
-              <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/art-1.jpg" alt="Strukturpaste" loading="lazy"></div>
-              <p class="polaroid-caption">Tape-Art</p>
-            </div>
-            <div class="scrapbook__polaroid" style="--rot: 1deg; --x: 28%; --y: 55%;">
-              <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art-5.jpg" alt="Ergebnis" loading="lazy"></div>
-              <p class="polaroid-caption">Fertig!</p>
-            </div>
-          <a href="#booking" class="book__page-cta">Buche jetzt dein Event &rarr;</a>
-          </div>
-          <span class="book__hint">Bilder ansehen</span>
-        </div>
-        <div class="book__page-back">
-          <p class="scrapbook__back-note">~ weiter bl&auml;ttern ~</p>
-        </div>
-      </div>
-      <!-- CTA page -->
-      <div class="book__page" style="z-index: 0;">
-        <div class="book__page-front book__cover-front book__cta-page">
-          <div class="scrapbook__back-cta">
-            <p class="scrapbook__back-note">Lust bekommen?</p>
-            <a href="#booking" class="scrapbook__book-btn">Buche jetzt dein Event &rarr;</a>
-          </div>
-        </div>
-        <div class="book__page-back">
-        </div>
-      </div>
-      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">4</span></div>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
     </div>
 
     <!-- EVENT 4: Torn page CTA -->
@@ -512,7 +418,11 @@
 
       <p class="letter-intro">Damit ich dein Event perfekt planen kann, f&uuml;lle bitte die wichtigsten Infos aus.</p>
 
-      <form class="letter-form" onsubmit="event.preventDefault(); this.classList.add('submitted'); return false;">
+      <form class="letter-form" action="https://formsubmit.co/vivisionart@web.de" method="POST">
+        <input type="hidden" name="_subject" value="Neue Event-Anfrage von Vi.Vision ART">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://vivisionart.online/#booking">
+        <input type="hidden" name="_template" value="table">
 
         <!-- 1. Anlass -->
         <div class="form-field">
@@ -603,16 +513,68 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
     </button>
     <div class="book-picker__panel" id="bookPickerPanel">
-      <div class="picker-label">Background</div>
+      <div class="picker-label">Kindergeburtstag</div>
       <div class="book-color-options">
-        <button class="book-color-swatch" data-site-bg="snow" style="background: #ffffff;" title="Snow"></button>
-        <button class="book-color-swatch" data-site-bg="cream" style="background: #fdf8f0;" title="Cream"></button>
-        <button class="book-color-swatch" data-site-bg="ivory" style="background: #faf6ee;" title="Ivory"></button>
-        <button class="book-color-swatch" data-site-bg="linen" style="background: #f5efe4;" title="Linen"></button>
-        <button class="book-color-swatch" data-site-bg="parchment" style="background: #f0e8d8;" title="Parchment"></button>
-        <button class="book-color-swatch" data-site-bg="sand" style="background: #e8dcc8;" title="Sand"></button>
-        <button class="book-color-swatch" data-site-bg="kraft" style="background: #d8c8b0;" title="Kraft"></button>
-        <button class="book-color-swatch" data-site-bg="taupe" style="background: #c8b8a0;" title="Taupe"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #c8b098;" title="Oat"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #c0a488;" title="Camel"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #b89878;" title="Tan"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #b08c6c;" title="Toffee"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #a88060;" title="Amber"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #9c7858;" title="Hazel"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #a07450;" title="Cinnamon"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #946848;" title="Copper"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #8c6840;" title="Sienna"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #886444;" title="Chestnut"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #7c5c3c;" title="Walnut"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #8a7058;" title="Mocha"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #9a806a;" title="Latte"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #a89080;" title="Mushroom"></button>
+        <button class="book-cover-swatch" data-target="birthday" style="background: #b09888;" title="Stone"></button>
+      </div>
+      <div class="picker-label">Junggesellinnenabschied</div>
+      <div class="book-color-options">
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #c8b098;" title="Oat"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #c0a488;" title="Camel"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #b89878;" title="Tan"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #b08c6c;" title="Toffee"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #a88060;" title="Amber"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #9c7858;" title="Hazel"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #a07450;" title="Cinnamon"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #946848;" title="Copper"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #8c6840;" title="Sienna"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #886444;" title="Chestnut"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #7c5c3c;" title="Walnut"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #8a7058;" title="Mocha"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #9a806a;" title="Latte"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #a89080;" title="Mushroom"></button>
+        <button class="book-cover-swatch" data-target="bachelorette" style="background: #b09888;" title="Stone"></button>
+      </div>
+      <div class="picker-label">Workshop</div>
+      <div class="book-color-options">
+        <button class="book-cover-swatch" data-target="workshop" style="background: #c8b098;" title="Oat"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #c0a488;" title="Camel"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #b89878;" title="Tan"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #b08c6c;" title="Toffee"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #a88060;" title="Amber"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #9c7858;" title="Hazel"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #a07450;" title="Cinnamon"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #946848;" title="Copper"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #8c6840;" title="Sienna"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #886444;" title="Chestnut"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #7c5c3c;" title="Walnut"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #8a7058;" title="Mocha"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #9a806a;" title="Latte"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #a89080;" title="Mushroom"></button>
+        <button class="book-cover-swatch" data-target="workshop" style="background: #b09888;" title="Stone"></button>
+      </div>
+      <div class="picker-label">Cover Texture</div>
+      <div class="book-texture-options">
+        <button class="cover-tex-swatch active" data-cover-tex="smooth">Smooth</button>
+        <button class="cover-tex-swatch" data-cover-tex="grain">Grain</button>
+        <button class="cover-tex-swatch" data-cover-tex="leather">Leather</button>
+        <button class="cover-tex-swatch" data-cover-tex="linen">Linen</button>
+        <button class="cover-tex-swatch" data-cover-tex="canvas">Canvas</button>
+        <button class="cover-tex-swatch" data-cover-tex="suede">Suede</button>
       </div>
       <div class="picker-label">Accent</div>
       <div class="book-accent-options">
@@ -907,38 +869,78 @@
       });
 
       /* Restore from localStorage */
-      const savedBg = localStorage.getItem('siteBg');
       const savedAccent = localStorage.getItem('accentColor');
-      if (savedBg) html.setAttribute('data-site-bg', savedBg);
       if (savedAccent) html.setAttribute('data-accent', savedAccent);
+
+      // Restore per-book cover colors
+      ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+        const saved = localStorage.getItem('cover-' + name);
+        if (saved) {
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (book) {
+            book.querySelector('.book__page--cover .book__page-front').style.background = saved;
+            book.style.setProperty('--cover-bg', saved);
+          }
+        }
+      });
+
+      // Restore cover texture
+      const savedCoverTex = localStorage.getItem('coverTex');
+      if (savedCoverTex) html.setAttribute('data-cover-tex', savedCoverTex);
+
+      /* Cover texture clicks */
+      document.querySelectorAll('.cover-tex-swatch').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tex = btn.getAttribute('data-cover-tex');
+          html.setAttribute('data-cover-tex', tex);
+          localStorage.setItem('coverTex', tex);
+          document.querySelectorAll('.cover-tex-swatch').forEach(s => s.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        // Mark active on load
+        if (btn.getAttribute('data-cover-tex') === (savedCoverTex || 'smooth')) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
 
       /* Mark active swatches */
       function updateActive() {
-        const curBg = html.getAttribute('data-site-bg') || '';
         const curAccent = html.getAttribute('data-accent') || '';
-
-        document.querySelectorAll('.book-color-swatch').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-site-bg') === curBg);
-        });
         document.querySelectorAll('.book-accent-swatch').forEach(btn => {
           btn.classList.toggle('active', btn.getAttribute('data-accent') === curAccent);
         });
       }
       updateActive();
 
-      /* Background color swatch clicks */
-      document.querySelectorAll('.book-color-swatch').forEach(btn => {
+      /* Per-book cover color clicks */
+      document.querySelectorAll('.book-cover-swatch').forEach(btn => {
         btn.addEventListener('click', () => {
-          const bg = btn.getAttribute('data-site-bg');
-          const current = html.getAttribute('data-site-bg');
-          if (current === bg) {
-            html.removeAttribute('data-site-bg');
-            localStorage.removeItem('siteBg');
-          } else {
-            html.setAttribute('data-site-bg', bg);
-            localStorage.setItem('siteBg', bg);
+          const target = btn.getAttribute('data-target');
+          const color = btn.style.background;
+          const book = document.querySelector('[data-book="' + target + '"]');
+          if (book) {
+            const cover = book.querySelector('.book__page--cover .book__page-front');
+            cover.style.background = color;
+            localStorage.setItem('cover-' + target, color);
+            // Light or dark text based on color brightness
+            const darkCovers = ['#8b7560', '#6b5a48', '#4a3c30', '#3a3a3a', '#a89078'];
+            const isDark = darkCovers.some(c => color.includes(c.replace('#', '')));
+            const coverPage = book.querySelector('.book__page--cover');
+            if (isDark) {
+              coverPage.style.setProperty('--book-text', '#f0ece8');
+              coverPage.style.setProperty('--book-text-light', '#e0d8d0');
+            } else {
+              coverPage.style.removeProperty('--book-text');
+              coverPage.style.removeProperty('--book-text-light');
+            }
           }
-          updateActive();
+          // Mark active within this group
+          btn.closest('.book-color-options').querySelectorAll('.book-cover-swatch').forEach(s => {
+            s.classList.remove('active');
+          });
+          btn.classList.add('active');
         });
       });
 
@@ -963,4 +965,3 @@
   </script>
 </body>
 </html>
-<!-- deployed -->
