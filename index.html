@@ -872,21 +872,21 @@
       const savedAccent = localStorage.getItem('accentColor');
       if (savedAccent) html.setAttribute('data-accent', savedAccent);
 
-      // Restore per-book cover colors
+      // Restore per-book cover colors (default: latte #9a806a)
+      const defaultCover = '#9a806a';
       ['birthday', 'bachelorette', 'workshop'].forEach(name => {
         const saved = localStorage.getItem('cover-' + name);
-        if (saved) {
-          const book = document.querySelector('[data-book="' + name + '"]');
-          if (book) {
-            book.querySelector('.book__page--cover .book__page-front').style.background = saved;
-            book.style.setProperty('--cover-bg', saved);
-          }
+        const color = saved || defaultCover;
+        const book = document.querySelector('[data-book="' + name + '"]');
+        if (book) {
+          book.querySelector('.book__page--cover .book__page-front').style.background = color;
+          book.style.setProperty('--cover-bg', color);
         }
       });
 
-      // Restore cover texture
+      // Restore cover texture (default: leather)
       const savedCoverTex = localStorage.getItem('coverTex');
-      if (savedCoverTex) html.setAttribute('data-cover-tex', savedCoverTex);
+      html.setAttribute('data-cover-tex', savedCoverTex || 'leather');
 
       /* Cover texture clicks */
       document.querySelectorAll('.cover-tex-swatch').forEach(btn => {
@@ -898,7 +898,7 @@
           btn.classList.add('active');
         });
         // Mark active on load
-        if (btn.getAttribute('data-cover-tex') === (savedCoverTex || 'smooth')) {
+        if (btn.getAttribute('data-cover-tex') === (savedCoverTex || 'leather')) {
           btn.classList.add('active');
         } else {
           btn.classList.remove('active');
