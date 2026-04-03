@@ -2892,6 +2892,8 @@ html[data-book-texture="rough"] .book__cover-front > .book-texture-overlay {
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   transition: background 0.5s ease;
   max-width: 260px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .book-picker__panel.is-open {
