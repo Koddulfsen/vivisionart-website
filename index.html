@@ -341,51 +341,9 @@
 
     <p class="gallery-note fade-in">Alle Werke sind Originale &mdash; wenn dir etwas gef&auml;llt, schreib mir einfach</p>
 
-    <div class="board">
-      <article class="polaroid p1 fade-in" style="--rot: -4deg; --x: 2%; --y: 0;">
-        <div class="polaroid-pin"></div>
-        <span class="art-sticker">zu verkaufen</span>
-        <div class="polaroid-frame">
-          <img src="images/connection.png" alt="Connection" loading="lazy">
-        </div>
-        <p class="polaroid-caption">Connection</p>
-      </article>
-
-      <article class="polaroid p2 fade-in" style="--rot: 3deg; --x: 34%; --y: 2%;">
-        <div class="tape-corner"></div>
-        <span class="art-sticker">zu verkaufen</span>
-        <div class="polaroid-frame">
-          <img src="images/florasol.png" alt="Florasol" loading="lazy">
-        </div>
-        <p class="polaroid-caption">Florasol</p>
-      </article>
-
-      <article class="polaroid p3 fade-in" style="--rot: -2deg; --x: 66%; --y: -1%;">
-        <div class="polaroid-pin"></div>
-        <span class="art-sticker">zu verkaufen</span>
-        <div class="polaroid-frame">
-          <img src="images/love.png" alt="Love Is The Answer" loading="lazy">
-        </div>
-        <p class="polaroid-caption">Love Is The Answer</p>
-      </article>
-
-      <article class="polaroid p4 fade-in" style="--rot: 5deg; --x: 8%; --y: 0;">
-        <div class="tape-corner"></div>
-        <span class="art-sticker">zu verkaufen</span>
-        <div class="polaroid-frame">
-          <img src="images/show-me.png" alt="Show Me How Easy It Can Be" loading="lazy">
-        </div>
-        <p class="polaroid-caption">Show Me How Easy It Can Be</p>
-      </article>
-
-      <article class="polaroid p5 fade-in" style="--rot: -3deg; --x: 40%; --y: 1%;">
-        <div class="polaroid-pin"></div>
-        <span class="art-sticker">zu verkaufen</span>
-        <div class="polaroid-frame">
-          <img src="images/the-best.png" alt="What's The Best That Could Happen?" loading="lazy">
-        </div>
-        <p class="polaroid-caption">What's The Best That Could Happen?</p>
-      </article>
+    <div class="board" id="galleryBoard">
+      <!-- Artworks loaded dynamically from /api/artworks -->
+      <p class="gallery-loading" style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke werden geladen...</p>
     </div>
 
   </section>
@@ -659,6 +617,164 @@
   </footer>
 
   <script>
+    /* ---- Load settings from API and apply to DOM ---- */
+    (async function loadAndApplySettings() {
+      try {
+        const res = await fetch('/api/settings');
+        if (!res.ok) return;
+        const s = await res.json();
+        const html = document.documentElement;
+
+        // Style settings
+        if (s.heading_font) html.setAttribute('data-heading-font', s.heading_font);
+        if (s.body_font) html.setAttribute('data-body-font', s.body_font);
+        if (s.bg_color) html.setAttribute('data-site-bg', s.bg_color);
+        if (s.accent_color) html.setAttribute('data-accent', s.accent_color);
+        if (s.cover_texture) html.setAttribute('data-cover-tex', s.cover_texture);
+
+        // Cover colors
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const color = s['cover_color_' + name];
+          if (!color) return;
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (book) {
+            const cover = book.querySelector('.book__page--cover .book__page-front');
+            if (cover) cover.style.background = color;
+            book.style.setProperty('--cover-bg', color);
+          }
+        });
+
+        // About content
+        if (s.about_name) {
+          const nameEl = document.querySelector('.about-name');
+          if (nameEl) nameEl.textContent = s.about_name;
+        }
+        if (s.about_bio) {
+          const bioContainer = document.querySelector('.about-text');
+          if (bioContainer) {
+            const paras = s.about_bio.split(/\n\s*\n/);
+            const existing = bioContainer.querySelectorAll('.about-bio');
+            existing.forEach(el => el.remove());
+            const nameEl = bioContainer.querySelector('.about-name');
+            let insertAfter = nameEl;
+            paras.forEach(p => {
+              if (!p.trim()) return;
+              const el = document.createElement('p');
+              el.className = 'about-bio';
+              el.textContent = p.trim();
+              if (insertAfter && insertAfter.nextSibling) {
+                insertAfter.parentNode.insertBefore(el, insertAfter.nextSibling);
+              } else if (insertAfter) {
+                insertAfter.parentNode.appendChild(el);
+              }
+              insertAfter = el;
+            });
+          }
+        }
+
+        // Instagram
+        if (s.instagram_url) {
+          const igLink = document.querySelector('.about-instagram__link');
+          if (igLink) igLink.href = s.instagram_url;
+        }
+
+        // Footer
+        if (s.footer_text) {
+          const footer = document.querySelector('.retro-footer p');
+          if (footer) footer.innerHTML = '&copy; ' + s.footer_text;
+        }
+
+        // Book content
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (!book) return;
+
+          // Cover checkmarks
+          const checksKey = 'book_' + name + '_checks';
+          if (s[checksKey]) {
+            const ul = book.querySelector('.event-spread__includes');
+            if (ul) {
+              ul.innerHTML = s[checksKey].split('\n').filter(l => l.trim()).map(l => '<li>' + l.trim() + '</li>').join('');
+            }
+          }
+
+          // Description
+          const descKey = 'book_' + name + '_desc';
+          if (s[descKey]) {
+            const descEls = book.querySelectorAll('.event-spread__desc');
+            const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
+            descEls.forEach((el, i) => {
+              if (paras[i]) el.textContent = paras[i].trim();
+            });
+          }
+
+          // Extra text
+          const extraKey = 'book_' + name + '_extra';
+          if (s[extraKey]) {
+            const extraEl = book.querySelector('.event-spread__extra');
+            if (extraEl) extraEl.textContent = s[extraKey];
+          }
+        });
+
+      } catch (err) {
+        // Settings load failed — use defaults from HTML
+      }
+    })();
+
+    /* ---- Load artworks from API ---- */
+    (async function loadArtworks() {
+      const board = document.getElementById('galleryBoard');
+      const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
+      const xPositions = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
+      const yPositions = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
+      const attachments = ['polaroid-pin', 'tape-corner'];
+
+      try {
+        const res = await fetch('/api/artworks');
+        if (!res.ok) throw new Error('Failed to load');
+        const artworks = await res.json();
+
+        if (!artworks.length) {
+          board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>';
+          return;
+        }
+
+        board.innerHTML = artworks.map((a, i) => {
+          const rot = rotations[i % rotations.length];
+          const x = xPositions[i % xPositions.length];
+          const y = yPositions[i % yPositions.length];
+          const attach = attachments[i % attachments.length];
+          const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
+          return `
+            <article class="polaroid p${i + 1} fade-in" style="--rot: ${rot}; --x: ${x}; --y: ${y};">
+              <div class="${attach}"></div>
+              <span class="art-sticker">${statusLabel}</span>
+              <div class="polaroid-frame">
+                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy">
+              </div>
+              <p class="polaroid-caption">${a.title || ''}</p>
+            </article>
+          `;
+        }).join('');
+
+        // Re-init lightbox with new polaroids
+        initLightbox();
+
+        // Observe new fade-in elements
+        board.querySelectorAll('.fade-in').forEach(el => {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+            });
+          }, { threshold: 0.15 });
+          obs.observe(el);
+        });
+
+      } catch (err) {
+        board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke konnten nicht geladen werden</p>';
+      }
+    })();
+
     /* ---- Load calendar events from API ---- */
     (async function() {
       const rotations = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
@@ -826,12 +942,21 @@
     const lightbox = document.getElementById('lightbox');
     const lbImg = lightbox.querySelector('.lightbox__img');
     const lbCaption = lightbox.querySelector('.lightbox__caption');
-    const polaroids = document.querySelectorAll('.board .polaroid');
+    let lbPolaroids = [];
     let currentIdx = 0;
 
+    function initLightbox() {
+      lbPolaroids = document.querySelectorAll('.board .polaroid');
+      lbPolaroids.forEach((pol, i) => {
+        pol.style.cursor = 'pointer';
+        pol.addEventListener('click', () => openLightbox(i));
+      });
+    }
+
     function openLightbox(idx) {
+      if (!lbPolaroids.length) return;
       currentIdx = idx;
-      const pol = polaroids[idx];
+      const pol = lbPolaroids[idx];
       const img = pol.querySelector('.polaroid-frame img');
       const caption = pol.querySelector('.polaroid-caption');
       lbImg.src = img.src;
@@ -847,19 +972,19 @@
     }
 
     function showPrev() {
-      currentIdx = (currentIdx - 1 + polaroids.length) % polaroids.length;
+      if (!lbPolaroids.length) return;
+      currentIdx = (currentIdx - 1 + lbPolaroids.length) % lbPolaroids.length;
       openLightbox(currentIdx);
     }
 
     function showNext() {
-      currentIdx = (currentIdx + 1) % polaroids.length;
+      if (!lbPolaroids.length) return;
+      currentIdx = (currentIdx + 1) % lbPolaroids.length;
       openLightbox(currentIdx);
     }
 
-    polaroids.forEach((pol, i) => {
-      pol.style.cursor = 'pointer';
-      pol.addEventListener('click', () => openLightbox(i));
-    });
+    // Init lightbox for any polaroids already in DOM
+    initLightbox();
 
     lightbox.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
     lightbox.querySelector('.lightbox__prev').addEventListener('click', showPrev);
