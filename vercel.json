@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/events.js": {
+      "runtime": "@vercel/node@3"
+    }
+  }
+}

@@ -648,24 +648,8 @@
       Komm vorbei
     </h2>
 
-    <div class="dates-list">
-      <div class="date-card fade-in" style="--rot: -1.5deg;">
-        <span class="date-card__date">12. April</span>
-        <span class="date-card__what">Paint &amp; Sip Abend</span>
-        <span class="date-card__where">Studio Vivi</span>
-      </div>
-
-      <div class="date-card fade-in" style="--rot: 1deg;">
-        <span class="date-card__date">26. April</span>
-        <span class="date-card__what">Kinder-Workshop</span>
-        <span class="date-card__where">Gemeindezentrum</span>
-      </div>
-
-      <div class="date-card fade-in" style="--rot: -0.5deg;">
-        <span class="date-card__date">10. Mai</span>
-        <span class="date-card__what">Abstrakte Malerei f&uuml;r Anf&auml;nger</span>
-        <span class="date-card__where">Studio Vivi</span>
-      </div>
+    <div class="dates-list" id="datesList">
+      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Termine werden geladen...</p>
     </div>
   </section>
 
@@ -675,6 +659,38 @@
   </footer>
 
   <script>
+    /* ---- Load calendar events from API ---- */
+    (async function() {
+      const rotations = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
+      try {
+        const res = await fetch('/api/events');
+        const events = await res.json();
+        const list = document.getElementById('datesList');
+        if (events.length === 0) {
+          list.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>';
+        } else {
+          list.innerHTML = events.map((e, i) => `
+            <div class="date-card fade-in" style="--rot: ${rotations[i % rotations.length]};">
+              <span class="date-card__date">${e.date}</span>
+              <span class="date-card__what">${e.title}</span>
+              <span class="date-card__where">${e.location || ''}</span>
+            </div>
+          `).join('');
+          // Re-observe for fade-in
+          list.querySelectorAll('.fade-in').forEach(el => {
+            const obs = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+              });
+            }, { threshold: 0.15 });
+            obs.observe(el);
+          });
+        }
+      } catch (err) {
+        // Fallback: keep loading text or show nothing
+      }
+    })();
+
     /* ---- Scroll-triggered fade-in ---- */
     const fadeEls = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {

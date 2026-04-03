@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vi.Vision ART — Admin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: #f5f0ea;
+      color: #2c2420;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .subtitle { color: #888; font-size: 14px; margin-bottom: 32px; }
+
+    /* Login */
+    .login-form { margin-bottom: 32px; }
+    .login-form input {
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      width: 200px;
+      margin-right: 8px;
+    }
+    .login-form button, .btn {
+      padding: 10px 20px;
+      background: #8a7058;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-danger { background: #c55; }
+    .logged-in { display: none; }
+
+    /* Events list */
+    .event-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .event-info { flex: 1; }
+    .event-date { font-weight: 600; color: #8a7058; }
+    .event-title { font-size: 15px; }
+    .event-location { font-size: 13px; color: #888; }
+
+    /* Add form */
+    .add-form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .add-form h3 { margin-bottom: 16px; font-size: 16px; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 13px; color: #666; margin-bottom: 4px; }
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+    .field input:focus { outline: none; border-color: #8a7058; }
+
+    .status { padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; }
+    .status-ok { background: #e8f5e9; color: #2e7d32; }
+    .status-err { background: #fce4ec; color: #c62828; }
+    .empty { text-align: center; color: #aaa; padding: 32px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vi.Vision ART</h1>
+    <p class="subtitle">Termine verwalten</p>
+
+    <!-- Login -->
+    <div id="loginSection">
+      <div class="login-form">
+        <input type="password" id="password" placeholder="Passwort">
+        <button class="btn" onclick="login()">Login</button>
+      </div>
+    </div>
+
+    <!-- Admin (hidden until login) -->
+    <div id="adminSection" class="logged-in">
+      <div id="status"></div>
+
+      <h3 style="margin-bottom: 12px;">Aktuelle Termine</h3>
+      <div id="eventsList"></div>
+
+      <div class="add-form">
+        <h3>Neuen Termin hinzufuegen</h3>
+        <div class="field">
+          <label>Datum</label>
+          <input type="text" id="newDate" placeholder="z.B. 15. Juni">
+        </div>
+        <div class="field">
+          <label>Titel</label>
+          <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
+        </div>
+        <div class="field">
+          <label>Ort</label>
+          <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
+        </div>
+        <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let token = '';
+
+    function login() {
+      token = document.getElementById('password').value;
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('adminSection').style.display = 'block';
+      loadEvents();
+    }
+
+    async function loadEvents() {
+      try {
+        const res = await fetch('/api/events');
+        const events = await res.json();
+        const list = document.getElementById('eventsList');
+
+        if (events.length === 0) {
+          list.innerHTML = '<div class="empty">Keine Termine vorhanden</div>';
+          return;
+        }
+
+        list.innerHTML = events.map(e => `
+          <div class="event-item">
+            <div class="event-info">
+              <div class="event-date">${e.date}</div>
+              <div class="event-title">${e.title}</div>
+              <div class="event-location">${e.location || ''}</div>
+            </div>
+            <button class="btn btn-danger" onclick="deleteEvent(${e.id})">X</button>
+          </div>
+        `).join('');
+      } catch (err) {
+        showStatus('Fehler beim Laden', true);
+      }
+    }
+
+    async function addEvent() {
+      const date = document.getElementById('newDate').value;
+      const title = document.getElementById('newTitle').value;
+      const location = document.getElementById('newLocation').value;
+
+      if (!date || !title) {
+        showStatus('Datum und Titel sind erforderlich', true);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+          body: JSON.stringify({ date, title, location }),
+        });
+
+        if (res.ok) {
+          showStatus('Termin hinzugefuegt!', false);
+          document.getElementById('newDate').value = '';
+          document.getElementById('newTitle').value = '';
+          document.getElementById('newLocation').value = '';
+          loadEvents();
+        } else {
+          const data = await res.json();
+          showStatus(data.error || 'Fehler', true);
+        }
+      } catch (err) {
+        showStatus('Fehler beim Speichern', true);
+      }
+    }
+
+    async function deleteEvent(id) {
+      if (!confirm('Termin wirklich loeschen?')) return;
+
+      try {
+        const res = await fetch('/api/events', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (res.ok) {
+          showStatus('Termin geloescht', false);
+          loadEvents();
+        } else {
+          showStatus('Fehler beim Loeschen', true);
+        }
+      } catch (err) {
+        showStatus('Fehler', true);
+      }
+    }
+
+    function showStatus(msg, isError) {
+      const el = document.getElementById('status');
+      el.className = 'status ' + (isError ? 'status-err' : 'status-ok');
+      el.textContent = msg;
+      setTimeout(() => { el.textContent = ''; el.className = ''; }, 3000);
+    }
+
+    // Enter key triggers login
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') login();
+    });
+  </script>
+</body>
+</html>
