@@ -13,27 +13,28 @@
       min-height: 100vh;
     }
 
-    /* Header */
+    /* Sticky header */
     .admin-header {
       background: #fff;
       border-bottom: 1px solid #e0d8d0;
-      padding: 20px 24px;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
     .admin-header h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       color: #2c2420;
     }
     .admin-header .subtitle {
-      font-size: 13px;
+      font-size: 12px;
       color: #999;
-      margin-top: 2px;
+      margin-top: 1px;
     }
     .logout-btn {
       padding: 6px 14px;
@@ -77,44 +78,25 @@
     .login-box input:focus { outline: none; border-color: #8a7058; }
     .login-box .btn { width: 100%; }
 
-    /* Tabs nav */
-    .tab-bar {
-      display: flex;
-      background: #fff;
-      border-bottom: 1px solid #e0d8d0;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .tab-bar button {
-      flex: 1;
-      min-width: 0;
-      padding: 14px 12px;
-      background: none;
-      border: none;
-      border-bottom: 3px solid transparent;
-      font-size: 14px;
-      font-weight: 500;
-      color: #999;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .tab-bar button:hover { color: #666; }
-    .tab-bar button.active {
-      color: #8a7058;
-      border-bottom-color: #8a7058;
-    }
-
-    /* Main content */
+    /* Scrollable content area */
     .main-content {
       max-width: 720px;
       margin: 0 auto;
-      padding: 24px 20px 60px;
+      padding: 24px 20px 80px;
     }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
 
-    /* Common elements */
+    /* Section headings */
+    .section-heading {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c2420;
+      margin: 32px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0d8d0;
+    }
+    .section-heading:first-child { margin-top: 0; }
+
+    /* Common */
     .btn {
       padding: 10px 20px;
       background: #8a7058;
@@ -139,20 +121,16 @@
 
     .card {
       background: #fff;
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 24px;
       margin-bottom: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
     }
     .card h3 {
       font-size: 15px;
       font-weight: 600;
       margin-bottom: 16px;
       color: #2c2420;
-    }
-    .card-muted {
-      background: #faf8f5;
-      border: 1px dashed #e0d8d0;
     }
 
     .field { margin-bottom: 14px; }
@@ -184,7 +162,7 @@
     }
     .field-row .field { flex: 1; }
 
-    /* Status toast */
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -220,9 +198,9 @@
 
     .empty { text-align: center; color: #bbb; padding: 32px 16px; font-size: 14px; }
 
-    /* Style picker sections */
+    /* Pill/swatch buttons for fonts and textures */
     .picker-section {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .picker-section label {
       display: block;
@@ -231,27 +209,14 @@
       color: #666;
       margin-bottom: 8px;
     }
-
-    /* Swatches */
     .swatch-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
-    .swatch {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.15s;
-    }
-    .swatch:hover { transform: scale(1.1); }
-    .swatch.active { border-color: #8a7058; box-shadow: 0 0 0 2px rgba(138,112,88,0.3); }
-
     .text-swatch {
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: 20px;
       border: 1px solid #ddd;
       background: #faf8f5;
       font-size: 13px;
@@ -265,11 +230,12 @@
       font-weight: 600;
     }
 
+    /* Color input rows */
     .color-input-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .color-input-row span {
       font-size: 13px;
@@ -284,6 +250,46 @@
       padding: 2px;
       cursor: pointer;
       background: #fff;
+    }
+
+    /* Preview boxes */
+    .preview-box {
+      background: #faf8f5;
+      border: 1px dashed #e0d8d0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 12px;
+    }
+    .preview-box .preview-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+    .font-preview-title {
+      font-size: 22px;
+      margin-bottom: 4px;
+      color: #2c2420;
+    }
+    .font-preview-body {
+      font-size: 15px;
+      color: #555;
+    }
+    .color-preview-rect {
+      width: 100%;
+      height: 60px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .color-preview-rect span {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 6px;
     }
 
     /* Gallery items */
@@ -317,7 +323,31 @@
     .artwork-status--sold { background: #fce4ec; color: #c62828; }
     .artwork-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
-    /* Section save bar */
+    /* New artwork image preview */
+    .new-art-preview {
+      margin-top: 8px;
+      text-align: center;
+    }
+    .new-art-preview img {
+      max-width: 120px;
+      max-height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #e0d8d0;
+    }
+
+    /* Instagram preview link */
+    .insta-preview {
+      margin-top: 4px;
+    }
+    .insta-preview a {
+      font-size: 13px;
+      color: #8a7058;
+      text-decoration: underline;
+    }
+    .insta-preview a:hover { color: #6b5844; }
+
+    /* Save bar */
     .save-bar {
       display: flex;
       justify-content: flex-end;
@@ -326,7 +356,7 @@
       margin-top: 8px;
     }
 
-    /* Inline edit modal */
+    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -356,12 +386,14 @@
 
     /* Responsive */
     @media (max-width: 600px) {
-      .admin-header { padding: 14px 16px; }
-      .admin-header h1 { font-size: 17px; }
-      .main-content { padding: 16px 14px 40px; }
+      .admin-header { padding: 12px 16px; }
+      .admin-header h1 { font-size: 16px; }
+      .main-content { padding: 16px 14px 60px; }
       .field-row { flex-direction: column; gap: 0; }
       .event-item { flex-wrap: wrap; }
       .artwork-item { flex-wrap: wrap; }
+      .color-input-row span { min-width: 100px; font-size: 12px; }
+      .section-heading { font-size: 17px; }
     }
   </style>
 </head>
@@ -377,214 +409,239 @@
     </div>
   </div>
 
-  <!-- ADMIN -->
+  <!-- ADMIN (single scrollable page) -->
   <div id="adminView" style="display:none;">
     <div class="admin-header">
       <div>
-        <h1>Vi.Vision ART</h1>
+        <h1>Vi.Vision ART — Admin</h1>
         <div class="subtitle">Admin-Bereich</div>
       </div>
       <button class="logout-btn" onclick="doLogout()">Abmelden</button>
     </div>
 
-    <div class="tab-bar">
-      <button class="active" data-panel="termine" onclick="switchTab(this)">Termine</button>
-      <button data-panel="stil" onclick="switchTab(this)">Stil</button>
-      <button data-panel="inhalte" onclick="switchTab(this)">Inhalte</button>
-      <button data-panel="galerie" onclick="switchTab(this)">Galerie</button>
-    </div>
-
     <div class="main-content">
 
-      <!-- ============ TAB 1: TERMINE ============ -->
-      <div id="panel-termine" class="tab-panel active">
-        <div class="card">
-          <h3>Aktuelle Termine</h3>
-          <div id="eventsList"></div>
+      <!-- ============ 1. SCHRIFTARTEN ============ -->
+      <h2 class="section-heading">Schriftarten</h2>
+
+      <div class="card">
+        <div class="picker-section">
+          <label>Titel</label>
+          <div class="swatch-row" id="headingFontPicker"></div>
         </div>
-        <div class="card">
-          <h3>Neuen Termin hinzufuegen</h3>
-          <div class="field-row">
-            <div class="field">
-              <label>Datum</label>
-              <input type="text" id="newDate" placeholder="z.B. 15. Juni">
-            </div>
-            <div class="field">
-              <label>Ort</label>
-              <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
-            </div>
-          </div>
-          <div class="field">
-            <label>Titel</label>
-            <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
-          </div>
-          <div class="save-bar">
-            <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
-          </div>
+        <div class="picker-section">
+          <label>Text</label>
+          <div class="swatch-row" id="bodyFontPicker"></div>
+        </div>
+
+        <!-- Font preview -->
+        <div class="preview-box">
+          <div class="preview-label">Vorschau</div>
+          <div class="font-preview-title" id="fontPreviewTitle">So sieht dein Titel aus</div>
+          <div class="font-preview-body" id="fontPreviewBody">So sieht dein Text aus</div>
+        </div>
+
+        <div class="save-bar">
+          <button class="btn" onclick="saveFonts()">Schriftarten speichern</button>
         </div>
       </div>
 
-      <!-- ============ TAB 2: STIL ============ -->
-      <div id="panel-stil" class="tab-panel">
-        <div class="card">
-          <h3>Schriftarten</h3>
-          <div class="picker-section">
-            <label>Titel-Schriftart</label>
-            <div class="swatch-row" id="headingFontPicker"></div>
-          </div>
-          <div class="picker-section">
-            <label>Text-Schriftart</label>
-            <div class="swatch-row" id="bodyFontPicker"></div>
-          </div>
+      <!-- ============ 2. FARBEN ============ -->
+      <h2 class="section-heading">Farben</h2>
+
+      <div class="card">
+        <h3>Hintergrund</h3>
+        <div class="color-input-row">
+          <span>Hauptfarbe</span>
+          <input type="color" id="bgPrimary" value="#f0ebe0" oninput="updateColorPreview()">
         </div>
-        <div class="card">
-          <h3>Farben</h3>
-          <div class="picker-section">
-            <label>Hintergrundfarbe</label>
-            <div class="color-input-row">
-              <span>Hauptfarbe</span>
-              <input type="color" id="bgPrimary" value="#f0ebe0">
-            </div>
-            <div class="color-input-row">
-              <span>Sekundaer</span>
-              <input type="color" id="bgSecondary" value="#e8e0d4">
-            </div>
-          </div>
-          <div class="picker-section">
-            <label>Akzentfarbe (Highlights, Buttons, etc.)</label>
-            <div class="color-input-row">
-              <span>Akzent</span>
-              <input type="color" id="accentPrimary" value="#80b8a0">
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Buch-Cover</h3>
-          <div class="picker-section">
-            <label>Cover-Farben</label>
-            <div class="color-input-row">
-              <span>Kindergeburtstag</span>
-              <input type="color" id="coverBirthday" value="#9a806a">
-            </div>
-            <div class="color-input-row">
-              <span>Junggesellinnenabschied</span>
-              <input type="color" id="coverBachelorette" value="#9a806a">
-            </div>
-            <div class="color-input-row">
-              <span>Workshop</span>
-              <input type="color" id="coverWorkshop" value="#9a806a">
-            </div>
-          </div>
-          <div class="picker-section">
-            <label>Cover-Textur</label>
-            <div class="swatch-row" id="coverTexturePicker"></div>
-          </div>
-        </div>
-        <div class="save-bar">
-          <button class="btn" onclick="saveStyle()">Stil speichern</button>
+        <div class="color-input-row">
+          <span>Sekundaer</span>
+          <input type="color" id="bgSecondary" value="#e8e0d4" oninput="updateColorPreview()">
         </div>
       </div>
 
-      <!-- ============ TAB 3: INHALTE ============ -->
-      <div id="panel-inhalte" class="tab-panel">
-        <div class="card">
-          <h3>Ueber mich</h3>
-          <div class="field">
-            <label>Name / Ueberschrift</label>
-            <input type="text" id="aboutName" placeholder="Hi, ich bin Vivi.">
-          </div>
-          <div class="field">
-            <label>Bio (Absaetze mit Leerzeile trennen)</label>
-            <textarea id="aboutBio" rows="8" placeholder="Kuenstlerin und Gastgeberin kreativer Erlebnisse."></textarea>
-          </div>
+      <div class="card">
+        <h3>Akzent</h3>
+        <div class="color-input-row">
+          <span>Akzentfarbe</span>
+          <input type="color" id="accentPrimary" value="#80b8a0" oninput="updateColorPreview()">
         </div>
-        <div class="card">
-          <h3>Links &amp; Footer</h3>
-          <div class="field">
-            <label>Instagram URL</label>
-            <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/vi.visionart">
-          </div>
-          <div class="field">
-            <label>Footer-Text</label>
-            <input type="text" id="footerText" placeholder="2026 Vi.Vision ART">
-          </div>
+      </div>
+
+      <div class="card">
+        <h3>Buch-Cover Farben</h3>
+        <div class="color-input-row">
+          <span>Kindergeburtstag</span>
+          <input type="color" id="coverBirthday" value="#9a806a">
         </div>
-        <div class="card">
-          <h3>Event-Buch: Kindergeburtstag</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text</label>
-            <textarea id="bookBirthdayDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookBirthdayExtra" rows="2"></textarea>
-          </div>
+        <div class="color-input-row">
+          <span>Junggesellinnenabschied</span>
+          <input type="color" id="coverBachelorette" value="#9a806a">
         </div>
-        <div class="card">
-          <h3>Event-Buch: Junggesellinnenabschied</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookBacheloretteChecks" rows="4"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text</label>
-            <textarea id="bookBacheloretteDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookBacheloretteExtra" rows="2"></textarea>
-          </div>
+        <div class="color-input-row">
+          <span>Workshop</span>
+          <input type="color" id="coverWorkshop" value="#9a806a">
         </div>
-        <div class="card">
-          <h3>Event-Buch: Workshop</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookWorkshopChecks" rows="4"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text (Absaetze mit Leerzeile trennen)</label>
-            <textarea id="bookWorkshopDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookWorkshopExtra" rows="2"></textarea>
+      </div>
+
+      <div class="card">
+        <h3>Cover-Textur</h3>
+        <div class="swatch-row" id="coverTexturePicker"></div>
+      </div>
+
+      <!-- Color preview -->
+      <div class="card">
+        <div class="preview-box" style="border:none; background:none; padding:0; margin:0;">
+          <div class="preview-label">Vorschau — Hintergrund + Akzent</div>
+          <div class="color-preview-rect" id="colorPreviewRect">
+            <span id="colorPreviewAccent">Akzent</span>
           </div>
         </div>
         <div class="save-bar">
+          <button class="btn" onclick="saveColors()">Farben speichern</button>
+        </div>
+      </div>
+
+      <!-- ============ 3. TERMINE ============ -->
+      <h2 class="section-heading">Termine</h2>
+
+      <div class="card">
+        <h3>Aktuelle Termine</h3>
+        <div id="eventsList"></div>
+      </div>
+
+      <div class="card">
+        <h3>Neuen Termin hinzufuegen</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Datum</label>
+            <input type="text" id="newDate" placeholder="z.B. 15. Juni">
+          </div>
+          <div class="field">
+            <label>Ort</label>
+            <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
+          </div>
+        </div>
+        <div class="field">
+          <label>Titel</label>
+          <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
+        </div>
+        <div class="save-bar">
+          <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
+        </div>
+      </div>
+
+      <!-- ============ 4. GALERIE ============ -->
+      <h2 class="section-heading">Galerie</h2>
+
+      <div class="card">
+        <h3>Kunstwerke</h3>
+        <div id="artworksList"></div>
+      </div>
+
+      <div class="card">
+        <h3>Neues Werk hinzufuegen</h3>
+        <div class="field">
+          <label>Titel</label>
+          <input type="text" id="newArtTitle" placeholder="z.B. Connection">
+        </div>
+        <div class="field">
+          <label>Bild-URL</label>
+          <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png" oninput="previewNewArtImage()">
+          <div class="new-art-preview" id="newArtPreview"></div>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="newArtStatus">
+            <option value="for_sale">Zu verkaufen</option>
+            <option value="sold">Hat ein Zuhause gefunden</option>
+          </select>
+        </div>
+        <div class="save-bar">
+          <button class="btn" onclick="addArtwork()">Werk hinzufuegen</button>
+        </div>
+      </div>
+
+      <!-- ============ 5. INHALTE ============ -->
+      <h2 class="section-heading">Inhalte</h2>
+
+      <div class="card">
+        <h3>Ueber mich</h3>
+        <div class="field">
+          <label>Name / Ueberschrift</label>
+          <input type="text" id="aboutName" placeholder="Hi, ich bin Vivi.">
+        </div>
+        <div class="field">
+          <label>Bio (Absaetze mit Leerzeile trennen)</label>
+          <textarea id="aboutBio" rows="8" placeholder="Kuenstlerin und Gastgeberin kreativer Erlebnisse."></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Links &amp; Footer</h3>
+        <div class="field">
+          <label>Instagram URL</label>
+          <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/vi.visionart" oninput="previewInstagram()">
+          <div class="insta-preview" id="instaPreview"></div>
+        </div>
+        <div class="field">
+          <label>Footer-Text</label>
+          <input type="text" id="footerText" placeholder="2026 Vi.Vision ART">
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Event-Buch: Kindergeburtstag</h3>
+        <div class="field">
+          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+          <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
+        </div>
+        <div class="field">
+          <label>Detail-Seite Text</label>
+          <textarea id="bookBirthdayDesc" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Zusatz-Text</label>
+          <textarea id="bookBirthdayExtra" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Event-Buch: Junggesellinnenabschied</h3>
+        <div class="field">
+          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+          <textarea id="bookBacheloretteChecks" rows="4"></textarea>
+        </div>
+        <div class="field">
+          <label>Detail-Seite Text</label>
+          <textarea id="bookBacheloretteDesc" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Zusatz-Text</label>
+          <textarea id="bookBacheloretteExtra" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Event-Buch: Workshop</h3>
+        <div class="field">
+          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+          <textarea id="bookWorkshopChecks" rows="4"></textarea>
+        </div>
+        <div class="field">
+          <label>Detail-Seite Text (Absaetze mit Leerzeile trennen)</label>
+          <textarea id="bookWorkshopDesc" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label>Zusatz-Text</label>
+          <textarea id="bookWorkshopExtra" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="save-bar" style="border:none; padding-top:0; margin-top:0;">
           <button class="btn" onclick="saveContent()">Inhalte speichern</button>
-        </div>
-      </div>
-
-      <!-- ============ TAB 4: GALERIE ============ -->
-      <div id="panel-galerie" class="tab-panel">
-        <div class="card">
-          <h3>Kunstwerke</h3>
-          <div id="artworksList"></div>
-        </div>
-        <div class="card">
-          <h3>Neues Werk hinzufuegen</h3>
-          <div class="field">
-            <label>Titel</label>
-            <input type="text" id="newArtTitle" placeholder="z.B. Connection">
-          </div>
-          <div class="field">
-            <label>Bild-URL</label>
-            <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png">
-          </div>
-          <div class="field">
-            <label>Status</label>
-            <select id="newArtStatus">
-              <option value="for_sale">Zu verkaufen</option>
-              <option value="sold">Verkauft</option>
-            </select>
-          </div>
-          <div class="save-bar">
-            <button class="btn" onclick="addArtwork()">Werk hinzufuegen</button>
-          </div>
         </div>
       </div>
 
@@ -632,7 +689,7 @@
         <label>Status</label>
         <select id="editArtStatus">
           <option value="for_sale">Zu verkaufen</option>
-          <option value="sold">Verkauft</option>
+          <option value="sold">Hat ein Zuhause gefunden</option>
         </select>
       </div>
       <div class="modal-actions">
@@ -647,6 +704,23 @@
 
   <script>
     let token = '';
+    let currentSettings = {};
+
+    /* ---- Font map for previews ---- */
+    const FONT_FAMILY_MAP = {
+      marker: "'Permanent Marker', cursive",
+      shadows: "'Shadows Into Light', cursive",
+      indie: "'Indie Flower', cursive",
+      playfair: "'Playfair Display', serif",
+      quicksand: "'Quicksand', sans-serif",
+      patrick: "'Patrick Hand', cursive",
+      special: "'Special Elite', monospace",
+      caveat: "'Caveat', cursive",
+      coming: "'Coming Soon', cursive",
+      nunito: "'Nunito', sans-serif",
+      dm: "'DM Sans', sans-serif",
+      courier: "'Courier Prime', monospace",
+    };
 
     /* ---- Auth ---- */
     function doLogin() {
@@ -670,14 +744,6 @@
       if (e.key === 'Enter') doLogin();
     });
 
-    /* ---- Tabs ---- */
-    function switchTab(btn) {
-      document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
-    }
-
     /* ---- Toast ---- */
     function showToast(msg, isError) {
       const el = document.getElementById('toast');
@@ -690,8 +756,6 @@
     function closeModal(id) {
       document.getElementById(id).classList.remove('show');
     }
-
-    /* Close modals on overlay click */
     document.querySelectorAll('.modal-overlay').forEach(m => {
       m.addEventListener('click', e => {
         if (e.target === m) m.classList.remove('show');
@@ -704,6 +768,142 @@
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
       };
+    }
+
+    /* ======================================================
+       FONTS
+       ====================================================== */
+    const HEADING_FONTS = [
+      { key: 'marker', label: 'Permanent Marker' },
+      { key: 'shadows', label: 'Shadows Into Light' },
+      { key: 'indie', label: 'Indie Flower' },
+      { key: 'playfair', label: 'Playfair Display' },
+      { key: 'quicksand', label: 'Quicksand' },
+      { key: 'patrick', label: 'Patrick Hand' },
+      { key: 'special', label: 'Special Elite' },
+      { key: 'caveat', label: 'Caveat' },
+    ];
+    const BODY_FONTS = [
+      { key: 'caveat', label: 'Caveat' },
+      { key: 'patrick', label: 'Patrick Hand' },
+      { key: 'coming', label: 'Coming Soon' },
+      { key: 'nunito', label: 'Nunito' },
+      { key: 'quicksand', label: 'Quicksand' },
+      { key: 'dm', label: 'DM Sans' },
+      { key: 'special', label: 'Special Elite' },
+      { key: 'courier', label: 'Courier Prime' },
+    ];
+
+    function buildFontPickers() {
+      const hfEl = document.getElementById('headingFontPicker');
+      hfEl.innerHTML = HEADING_FONTS.map(f =>
+        `<button class="text-swatch" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key] || 'inherit'}" onclick="pickFont(this, 'headingFontPicker', 'heading_font')">${f.label}</button>`
+      ).join('');
+
+      const bfEl = document.getElementById('bodyFontPicker');
+      bfEl.innerHTML = BODY_FONTS.map(f =>
+        `<button class="text-swatch" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key] || 'inherit'}" onclick="pickFont(this, 'bodyFontPicker', 'body_font')">${f.label}</button>`
+      ).join('');
+    }
+
+    function pickFont(btn, containerId, settingKey) {
+      document.getElementById(containerId).querySelectorAll('.text-swatch').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      currentSettings[settingKey] = btn.dataset.key;
+      updateFontPreview();
+    }
+
+    function updateFontPreview() {
+      const titleKey = currentSettings.heading_font;
+      const bodyKey = currentSettings.body_font;
+      const titleEl = document.getElementById('fontPreviewTitle');
+      const bodyEl = document.getElementById('fontPreviewBody');
+      if (titleKey && FONT_FAMILY_MAP[titleKey]) {
+        titleEl.style.fontFamily = FONT_FAMILY_MAP[titleKey];
+      }
+      if (bodyKey && FONT_FAMILY_MAP[bodyKey]) {
+        bodyEl.style.fontFamily = FONT_FAMILY_MAP[bodyKey];
+      }
+    }
+
+    async function saveFonts() {
+      const pairs = [];
+      if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
+      if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
+      if (!pairs.length) { showToast('Keine Aenderungen', true); return; }
+      try {
+        for (const [key, value] of pairs) {
+          const res = await fetch('/api/settings', {
+            method: 'POST', headers: authHeaders(),
+            body: JSON.stringify({ key, value }),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            showToast('Fehler: ' + (d.error || key), true);
+            return;
+          }
+        }
+        showToast('Schriftarten gespeichert');
+      } catch (err) {
+        showToast('Fehler beim Speichern', true);
+      }
+    }
+
+    /* ======================================================
+       COLORS
+       ====================================================== */
+    const COVER_TEXTURES = ['smooth', 'grain', 'leather', 'linen', 'canvas', 'suede'];
+
+    function buildTexturePicker() {
+      const texEl = document.getElementById('coverTexturePicker');
+      texEl.innerHTML = COVER_TEXTURES.map(t =>
+        `<button class="text-swatch" data-key="${t}" onclick="pickTexture(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
+      ).join('');
+    }
+
+    function pickTexture(btn) {
+      document.getElementById('coverTexturePicker').querySelectorAll('.text-swatch').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      currentSettings.cover_texture = btn.dataset.key;
+    }
+
+    function updateColorPreview() {
+      const bg = document.getElementById('bgPrimary').value;
+      const accent = document.getElementById('accentPrimary').value;
+      const rect = document.getElementById('colorPreviewRect');
+      const accentSpan = document.getElementById('colorPreviewAccent');
+      rect.style.background = bg;
+      accentSpan.style.background = accent;
+      accentSpan.style.color = '#fff';
+    }
+
+    async function saveColors() {
+      const pairs = [
+        ['bg_primary', document.getElementById('bgPrimary').value],
+        ['bg_secondary', document.getElementById('bgSecondary').value],
+        ['accent_primary', document.getElementById('accentPrimary').value],
+        ['cover_color_birthday', document.getElementById('coverBirthday').value],
+        ['cover_color_bachelorette', document.getElementById('coverBachelorette').value],
+        ['cover_color_workshop', document.getElementById('coverWorkshop').value],
+      ];
+      if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
+
+      try {
+        for (const [key, value] of pairs) {
+          const res = await fetch('/api/settings', {
+            method: 'POST', headers: authHeaders(),
+            body: JSON.stringify({ key, value }),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            showToast('Fehler: ' + (d.error || key), true);
+            return;
+          }
+        }
+        showToast('Farben gespeichert');
+      } catch (err) {
+        showToast('Fehler beim Speichern', true);
+      }
     }
 
     /* ======================================================
@@ -801,205 +1001,6 @@
     }
 
     /* ======================================================
-       STIL (Style Settings)
-       ====================================================== */
-    const HEADING_FONTS = [
-      { key: 'marker', label: 'Permanent Marker' },
-      { key: 'shadows', label: 'Shadows Into Light' },
-      { key: 'indie', label: 'Indie Flower' },
-      { key: 'playfair', label: 'Playfair Display' },
-      { key: 'quicksand', label: 'Quicksand' },
-      { key: 'patrick', label: 'Patrick Hand' },
-      { key: 'special', label: 'Special Elite' },
-      { key: 'caveat', label: 'Caveat' },
-    ];
-    const BODY_FONTS = [
-      { key: 'caveat', label: 'Caveat' },
-      { key: 'patrick', label: 'Patrick Hand' },
-      { key: 'coming', label: 'Coming Soon' },
-      { key: 'nunito', label: 'Nunito' },
-      { key: 'quicksand', label: 'Quicksand' },
-      { key: 'dm', label: 'DM Sans' },
-      { key: 'special', label: 'Special Elite' },
-      { key: 'courier', label: 'Courier Prime' },
-    ];
-    const BG_COLORS = [
-      { key: 'snow', label: 'Snow', hex: '#f2f2f0' },
-      { key: 'cream', label: 'Cream', hex: '#f0ebe0' },
-      { key: 'ivory', label: 'Ivory', hex: '#ede8dc' },
-      { key: 'linen', label: 'Linen', hex: '#e8e0d4' },
-      { key: 'parchment', label: 'Parchment', hex: '#e0d6c4' },
-      { key: 'sand', label: 'Sand', hex: '#d8ccb8' },
-      { key: 'kraft', label: 'Kraft', hex: '#ccc0a8' },
-      { key: 'taupe', label: 'Taupe', hex: '#c0b498' },
-    ];
-    const ACCENT_COLORS = [
-      { key: 'apricot', hex: '#e8a870' }, { key: 'sunset', hex: '#d4956a' },
-      { key: 'terracotta', hex: '#c07050' }, { key: 'amber', hex: '#d4a040' },
-      { key: 'honey', hex: '#d4a858' }, { key: 'peach', hex: '#e8b898' },
-      { key: 'coral', hex: '#d48068' }, { key: 'rust', hex: '#b86848' },
-      { key: 'sky', hex: '#7aadcc' }, { key: 'ocean', hex: '#5b8fa8' },
-      { key: 'storm', hex: '#6880a0' }, { key: 'ice', hex: '#a0c4d4' },
-      { key: 'mist', hex: '#8aa8b8' }, { key: 'steel', hex: '#7890a0' },
-      { key: 'sage', hex: '#8aaa80' }, { key: 'moss', hex: '#6a8a5a' },
-      { key: 'olive', hex: '#8a9460' }, { key: 'forest', hex: '#5a7a5a' },
-      { key: 'mint', hex: '#80b8a0' }, { key: 'eucalyptus', hex: '#70a088' },
-      { key: 'turquoise', hex: '#48a0a0' }, { key: 'teal', hex: '#3d8a8a' },
-      { key: 'aqua', hex: '#60b8b0' }, { key: 'clay', hex: '#b88868' },
-      { key: 'sand-accent', hex: '#c4a870' }, { key: 'sienna', hex: '#a07050' },
-      { key: 'cinnamon', hex: '#a06840' }, { key: 'blush', hex: '#c8899c' },
-      { key: 'rose', hex: '#b88090' },
-    ];
-    const COVER_TEXTURES = ['smooth', 'grain', 'leather', 'linen', 'canvas', 'suede'];
-
-    let currentSettings = {};
-
-    function buildStylePickers() {
-      // Heading fonts
-      const hfEl = document.getElementById('headingFontPicker');
-      hfEl.innerHTML = HEADING_FONTS.map(f =>
-        `<button class="text-swatch" data-key="${f.key}" onclick="pickStyle(this, 'headingFontPicker', 'heading_font')">${f.label}</button>`
-      ).join('');
-
-      // Body fonts
-      const bfEl = document.getElementById('bodyFontPicker');
-      bfEl.innerHTML = BODY_FONTS.map(f =>
-        `<button class="text-swatch" data-key="${f.key}" onclick="pickStyle(this, 'bodyFontPicker', 'body_font')">${f.label}</button>`
-      ).join('');
-
-      // BG and accent colors are now <input type="color"> — no swatches needed
-
-      // Cover textures
-      const texEl = document.getElementById('coverTexturePicker');
-      texEl.innerHTML = COVER_TEXTURES.map(t =>
-        `<button class="text-swatch" data-key="${t}" onclick="pickStyle(this, 'coverTexturePicker', 'cover_texture')">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
-      ).join('');
-    }
-
-    function pickStyle(btn, containerId, settingKey) {
-      // Toggle active in group
-      document.getElementById(containerId).querySelectorAll('.swatch, .text-swatch').forEach(s => s.classList.remove('active'));
-      btn.classList.add('active');
-      // Store locally
-      currentSettings[settingKey] = btn.dataset.key;
-    }
-
-    function applySettingsToStyleTab(settings) {
-      // Mark active swatches based on loaded settings
-      function activate(containerId, key) {
-        const el = document.getElementById(containerId);
-        if (!el) return;
-        el.querySelectorAll('.swatch, .text-swatch').forEach(s => {
-          s.classList.toggle('active', s.dataset.key === key);
-        });
-      }
-      activate('headingFontPicker', settings.heading_font);
-      activate('bodyFontPicker', settings.body_font);
-      activate('coverTexturePicker', settings.cover_texture);
-
-      // Color pickers
-      if (settings.bg_primary) document.getElementById('bgPrimary').value = settings.bg_primary;
-      if (settings.bg_secondary) document.getElementById('bgSecondary').value = settings.bg_secondary;
-      if (settings.accent_primary) document.getElementById('accentPrimary').value = settings.accent_primary;
-
-      // Cover color pickers
-      if (settings.cover_color_birthday) document.getElementById('coverBirthday').value = settings.cover_color_birthday;
-      if (settings.cover_color_bachelorette) document.getElementById('coverBachelorette').value = settings.cover_color_bachelorette;
-      if (settings.cover_color_workshop) document.getElementById('coverWorkshop').value = settings.cover_color_workshop;
-    }
-
-    async function saveStyle() {
-      const pairs = [];
-      // From pickers
-      if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
-      if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
-      if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
-
-      // Color pickers
-      pairs.push(['bg_primary', document.getElementById('bgPrimary').value]);
-      pairs.push(['bg_secondary', document.getElementById('bgSecondary').value]);
-      pairs.push(['accent_primary', document.getElementById('accentPrimary').value]);
-
-      // Cover colors from color pickers
-      pairs.push(['cover_color_birthday', document.getElementById('coverBirthday').value]);
-      pairs.push(['cover_color_bachelorette', document.getElementById('coverBachelorette').value]);
-      pairs.push(['cover_color_workshop', document.getElementById('coverWorkshop').value]);
-
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
-            return;
-          }
-        }
-        showToast('Stil gespeichert');
-      } catch (err) {
-        showToast('Fehler beim Speichern', true);
-      }
-    }
-
-    /* ======================================================
-       INHALTE (Content)
-       ====================================================== */
-    function applySettingsToContentTab(settings) {
-      if (settings.about_name) document.getElementById('aboutName').value = settings.about_name;
-      if (settings.about_bio) document.getElementById('aboutBio').value = settings.about_bio;
-      if (settings.instagram_url) document.getElementById('instagramUrl').value = settings.instagram_url;
-      if (settings.footer_text) document.getElementById('footerText').value = settings.footer_text;
-
-      // Book content
-      if (settings.book_birthday_checks) document.getElementById('bookBirthdayChecks').value = settings.book_birthday_checks;
-      if (settings.book_birthday_desc) document.getElementById('bookBirthdayDesc').value = settings.book_birthday_desc;
-      if (settings.book_birthday_extra) document.getElementById('bookBirthdayExtra').value = settings.book_birthday_extra;
-      if (settings.book_bachelorette_checks) document.getElementById('bookBacheloretteChecks').value = settings.book_bachelorette_checks;
-      if (settings.book_bachelorette_desc) document.getElementById('bookBacheloretteDesc').value = settings.book_bachelorette_desc;
-      if (settings.book_bachelorette_extra) document.getElementById('bookBacheloretteExtra').value = settings.book_bachelorette_extra;
-      if (settings.book_workshop_checks) document.getElementById('bookWorkshopChecks').value = settings.book_workshop_checks;
-      if (settings.book_workshop_desc) document.getElementById('bookWorkshopDesc').value = settings.book_workshop_desc;
-      if (settings.book_workshop_extra) document.getElementById('bookWorkshopExtra').value = settings.book_workshop_extra;
-    }
-
-    async function saveContent() {
-      const pairs = [
-        ['about_name', document.getElementById('aboutName').value],
-        ['about_bio', document.getElementById('aboutBio').value],
-        ['instagram_url', document.getElementById('instagramUrl').value],
-        ['footer_text', document.getElementById('footerText').value],
-        ['book_birthday_checks', document.getElementById('bookBirthdayChecks').value],
-        ['book_birthday_desc', document.getElementById('bookBirthdayDesc').value],
-        ['book_birthday_extra', document.getElementById('bookBirthdayExtra').value],
-        ['book_bachelorette_checks', document.getElementById('bookBacheloretteChecks').value],
-        ['book_bachelorette_desc', document.getElementById('bookBacheloretteDesc').value],
-        ['book_bachelorette_extra', document.getElementById('bookBacheloretteExtra').value],
-        ['book_workshop_checks', document.getElementById('bookWorkshopChecks').value],
-        ['book_workshop_desc', document.getElementById('bookWorkshopDesc').value],
-        ['book_workshop_extra', document.getElementById('bookWorkshopExtra').value],
-      ];
-
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
-            return;
-          }
-        }
-        showToast('Inhalte gespeichert');
-      } catch (err) {
-        showToast('Fehler beim Speichern', true);
-      }
-    }
-
-    /* ======================================================
        GALERIE (Artworks)
        ====================================================== */
     async function loadArtworks() {
@@ -1017,7 +1018,7 @@
             <div class="artwork-info">
               <div class="artwork-title">${esc(a.title || 'Ohne Titel')}</div>
               <span class="artwork-status ${a.status === 'sold' ? 'artwork-status--sold' : 'artwork-status--sale'}">
-                ${a.status === 'sold' ? 'Verkauft' : 'Zu verkaufen'}
+                ${a.status === 'sold' ? 'Hat ein Zuhause gefunden' : 'Zu verkaufen'}
               </span>
             </div>
             <div class="artwork-actions">
@@ -1028,6 +1029,16 @@
         `).join('');
       } catch (err) {
         showToast('Fehler beim Laden der Werke', true);
+      }
+    }
+
+    function previewNewArtImage() {
+      const url = document.getElementById('newArtUrl').value.trim();
+      const container = document.getElementById('newArtPreview');
+      if (url) {
+        container.innerHTML = `<img src="${esc(url)}" alt="Vorschau" onerror="this.parentElement.innerHTML='<span style=\\'color:#c55;font-size:12px\\'>Bild konnte nicht geladen werden</span>'">`;
+      } else {
+        container.innerHTML = '';
       }
     }
 
@@ -1046,6 +1057,7 @@
           document.getElementById('newArtTitle').value = '';
           document.getElementById('newArtUrl').value = '';
           document.getElementById('newArtStatus').value = 'for_sale';
+          document.getElementById('newArtPreview').innerHTML = '';
           loadArtworks();
         } else {
           const d = await res.json();
@@ -1096,6 +1108,54 @@
     }
 
     /* ======================================================
+       INHALTE (Content)
+       ====================================================== */
+    function previewInstagram() {
+      const url = document.getElementById('instagramUrl').value.trim();
+      const container = document.getElementById('instaPreview');
+      if (url) {
+        container.innerHTML = `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a>`;
+      } else {
+        container.innerHTML = '';
+      }
+    }
+
+    async function saveContent() {
+      const pairs = [
+        ['about_name', document.getElementById('aboutName').value],
+        ['about_bio', document.getElementById('aboutBio').value],
+        ['instagram_url', document.getElementById('instagramUrl').value],
+        ['footer_text', document.getElementById('footerText').value],
+        ['book_birthday_checks', document.getElementById('bookBirthdayChecks').value],
+        ['book_birthday_desc', document.getElementById('bookBirthdayDesc').value],
+        ['book_birthday_extra', document.getElementById('bookBirthdayExtra').value],
+        ['book_bachelorette_checks', document.getElementById('bookBacheloretteChecks').value],
+        ['book_bachelorette_desc', document.getElementById('bookBacheloretteDesc').value],
+        ['book_bachelorette_extra', document.getElementById('bookBacheloretteExtra').value],
+        ['book_workshop_checks', document.getElementById('bookWorkshopChecks').value],
+        ['book_workshop_desc', document.getElementById('bookWorkshopDesc').value],
+        ['book_workshop_extra', document.getElementById('bookWorkshopExtra').value],
+      ];
+
+      try {
+        for (const [key, value] of pairs) {
+          const res = await fetch('/api/settings', {
+            method: 'POST', headers: authHeaders(),
+            body: JSON.stringify({ key, value }),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            showToast('Fehler: ' + (d.error || key), true);
+            return;
+          }
+        }
+        showToast('Inhalte gespeichert');
+      } catch (err) {
+        showToast('Fehler beim Speichern', true);
+      }
+    }
+
+    /* ======================================================
        SETTINGS LOAD
        ====================================================== */
     async function loadSettings() {
@@ -1103,11 +1163,50 @@
         const res = await fetch('/api/settings');
         const settings = await res.json();
         currentSettings = { ...settings };
-        applySettingsToStyleTab(settings);
-        applySettingsToContentTab(settings);
+
+        // Fonts
+        activatePicker('headingFontPicker', settings.heading_font);
+        activatePicker('bodyFontPicker', settings.body_font);
+        updateFontPreview();
+
+        // Colors
+        if (settings.bg_primary) document.getElementById('bgPrimary').value = settings.bg_primary;
+        if (settings.bg_secondary) document.getElementById('bgSecondary').value = settings.bg_secondary;
+        if (settings.accent_primary) document.getElementById('accentPrimary').value = settings.accent_primary;
+        if (settings.cover_color_birthday) document.getElementById('coverBirthday').value = settings.cover_color_birthday;
+        if (settings.cover_color_bachelorette) document.getElementById('coverBachelorette').value = settings.cover_color_bachelorette;
+        if (settings.cover_color_workshop) document.getElementById('coverWorkshop').value = settings.cover_color_workshop;
+        activatePicker('coverTexturePicker', settings.cover_texture);
+        updateColorPreview();
+
+        // Content
+        if (settings.about_name) document.getElementById('aboutName').value = settings.about_name;
+        if (settings.about_bio) document.getElementById('aboutBio').value = settings.about_bio;
+        if (settings.instagram_url) {
+          document.getElementById('instagramUrl').value = settings.instagram_url;
+          previewInstagram();
+        }
+        if (settings.footer_text) document.getElementById('footerText').value = settings.footer_text;
+        if (settings.book_birthday_checks) document.getElementById('bookBirthdayChecks').value = settings.book_birthday_checks;
+        if (settings.book_birthday_desc) document.getElementById('bookBirthdayDesc').value = settings.book_birthday_desc;
+        if (settings.book_birthday_extra) document.getElementById('bookBirthdayExtra').value = settings.book_birthday_extra;
+        if (settings.book_bachelorette_checks) document.getElementById('bookBacheloretteChecks').value = settings.book_bachelorette_checks;
+        if (settings.book_bachelorette_desc) document.getElementById('bookBacheloretteDesc').value = settings.book_bachelorette_desc;
+        if (settings.book_bachelorette_extra) document.getElementById('bookBacheloretteExtra').value = settings.book_bachelorette_extra;
+        if (settings.book_workshop_checks) document.getElementById('bookWorkshopChecks').value = settings.book_workshop_checks;
+        if (settings.book_workshop_desc) document.getElementById('bookWorkshopDesc').value = settings.book_workshop_desc;
+        if (settings.book_workshop_extra) document.getElementById('bookWorkshopExtra').value = settings.book_workshop_extra;
       } catch (err) {
         showToast('Fehler beim Laden der Einstellungen', true);
       }
+    }
+
+    function activatePicker(containerId, key) {
+      const el = document.getElementById(containerId);
+      if (!el || !key) return;
+      el.querySelectorAll('.text-swatch').forEach(s => {
+        s.classList.toggle('active', s.dataset.key === key);
+      });
     }
 
     /* ---- Utility: HTML escape ---- */
@@ -1121,7 +1220,9 @@
     }
 
     /* ---- Init ---- */
-    buildStylePickers();
+    buildFontPickers();
+    buildTexturePicker();
+    updateColorPreview();
   </script>
 </body>
 </html>
