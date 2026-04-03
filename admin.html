@@ -1,1664 +1,2018 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en" data-palette="splatter3" data-heading-font="marker" data-body-font="caveat" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="mint">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vi.Vision ART — Admin</title>
+  <link rel="icon" type="image/png" href="images/favicon-easel.png">
+  <link rel="stylesheet" href="style.css?v=7">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Coming+Soon&family=Courier+Prime&family=DM+Sans&family=Indie+Flower&family=Nunito:wght@400;600&family=Patrick+Hand&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;600&family=Shadows+Into+Light&family=Special+Elite&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     /* ============================================================
-       CSS Custom Properties (same names as main site)
+       ADMIN-ONLY CSS — Login overlay, pencils, popovers, drawer
        ============================================================ */
-    :root {
-      --font-heading: 'Permanent Marker', cursive;
-      --font-handwriting: 'Caveat', cursive;
-      --font-body: 'Patrick Hand', cursive;
-      --bg-primary: #f0ebe0;
-      --bg-secondary: #e8e0d4;
-      --accent: #80b8a0;
-    }
 
-    /* ============================================================
-       Reset & base
-       ============================================================ */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
-      background: #f5f0ea;
-      color: #2c2420;
-      min-height: 100vh;
-    }
-
-    /* ============================================================
-       Login
-       ============================================================ */
-    .login-wrapper {
+    /* ---- Login Overlay ---- */
+    .admin-login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(30, 25, 20, 0.85);
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+      transition: opacity 0.5s ease;
     }
-    .login-box {
+    .admin-login-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .admin-login-card {
       background: #fff;
-      padding: 40px 32px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 40px 32px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
       text-align: center;
       max-width: 360px;
-      width: 100%;
+      width: 90%;
     }
-    .login-box h1 { font-size: 22px; margin-bottom: 4px; }
-    .login-box .subtitle { color: #999; font-size: 14px; margin-bottom: 28px; }
-    .login-box input {
+    .admin-login-card h2 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: #2c2420;
+    }
+    .admin-login-card p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: #7a7068;
+      margin-bottom: 24px;
+    }
+    .admin-login-card input[type="password"] {
       width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #ddd;
+      padding: 12px 16px;
+      border: 2px solid #e0d8d0;
       border-radius: 8px;
-      font-size: 15px;
-      margin-bottom: 14px;
-      text-align: center;
+      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
     }
-    .login-box input:focus { outline: none; border-color: #8a7058; }
-    .login-box .login-btn { width: 100%; }
-
-    /* ============================================================
-       Admin header
-       ============================================================ */
-    .admin-header {
-      background: #fff;
-      border-bottom: 1px solid #e0d8d0;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    .admin-login-card input[type="password"]:focus {
+      border-color: var(--accent, #80b8a0);
     }
-    .admin-header h1 { font-size: 18px; font-weight: 600; color: #2c2420; }
-    .admin-header .subtitle { font-size: 12px; color: #999; margin-top: 1px; }
-    .logout-btn {
-      padding: 6px 14px;
-      background: none;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #888;
-      cursor: pointer;
-    }
-    .logout-btn:hover { border-color: #bbb; color: #555; }
-
-    /* ============================================================
-       Common elements
-       ============================================================ */
-    .btn {
-      padding: 10px 20px;
-      background: #8a7058;
-      color: white;
+    .admin-login-card .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent, #80b8a0);
+      color: #fff;
       border: none;
       border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 1rem;
+      font-family: 'Patrick Hand', cursive;
       cursor: pointer;
       transition: opacity 0.2s;
     }
-    .btn:hover { opacity: 0.85; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-danger { background: #c55; }
-    .btn-sm { padding: 6px 14px; font-size: 13px; }
-    .btn-outline {
-      background: none;
-      border: 1px solid #ccc;
-      color: #666;
+    .admin-login-card .login-btn:hover {
+      opacity: 0.85;
     }
-    .btn-outline:hover { border-color: #999; color: #333; }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-    }
-    .card h3 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: #2c2420;
+    .admin-login-card .login-error {
+      color: #c44;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      display: none;
     }
 
-    .field { margin-bottom: 14px; }
-    .field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #666;
-      margin-bottom: 5px;
-    }
-    .field input, .field select, .field textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      background: #fff;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      outline: none;
-      border-color: #8a7058;
-    }
-    .field textarea { resize: vertical; min-height: 80px; }
-
-    .field-row { display: flex; gap: 12px; }
-    .field-row .field { flex: 1; }
-
-    .save-bar {
-      display: flex;
-      justify-content: flex-end;
-      padding-top: 16px;
-      border-top: 1px solid #eee;
-      margin-top: 8px;
-    }
-
-    .empty { text-align: center; color: #bbb; padding: 32px 16px; font-size: 14px; }
-
-    /* ============================================================
-       LIVE PREVIEW SECTION
-       ============================================================ */
-    .preview-page {
-      background: var(--bg-primary);
-      padding: 0 0 120px;
-      min-height: 100vh;
-      transition: background 0.3s;
-    }
-
-    .preview-section {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Header sample */
-    .preview-header {
-      background: var(--accent);
-      padding: 40px 20px;
-      text-align: center;
-      transition: background 0.3s;
-    }
-    .preview-header h2 {
-      font-family: var(--font-heading);
-      color: #fff;
-      font-size: 32px;
-      letter-spacing: 1px;
-      font-weight: 400;
-    }
-    .preview-header .preview-sub {
-      font-family: var(--font-body);
-      color: rgba(255,255,255,0.8);
-      font-size: 15px;
-      margin-top: 6px;
-    }
-
-    /* Body text sample */
-    .preview-body-sample {
-      padding: 32px 0;
-    }
-    .preview-body-sample p {
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-      color: #2c2420;
-    }
-
-    /* Book covers row */
-    .preview-books {
-      display: flex;
-      gap: 16px;
-      padding: 24px 0;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .preview-book {
-      width: 140px;
-      height: 190px;
-      border-radius: 4px 12px 12px 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 12px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 3px 3px 12px rgba(0,0,0,0.15);
-      transition: background-color 0.3s;
-    }
-    .preview-book::before {
-      content: '';
+    /* ---- Edit Pencils ---- */
+    .edit-pencil {
       position: absolute;
-      inset: 0;
-      opacity: 0.15;
-      pointer-events: none;
-    }
-    /* Texturee overlays */
-    [data-cover-tex="grain"] .preview-book::before {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-    [data-cover-tex="leather"] .preview-book::before {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.05' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.2;
-    }
-    [data-cover-tex="linen"] .preview-book::before {
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px),
-                  repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-      opacity: 1;
-    }
-    [data-cover-tex="canvas"] .preview-book::before {
-      background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 3px),
-                  repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 3px);
-      opacity: 1;
-    }
-    [data-cover-tex="suede"] .preview-book::before {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.1;
-    }
-    .preview-book__title {
-      font-family: var(--font-heading);
-      color: #fff;
-      font-size: 13px;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    .preview-book__label {
-      font-family: var(--font-body);
-      color: rgba(255,255,255,0.7);
-      font-size: 11px;
-      margin-top: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Inside page sample */
-    .preview-inside-page {
-      background: var(--bg-secondary);
-      border-radius: 8px;
-      padding: 24px;
-      margin: 16px 0;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.06);
-      transition: background 0.3s;
-    }
-    .preview-inside-page p {
-      font-family: var(--font-body);
-      font-size: 15px;
-      line-height: 1.7;
-      color: #2c2420;
-    }
-    .preview-inside-page .preview-inside-label {
-      font-family: var(--font-handwriting);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #999;
-      margin-bottom: 8px;
-    }
-
-    /* Accent demo */
-    .preview-accent-demo {
-      padding: 24px 0;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .preview-accent-btn {
-      padding: 10px 28px;
-      background: var(--accent);
-      color: #fff;
+      top: -8px;
+      right: -8px;
+      width: 28px;
+      height: 28px;
+      min-width: 44px;
+      min-height: 44px;
+      background: var(--accent, #80b8a0);
+      color: white;
       border: none;
-      border-radius: 8px;
-      font-family: var(--font-body);
-      font-size: 15px;
-      cursor: default;
-      transition: background 0.3s;
-    }
-    .preview-accent-link {
-      font-family: var(--font-body);
-      color: var(--accent);
-      text-decoration: underline;
-      font-size: 15px;
-      cursor: default;
-      transition: color 0.3s;
-    }
-
-    /* Color swatches */
-    .preview-swatches {
-      display: flex;
-      gap: 12px;
-      padding: 20px 0 32px;
-      align-items: center;
-    }
-    .preview-swatch {
-      width: 40px;
-      height: 40px;
       border-radius: 50%;
-      border: 2px solid rgba(0,0,0,0.1);
-      transition: background 0.3s;
-    }
-    .preview-swatch-label {
-      font-size: 11px;
-      color: #999;
-      text-align: center;
-      margin-top: 4px;
-    }
-    .preview-swatch-group {
-      display: flex;
-      flex-direction: column;
+      cursor: pointer;
+      font-size: 14px;
+      display: none; /* hidden until admin mode */
       align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      padding: 0;
+      line-height: 1;
+    }
+    .admin-active .edit-pencil {
+      display: flex;
+    }
+    .edit-pencil:hover {
+      transform: scale(1.15);
     }
 
-    /* Section label in preview */
-    .preview-label {
-      font-size: 11px;
+    /* Make parents position relative for pencil positioning */
+    .admin-active .about-text { position: relative; }
+    .admin-active .about-name { position: relative; display: inline-block; }
+    .admin-active .about-bio-wrap { position: relative; }
+    .admin-active .about-polaroid { position: relative; }
+    .admin-active .about-instagram { position: relative; }
+    .admin-active .retro-footer { position: relative; }
+    .admin-active .date-card { position: relative; }
+    .admin-active .polaroid { position: relative; }
+
+    /* ---- Edit Popover ---- */
+    .edit-popover {
+      position: absolute;
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 1000;
+      min-width: 250px;
+      max-width: 380px;
+    }
+    .edit-popover label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: #7a7068;
+      margin-bottom: 4px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #999;
-      margin-bottom: 8px;
-      font-family: -apple-system, system-ui, sans-serif;
+      letter-spacing: 0.5px;
     }
-
-    /* ============================================================
-       ADMIN SECTIONS (below preview)
-       ============================================================ */
-    .admin-sections {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 20px 120px;
-    }
-    .section-heading {
-      font-size: 20px;
-      font-weight: 600;
-      color: #2c2420;
-      margin: 32px 0 16px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e0d8d0;
-    }
-
-    /* Event items */
-    .event-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: #faf8f5;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-    .event-info { flex: 1; min-width: 0; }
-    .event-date { font-weight: 600; font-size: 14px; color: #8a7058; }
-    .event-title { font-size: 14px; }
-    .event-location { font-size: 12px; color: #999; }
-    .event-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-    /* Gallery items */
-    .artwork-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 14px;
-      background: #faf8f5;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-    .artwork-thumb {
-      width: 60px;
-      height: 60px;
-      border-radius: 6px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: #e8e0d4;
-    }
-    .artwork-info { flex: 1; min-width: 0; }
-    .artwork-title { font-size: 14px; font-weight: 500; }
-    .artwork-status {
-      font-size: 12px;
-      padding: 2px 8px;
+    .edit-popover input,
+    .edit-popover textarea,
+    .edit-popover select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
       border-radius: 4px;
-      display: inline-block;
+      margin-bottom: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+    }
+    .edit-popover textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .edit-popover .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
       margin-top: 4px;
     }
-    .artwork-status--sale { background: #e8f5e9; color: #2e7d32; }
-    .artwork-status--sold { background: #fce4ec; color: #c62828; }
-    .artwork-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .edit-popover .btn-save,
+    .edit-popover .btn-cancel,
+    .edit-popover .btn-delete {
+      padding: 6px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.95rem;
+    }
+    .edit-popover .btn-save {
+      background: var(--accent, #80b8a0);
+      color: white;
+    }
+    .edit-popover .btn-cancel {
+      background: #e8e0d4;
+      color: #5a5048;
+    }
+    .edit-popover .btn-delete {
+      background: #d44;
+      color: white;
+      margin-right: auto;
+    }
+    .edit-popover .btn-save:hover { opacity: 0.85; }
+    .edit-popover .btn-cancel:hover { background: #ddd4c8; }
+    .edit-popover .btn-delete:hover { background: #b33; }
 
-    .new-art-preview { margin-top: 8px; text-align: center; }
-    .new-art-preview img {
-      max-width: 120px;
-      max-height: 120px;
+    /* ---- Add Buttons ---- */
+    .admin-add-btn {
+      display: none;
+      margin: 24px auto;
+      padding: 10px 24px;
+      background: var(--accent, #80b8a0);
+      color: white;
+      border: 2px dashed rgba(255,255,255,0.5);
       border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid #e0d8d0;
+      cursor: pointer;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem;
+      transition: opacity 0.2s;
+    }
+    .admin-active .admin-add-btn {
+      display: block;
+    }
+    .admin-add-btn:hover {
+      opacity: 0.85;
     }
 
-    .insta-preview { margin-top: 4px; }
-    .insta-preview a { font-size: 13px; color: #8a7058; text-decoration: underline; }
-    .insta-preview a:hover { color: #6b5844; }
+    /* ---- Floating Style Drawer ---- */
+    .admin-drawer-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background: var(--accent, #80b8a0);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 22px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .admin-active .admin-drawer-toggle {
+      display: flex;
+    }
+    .admin-drawer-toggle:hover {
+      transform: scale(1.1);
+    }
 
-    /* ============================================================
-       FLOATING DRAWER
-       ============================================================ */
-    .drawer {
+    .admin-drawer {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #2c2420;
-      color: #f0ebe0;
+      background: white;
       border-radius: 16px 16px 0 0;
-      transform: translateY(calc(100% - 50px));
-      transition: transform 0.3s ease;
-      z-index: 10000;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+      z-index: 8999;
       max-height: 70vh;
       overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.35s ease;
+      padding: 24px 24px 32px;
     }
-    .drawer.is-open {
+    .admin-drawer.is-open {
       transform: translateY(0);
     }
-    .drawer__toggle {
-      text-align: center;
-      padding: 12px;
-      cursor: pointer;
-      user-select: none;
-      position: sticky;
-      top: 0;
-      background: #2c2420;
-      z-index: 1;
-      border-radius: 16px 16px 0 0;
-    }
-    .drawer__toggle-icon {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #d4c8b8;
-    }
-    .drawer__toggle-icon svg {
-      width: 20px;
-      height: 20px;
-    }
-    .drawer__toggle-bar {
-      width: 36px;
-      height: 4px;
-      background: #5a4e44;
-      border-radius: 2px;
-      margin: 0 auto 6px;
-    }
-    .drawer__content {
-      padding: 0 20px 20px;
-    }
 
-    /* Drawer section labels */
     .drawer-section-label {
-      font-size: 12px;
-      font-weight: 600;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      color: #7a7068;
+      margin: 16px 0 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #a89880;
-      margin: 18px 0 10px;
     }
     .drawer-section-label:first-child { margin-top: 0; }
 
-    /* Font pill buttons */
-    .font-pill-row {
+    .drawer-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 4px;
-    }
-    .font-pill {
-      padding: 5px 12px;
-      border-radius: 20px;
-      border: 1.5px solid #5a4e44;
-      background: #3a322c;
-      color: #d4c8b8;
-      font-size: 13px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .font-pill:hover { border-color: #8a7058; }
-    .font-pill.active {
-      border-color: var(--accent);
-      background: rgba(128, 184, 160, 0.15);
-      color: #fff;
-    }
-
-    /* Color inputs in drawer */
-    .drawer-color-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       margin-bottom: 8px;
     }
-    .drawer-color-row span {
-      font-size: 13px;
-      color: #c4b8a8;
-      min-width: 0;
-      flex: 1;
+    .drawer-pill {
+      padding: 6px 14px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background: #faf8f5;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.15s;
+    }
+    .drawer-pill:hover { border-color: var(--accent, #80b8a0); }
+    .drawer-pill.active {
+      background: var(--accent, #80b8a0);
+      color: white;
+      border-color: var(--accent, #80b8a0);
+    }
+
+    .drawer-color-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .drawer-color-row label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: #7a7068;
+      min-width: 100px;
     }
     .drawer-color-row input[type="color"] {
       width: 36px;
-      height: 28px;
-      border: 1px solid #5a4e44;
+      height: 36px;
+      border: 2px solid #ddd;
       border-radius: 6px;
-      padding: 2px;
       cursor: pointer;
-      background: #3a322c;
-      flex-shrink: 0;
+      padding: 2px;
+      background: white;
     }
 
-    /* Texturee pills */
-    .texture-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    /* Save button in drawer */
-    .drawer-save-bar {
-      padding-top: 16px;
-      border-top: 1px solid #5a4e44;
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-    }
     .drawer-save-btn {
-      padding: 12px 48px;
-      background: var(--accent);
-      color: #fff;
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: var(--accent, #80b8a0);
+      color: white;
       border: none;
       border-radius: 8px;
-      font-size: 15px;
-      font-weight: 600;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem;
       cursor: pointer;
       transition: opacity 0.2s;
     }
     .drawer-save-btn:hover { opacity: 0.85; }
-    .drawer-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ============================================================
-       Toast
-       ============================================================ */
-    .toast {
-      position: fixed;
-      bottom: 70px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      z-index: 10001;
-      transition: transform 0.3s ease;
-      pointer-events: none;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast-ok { background: #e8f5e9; color: #2e7d32; }
-    .toast-err { background: #fce4ec; color: #c62828; }
-
-    /* ============================================================
-       Modal
-       ============================================================ */
-    .modal-overlay {
-      display: none;
+    /* ---- Popover backdrop for mobile ---- */
+    .popover-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-overlay.show { display: flex; }
-    .modal-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      max-width: 440px;
-      width: 100%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    }
-    .modal-box h3 { margin-bottom: 16px; font-size: 16px; }
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 16px;
+      z-index: 999;
+      background: rgba(0,0,0,0.15);
     }
 
-    /* ============================================================
-       Responsive
-       ============================================================ */
+    /* ---- Responsive tweaks ---- */
     @media (max-width: 600px) {
-      .admin-header { padding: 12px 16px; }
-      .admin-header h1 { font-size: 16px; }
-      .preview-header h2 { font-size: 24px; }
-      .preview-books { gap: 10px; }
-      .preview-book { width: 110px; height: 150px; }
-      .preview-book__title { font-size: 11px; }
-      .admin-sections { padding: 0 14px 120px; }
-      .field-row { flex-direction: column; gap: 0; }
-      .event-item { flex-wrap: wrap; }
-      .artwork-item { flex-wrap: wrap; }
-      .section-heading { font-size: 17px; }
-      .drawer__content { padding: 0 14px 14px; }
-      .drawer-color-row span { font-size: 12px; }
+      .edit-popover {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vw;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .admin-drawer {
+        max-height: 85vh;
+      }
+    }
+
+    /* ---- Notification toast ---- */
+    .admin-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2c2420;
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      z-index: 11000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .admin-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <!-- ============================================================
-       LOGIN
-       ============================================================ -->
-  <div id="loginView" class="login-wrapper">
-    <div class="login-box">
-      <h1>Vi.Vision ART</h1>
-      <p class="subtitle">Admin-Bereich</p>
-      <input type="password" id="password" placeholder="Password eingeben">
-      <button class="btn login-btn" onclick="doLogin()">Anmelden</button>
+  <!-- ============ ADMIN LOGIN OVERLAY ============ -->
+  <div class="admin-login-overlay" id="adminLoginOverlay">
+    <div class="admin-login-card">
+      <h2>Vi.Vision Admin</h2>
+      <p>Enter your password to edit the site</p>
+      <input type="password" id="adminPassword" placeholder="Password" autocomplete="current-password">
+      <button class="login-btn" id="adminLoginBtn">Login</button>
+      <p class="login-error" id="loginError">Login failed. Check your password.</p>
     </div>
   </div>
 
-  <!-- ============================================================
-       ADMIN VIEW (preview + sections + drawer)
-       ============================================================ -->
-  <div id="adminView" style="display:none;">
+  <!-- ============ ADMIN TOAST ============ -->
+  <div class="admin-toast" id="adminToast"></div>
 
-    <!-- Sticky header -->
-    <div class="admin-header">
-      <div>
-        <h1>Vi.Vision ART — Admin</h1>
-        <div class="subtitle">Live-Preview</div>
+  <!-- ============ NOTEBOOK TAB NAV ============ -->
+  <nav class="tab-nav" aria-label="Main navigation">
+    <div class="tab-strip">
+      <a href="#about" class="tab active" data-tab="about">
+        <span class="tab-label">&Uuml;ber&nbsp;mich</span>
+      </a>
+      <a href="#events" class="tab" data-tab="events">
+        <span class="tab-label">What&nbsp;I&nbsp;Do</span>
+      </a>
+      <a href="#gallery" class="tab" data-tab="gallery">
+        <span class="tab-label">Meine&nbsp;Werke</span>
+      </a>
+      <a href="#booking" class="tab" data-tab="booking">
+        <span class="tab-label">Kontakt</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ============ ABOUT + WHAT I DO — merged scrapbook section ============ -->
+  <section class="about-section" id="about">
+
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      &Uuml;ber mich
+    </h2>
+
+    <!-- About me -->
+    <div class="about-page about-page--clean fade-in">
+      <div class="about-layout">
+        <div class="about-polaroid" style="--rot: -4deg;">
+          <div class="polaroid-frame">
+            <img src="images/vivi-beach-art.png" alt="Vivi" id="aboutPhoto">
+          </div>
+          <button class="edit-pencil" data-edit="about-photo" title="Edit photo">&#9998;</button>
+        </div>
+
+        <div class="about-text">
+          <h3 class="about-name" id="aboutName">Hi, ich bin Vivi.</h3>
+          <button class="edit-pencil" data-edit="about-name" title="Edit name" style="top: -8px; right: -40px;">&#9998;</button>
+
+          <div class="about-bio-wrap" id="aboutBioWrap">
+            <p class="about-bio">K&uuml;nstlerin und Gastgeberin kreativer Erlebnisse.</p>
+            <p class="about-bio">Ich male nicht einfach nur &ndash; ich erschaffe R&auml;ume, in denen Kreativit&auml;t frei werden darf.</p>
+            <p class="about-bio">Meine Kunst entsteht intuitiv. Ohne feste Regeln, ohne klare Grenzen. Es geht nicht darum, was &bdquo;richtig&ldquo; ist, sondern darum, den Moment bewusst zu erleben und in eine eigene Welt einzutauchen &ndash; eine neue Perspektive auf das, was entsteht.</p>
+            <p class="about-bio">Genau dieses Gef&uuml;hl m&ouml;chte ich weitergeben.</p>
+            <p class="about-bio">Mit Vi.Vision Art gestalte ich kreative Erlebnisse, die &uuml;ber das Gew&ouml;hnliche hinausgehen. Stilvolle Events, bei denen nicht nur das Ergebnis z&auml;hlt, sondern vor allem das Erleben selbst.</p>
+            <p class="about-bio">Ob ein liebevoll gestalteter Kindergeburtstag, ein besonderer Junggesellinnenabschied oder ein inspirierender Workshop &ndash; jedes Event ist durchdacht, hochwertig und mit viel Gesp&uuml;r f&uuml;r Details umgesetzt.</p>
+            <p class="about-bio">Ich bringe alles mit, was es braucht: ausgew&auml;hlte Materialien, ein stimmiges Konzept und die passende Atmosph&auml;re. Ihr kommt an &ndash; und taucht ein in eure eigene kreative Welt.</p>
+            <button class="edit-pencil" data-edit="about-bio" title="Edit bio">&#9998;</button>
+          </div>
+
+          <div class="about-instagram">
+            <div class="about-instagram__line"></div>
+            <a href="https://www.instagram.com/vi.visionart" target="_blank" rel="noopener" class="about-instagram__link" id="instagramLink">
+              <svg class="about-instagram__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+              <span>Schau auf meinem Instagram vorbei</span>
+            </a>
+            <button class="edit-pencil" data-edit="instagram" title="Edit Instagram link">&#9998;</button>
+          </div>
+        </div>
       </div>
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
 
-    <!-- ======================== LIVE PREVIEW ======================== -->
-    <div class="preview-page">
+  </section>
 
-      <!-- 1. Header sample -->
-      <div class="preview-header" id="previewHeader">
-        <h2>Vi.Vision ART</h2>
-        <div class="preview-sub">Kunst &amp; kreative Erlebnisse</div>
-      </div>
+  <!-- ============ WHAT I DO ============ -->
+  <section class="about-section" id="events">
 
-      <div class="preview-section">
+    <h2 class="section-heading section-heading--whatido fade-in">
+      <span class="heading-tape"></span>
+      What I Do
+    </h2>
 
-        <!-- 2. Body text sample -->
-        <div class="preview-body-sample">
-          <div class="preview-label">Textvorschau</div>
-          <p>Jedes Kunstwerk erzaehlt seine eigene Geschichte. Manche fluesternd, manche laut. Alle Bilder sind Originale -- wenn dir etwas gefaellt, sag einfach hallo. Es gibt keinen Laden, keinen Warenkorb, nur ein Gespraech zwischen Menschen, die schoene Dinge moegen.</p>
-        </div>
+    <p class="events-sub fade-in">Bl&auml;ttere durch die Seiten f&uuml;r mehr Infos und Bilder</p>
 
-        <!-- 3. Book cover samples -->
-        <div class="preview-label">Buch-Cover</div>
-        <div class="preview-books">
-          <div class="preview-book" id="bookCoverBirthday">
-            <div class="preview-book__title">Kids Birthday</div>
-            <div class="preview-book__label">Kreativ-Party</div>
+    <div class="event-grid">
+
+    <!-- EVENT 1: Kids Birthday — Book -->
+    <div class="book fade-in" data-book="birthday" tabindex="0">
+      <div class="book__rings"></div>
+
+      <!-- Page 0: Cover -->
+      <div class="book__page book__page--cover" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="event-spread__header">
+            <div class="event-spread__sticker"></div>
+            <h3>Kreative Kindergeburtstage</h3>
           </div>
-          <div class="preview-book" id="bookCoverBachelorette">
-            <div class="preview-book__title">JGA</div>
-            <div class="preview-book__label">Junggesellinnen</div>
-          </div>
-          <div class="preview-book" id="bookCoverWorkshop">
-            <div class="preview-book__title">Workshop</div>
-            <div class="preview-book__label">Erwachsene</div>
-          </div>
-        </div>
-
-        <!-- 4. Inside page sample -->
-        <div class="preview-label">Innenseite</div>
-        <div class="preview-inside-page" id="previewInsidePage">
-          <div class="preview-inside-label">Innenseite</div>
-          <p>Alle Materialien sind inklusive. Du brauchst nichts mitzubringen ausser gute Laune und vielleicht ein paar Freunde. Wir kuemmern uns um den Rest -- Colors, Pinsel, Leinwaende und eine entspannte Atmosphaere.</p>
-        </div>
-
-        <!-- 5. Accent demo -->
-        <div class="preview-label">Accentfarbe</div>
-        <div class="preview-accent-demo">
-          <button class="preview-accent-btn">Termin buchen</button>
-          <span class="preview-accent-link">Mehr erfahren</span>
-        </div>
-
-        <!-- 6. Color swatches -->
-        <div class="preview-label">Aktuelle Colors</div>
-        <div class="preview-swatches">
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchBg"></div>
-            <div class="preview-swatch-label">Background</div>
-          </div>
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchBgSec"></div>
-            <div class="preview-swatch-label">Secondary</div>
-          </div>
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchAccent"></div>
-            <div class="preview-swatch-label">Accent</div>
-          </div>
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchCoverB"></div>
-            <div class="preview-swatch-label">Cover K.</div>
-          </div>
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchCoverJ"></div>
-            <div class="preview-swatch-label">Cover J.</div>
-          </div>
-          <div class="preview-swatch-group">
-            <div class="preview-swatch" id="swatchCoverW"></div>
-            <div class="preview-swatch-label">Cover W.</div>
-          </div>
-        </div>
-      </div><!-- /preview-section -->
-
-      <!-- ======================== ADMIN SECTIONS ======================== -->
-      <div class="admin-sections">
-
-        <!-- TERMINE -->
-        <h2 class="section-heading">Calendar</h2>
-
-        <div class="card">
-          <h3>Aktuelle Calendar</h3>
-          <div id="eventsList"></div>
-        </div>
-
-        <div class="card">
-          <h3>New Event hinzufuegen</h3>
-          <div class="field-row">
-            <div class="field">
-              <label>Date</label>
-              <input type="text" id="newDate" placeholder="z.B. 15. Juni">
-            </div>
-            <div class="field">
-              <label>Location</label>
-              <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
+          <div class="event-spread__body">
+            <div class="event-spread__details">
+              <ul class="event-spread__includes">
+                <li>Alle Materialien inklusive</li>
+                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+                <li>F&uuml;r bis zu 10 Kinder</li>
+              </ul>
+              <div class="cover-polaroid" style="--rot: 2deg;">
+                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
           </div>
-          <div class="field">
-            <label>Title</label>
-            <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
-          </div>
-          <div class="save-bar">
-            <button class="btn" onclick="addEvent()">Add Event</button>
-          </div>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
+        <div class="book__page-back">
 
-        <!-- GALERIE -->
-        <h2 class="section-heading">Gallery</h2>
-
-        <div class="card">
-          <h3>Kunstwerke</h3>
-          <div id="artworksList"></div>
-        </div>
-
-        <div class="card">
-          <h3>New Artwork hinzufuegen</h3>
-          <div class="field">
-            <label>Title</label>
-            <input type="text" id="newArtTitle" placeholder="z.B. Connection">
-          </div>
-          <div class="field">
-            <label>Image URL</label>
-            <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png" oninput="previewNewArtImage()">
-            <div class="new-art-preview" id="newArtPreview"></div>
-          </div>
-          <div class="field">
-            <label>Status</label>
-            <select id="newArtStatus">
-              <option value="for_sale">Zu verkaufen</option>
-              <option value="sold">Sold</option>
-            </select>
-          </div>
-          <div class="save-bar">
-            <button class="btn" onclick="addArtwork()">Werk hinzufuegen</button>
-          </div>
-        </div>
-
-        <!-- INHALTE -->
-        <h2 class="section-heading">Content</h2>
-
-        <div class="card">
-          <h3>Ueber mich</h3>
-          <div class="field">
-            <label>Name / Ueberschrift</label>
-            <input type="text" id="aboutName" placeholder="Hi, ich bin Vivi.">
-          </div>
-          <div class="field">
-            <label>Bio (Absaetze mit Leerzeile trennen)</label>
-            <textarea id="aboutBio" rows="8" placeholder="Kuenstlerin und Gastgeberin kreativer Erlebnisse."></textarea>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Links &amp; Footer</h3>
-          <div class="field">
-            <label>Instagram URL</label>
-            <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/vi.visionart" oninput="previewInstagram()">
-            <div class="insta-preview" id="instaPreview"></div>
-          </div>
-          <div class="field">
-            <label>Footer-Text</label>
-            <input type="text" id="footerText" placeholder="2026 Vi.Vision ART">
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Event-Buch: Kids Birthday</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text</label>
-            <textarea id="bookBirthdayDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookBirthdayExtra" rows="2"></textarea>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Event-Buch: Bachelorette</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookBacheloretteChecks" rows="4"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text</label>
-            <textarea id="bookBacheloretteDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookBacheloretteExtra" rows="2"></textarea>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Event-Buch: Workshop</h3>
-          <div class="field">
-            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-            <textarea id="bookWorkshopChecks" rows="4"></textarea>
-          </div>
-          <div class="field">
-            <label>Detail-Seite Text (Absaetze mit Leerzeile trennen)</label>
-            <textarea id="bookWorkshopDesc" rows="3"></textarea>
-          </div>
-          <div class="field">
-            <label>Zusatz-Text</label>
-            <textarea id="bookWorkshopExtra" rows="2"></textarea>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="save-bar" style="border:none; padding-top:0; margin-top:0;">
-            <button class="btn" onclick="saveContent()">Content speichern</button>
-          </div>
-        </div>
-
-      </div><!-- /admin-sections -->
-    </div><!-- /preview-page -->
-
-    <!-- ======================== FLOATING DRAWER ======================== -->
-    <div class="drawer" id="drawer">
-      <div class="drawer__toggle" onclick="toggleDrawer()">
-        <div class="drawer__toggle-bar"></div>
-        <div class="drawer__toggle-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span id="drawerToggleLabel">Customizer</span>
         </div>
       </div>
-      <div class="drawer__content">
+      <!-- Page 1: Details -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
+            <div class="cover-polaroid" style="--rot: -1.5deg;">
+              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
 
-        <!-- Heading Font -->
-        <div class="drawer-section-label">Heading Font</div>
-        <div class="font-pill-row" id="drawerHeadingFonts"></div>
-
-        <!-- Body Font -->
-        <div class="drawer-section-label">Body Font</div>
-        <div class="font-pill-row" id="drawerBodyFonts"></div>
-
-        <!-- Colors -->
-        <div class="drawer-section-label">Colors</div>
-        <div class="drawer-color-row">
-          <span>Background</span>
-          <input type="color" id="clrBgPrimary" value="#f0ebe0">
-        </div>
-        <div class="drawer-color-row">
-          <span>Background Secondary</span>
-          <input type="color" id="clrBgSecondary" value="#e8e0d4">
-        </div>
-        <div class="drawer-color-row">
-          <span>Accent</span>
-          <input type="color" id="clrAccent" value="#80b8a0">
-        </div>
-        <div class="drawer-color-row">
-          <span>Cover Kids Birthday</span>
-          <input type="color" id="clrCoverBirthday" value="#9a806a">
-        </div>
-        <div class="drawer-color-row">
-          <span>Cover Bachelorette</span>
-          <input type="color" id="clrCoverBachelorette" value="#9a806a">
-        </div>
-        <div class="drawer-color-row">
-          <span>Cover Workshop</span>
-          <input type="color" id="clrCoverWorkshop" value="#9a806a">
-        </div>
-
-        <!-- Texture -->
-        <div class="drawer-section-label">Texture</div>
-        <div class="font-pill-row texture-pill-row" id="drawerTextureePills"></div>
-
-        <!-- Save -->
-        <div class="drawer-save-bar">
-          <button class="drawer-save-btn" id="drawerSaveBtn" onclick="saveAll()">Save</button>
         </div>
       </div>
+      <!-- Page 2: Photos -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
+          <div class="scrapbook__photo-cluster">
+            <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 8%; --y: 8%;">
+              <div class="scrapbook__tape"></div>
+              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <p class="polaroid-caption">Kleine K&uuml;nstler</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 52%; --y: 12%;">
+              <div class="polaroid-pin"></div>
+              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <p class="polaroid-caption">Farbenfroh</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 42%;">
+              <div class="scrapbook__tape"></div>
+              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <p class="polaroid-caption">Dschungel-Welt</p>
+            </div>
+          </div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
     </div>
 
-  </div><!-- /adminView -->
+    <!-- EVENT 2: Bachelorette — Book -->
+    <div class="book fade-in" data-book="bachelorette" tabindex="0">
+      <div class="book__rings"></div>
 
-  <!-- ============================================================
-       MODALS
-       ============================================================ -->
-  <!-- Edit Event Modal -->
-  <div class="modal-overlay" id="editEventModal">
-    <div class="modal-box">
-      <h3>Termin bearbeiten</h3>
-      <input type="hidden" id="editEventId">
-      <div class="field">
-        <label>Date</label>
-        <input type="text" id="editEventDate">
+      <!-- Page 0: Cover -->
+      <div class="book__page book__page--cover" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="event-spread__header">
+            <div class="event-spread__sticker"></div>
+            <h3>Kreative Junggesellinnenabschiede</h3>
+          </div>
+          <div class="event-spread__body">
+            <div class="event-spread__details">
+              <ul class="event-spread__includes">
+                <li>Alle Materialien inklusive</li>
+                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+                <li>F&uuml;r Gruppen bis zu 10 Personen</li>
+                <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
+              </ul>
+              <div class="cover-polaroid" style="--rot: -2deg;">
+                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
+            </div>
+          </div>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
       </div>
-      <div class="field">
-        <label>Title</label>
-        <input type="text" id="editEventTitle">
+      <!-- Page 1: Details -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
+            <div class="cover-polaroid" style="--rot: 2deg;">
+              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
       </div>
-      <div class="field">
-        <label>Location</label>
-        <input type="text" id="editEventLocation">
+      <!-- Page 2: Gemeinsam kreativ -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
+                    <div class="scrapbook__photo-cluster">
+            <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 6%; --y: 8%;">
+              <div class="scrapbook__tape"></div>
+              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy"></div>
+              <p class="polaroid-caption">Cheers!</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 50%; --y: 12%;">
+              <div class="polaroid-pin"></div>
+              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy"></div>
+              <p class="polaroid-caption">Gemeinsam</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
+              <div class="scrapbook__tape"></div>
+              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy"></div>
+              <p class="polaroid-caption">Unvergesslich</p>
+            </div>
+          </div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-outline" onclick="closeModal('editEventModal')">Cancel</button>
-        <button class="btn" onclick="saveEditEvent()">Save</button>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
+    </div>
+
+    <!-- EVENT 3: Workshop — Book -->
+    <div class="book fade-in" data-book="workshop" tabindex="0">
+      <div class="book__rings"></div>
+
+      <!-- Page 0: Cover -->
+      <div class="book__page book__page--cover" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="event-spread__header">
+            <div class="event-spread__sticker"></div>
+            <h3>Kreativ-Workshops f&uuml;r Erwachsene &amp; Firmen</h3>
+          </div>
+          <div class="event-spread__body">
+            <div class="event-spread__details">
+              <ul class="event-spread__includes">
+                <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
+                <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
+                <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
+                <li>Gruppen bis 30 Personen m&ouml;glich</li>
+              </ul>
+              <div class="cover-polaroid" style="--rot: 1.5deg;">
+                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy"></div>
+              </div>
+              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
+            </div>
+          </div>
+          <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
       </div>
+      <!-- Page 1: Details -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
+            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
+            <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
+            <div class="cover-polaroid" style="--rot: -1deg;">
+              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Teamwork -->
+      <div class="book__page" style="z-index: 1;">
+        <div class="book__page-front book__cover-front">
+                    <div class="scrapbook__photo-cluster">
+            <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 6%; --y: 8%;">
+              <div class="scrapbook__tape"></div>
+              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy"></div>
+              <p class="polaroid-caption">Gemeinsam</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 10%;">
+              <div class="polaroid-pin"></div>
+              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy"></div>
+              <p class="polaroid-caption">Kreativ-Power</p>
+            </div>
+            <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 41%;">
+              <div class="polaroid-pin"></div>
+              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy"></div>
+              <p class="polaroid-caption">Inspiration</p>
+            </div>
+          </div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <span class="book__hint book__hint--left">&larr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <div class="book__counter"><span class="book__current">1</span> / <span class="book__total">3</span></div>
+    </div>
+
+    <!-- EVENT 4: Torn page CTA -->
+    <div class="torn-page fade-in">
+      <div class="torn-page__inner">
+        <div class="event-spread__sticker"></div>
+        <h3 class="torn-page__title">Etwas anderes im Sinn?</h3>
+        <p class="torn-page__desc">Ich bin offen f&uuml;r Ideen.</p>
+        <a href="#booking" class="event-spread__cta-btn">Buche jetzt dein Event &rarr;</a>
+      </div>
+
+    </div>
+
+    </div><!-- /event-grid -->
+  </section>
+
+  <!-- ============ GALLERY — CORKBOARD / SCRAPBOOK ============ -->
+  <section class="corkboard" id="gallery">
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      Meine Werke
+    </h2>
+
+    <p class="gallery-note fade-in">Alle Werke sind Originale &mdash; wenn dir etwas gef&auml;llt, schreib mir einfach</p>
+
+    <div class="board" id="galleryBoard">
+      <!-- Artworks loaded dynamically from /api/artworks -->
+      <p class="gallery-loading" style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke werden geladen...</p>
+    </div>
+
+    <button class="admin-add-btn" id="addArtworkBtn">+ Add Artwork</button>
+  </section>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" aria-label="Close">&times;</button>
+    <button class="lightbox__prev" aria-label="Previous">&lsaquo;</button>
+    <button class="lightbox__next" aria-label="Next">&rsaquo;</button>
+    <div class="lightbox__content">
+      <img class="lightbox__img" src="" alt="">
+      <p class="lightbox__caption"></p>
     </div>
   </div>
 
-  <!-- Edit Artwork Modal -->
-  <div class="modal-overlay" id="editArtModal">
-    <div class="modal-box">
-      <h3>Werk bearbeiten</h3>
-      <input type="hidden" id="editArtId">
-      <div class="field">
-        <label>Title</label>
-        <input type="text" id="editArtTitle">
+  <!-- ============ KONTAKTFORMULAR ============ -->
+  <section class="postcard-section" id="booking">
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      Kontaktformular &ndash; plane dein kreatives Event
+    </h2>
+
+    <div class="postcard fade-in">
+      <div class="letter-header">
+        <p class="letter-greeting">Ich freue mich auf deine Anfrage!</p>
+        <div class="postcard-stamp">
+          <img src="images/logo-bw.jpeg" alt="Vi.Vision ART" class="stamp-logo">
+        </div>
       </div>
-      <div class="field">
-        <label>Image URL</label>
-        <input type="url" id="editArtUrl">
-      </div>
-      <div class="field">
-        <label>Status</label>
-        <select id="editArtStatus">
-          <option value="for_sale">Zu verkaufen</option>
-          <option value="sold">Sold</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-outline" onclick="closeModal('editArtModal')">Cancel</button>
-        <button class="btn" onclick="saveEditArtwork()">Save</button>
-      </div>
+
+      <p class="letter-intro">Damit ich dein Event perfekt planen kann, f&uuml;lle bitte die wichtigsten Infos aus.</p>
+
+      <form class="letter-form" action="https://formsubmit.co/vivisionart@web.de" method="POST">
+        <input type="hidden" name="_subject" value="Neue Event-Anfrage von Vi.Vision ART">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://vivisionart.online/#booking">
+        <input type="hidden" name="_template" value="table">
+
+        <!-- 1. Anlass -->
+        <div class="form-field">
+          <label class="form-label">Anlass / Art des Events *</label>
+          <div class="form-radios">
+            <label class="form-radio"><input type="radio" name="anlass" value="geburtstag" required><span>Geburtstag</span></label>
+            <label class="form-radio"><input type="radio" name="anlass" value="jga"><span>Junggesellinnenabschied</span></label>
+            <label class="form-radio"><input type="radio" name="anlass" value="firma"><span>Firmenfeier / Workshop</span></label>
+            <label class="form-radio"><input type="radio" name="anlass" value="sonstiges"><span>Sonstiges</span></label>
+          </div>
+        </div>
+
+        <!-- 2. Datum -->
+        <div class="form-field">
+          <label class="form-label" for="datum">Geplantes Datum</label>
+          <input type="text" id="datum" name="datum" class="form-input" placeholder="TT / MM">
+        </div>
+
+        <!-- 3. Alternative -->
+        <div class="form-field">
+          <label class="form-label" for="alt-datum">Alternative Termine</label>
+          <input type="text" id="alt-datum" name="alt-datum" class="form-input" placeholder="z.B. flexibel im Juni">
+        </div>
+
+        <!-- 4. Name -->
+        <div class="form-field">
+          <label class="form-label" for="event-name">Name des Geburtstagskindes / der Braut / der Firma</label>
+          <input type="text" id="event-name" name="event-name" class="form-input">
+        </div>
+
+        <!-- 5. Teilnehmerzahl -->
+        <div class="form-field">
+          <label class="form-label" for="teilnehmer">Geplante Teilnehmerzahl *</label>
+          <input type="number" id="teilnehmer" name="teilnehmer" class="form-input" required placeholder="z.B. 8">
+        </div>
+
+        <!-- 6. Motto -->
+        <div class="form-field">
+          <label class="form-label" for="motto">Motto / Themenwunsch (optional)</label>
+          <p class="form-hint">(z.&nbsp;B. Dschungel, Universum, Regenbogen, Sommer, Pferde, Team-Values etc.)</p>
+          <input type="text" id="motto" name="motto" class="form-input">
+        </div>
+
+        <!-- 7. Ort -->
+        <div class="form-field">
+          <label class="form-label" for="ort">Ort / Adresse der Veranstaltung *</label>
+          <input type="text" id="ort" name="ort" class="form-input" required placeholder="Stra&szlig;e, Stadt">
+        </div>
+
+        <!-- 8. Hinweise -->
+        <div class="form-field">
+          <label class="form-label" for="hinweise">Besondere Hinweise / zus&auml;tzliche Informationen (optional)</label>
+          <p class="form-hint">(z.&nbsp;B. spezielle W&uuml;nsche, Allergien, Technikvorlieben, besondere Umst&auml;nde)</p>
+          <textarea id="hinweise" name="hinweise" class="form-input form-textarea" rows="3"></textarea>
+        </div>
+
+        <!-- 9. Kontaktdaten -->
+        <div class="form-divider"></div>
+        <p class="form-section-label">Kontaktdaten der anfragenden Person</p>
+
+        <div class="form-row-2col">
+          <div class="form-field">
+            <label class="form-label" for="contact-name">Name *</label>
+            <input type="text" id="contact-name" name="contact-name" class="form-input" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="contact-email">E-Mail-Adresse *</label>
+            <input type="email" id="contact-email" name="contact-email" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="contact-tel">Telefonnummer f&uuml;r R&uuml;ckfragen (optional, aber empfohlen)</label>
+          <input type="tel" id="contact-tel" name="contact-tel" class="form-input">
+        </div>
+
+        <button type="submit" class="stamp-btn">
+          <span class="stamp-btn-inner">ANFRAGE SENDEN</span>
+        </button>
+        <p class="form-success">Vielen Dank! Ich melde mich bald bei dir.</p>
+      </form>
     </div>
+  </section>
+
+  <!-- ============ BOOK PICKER (hidden in admin, replaced by drawer) ============ -->
+  <div class="book-picker" id="bookPicker" style="display:none;">
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+  <!-- ============ OFFENE TERMINE ============ -->
+  <section class="dates-section" id="dates">
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      Komm vorbei
+    </h2>
 
-  <!-- ============================================================
-       JAVASCRIPT
-       ============================================================ -->
+    <div class="dates-list" id="datesList">
+      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Termine werden geladen...</p>
+    </div>
+
+    <button class="admin-add-btn" id="addEventBtn">+ Add Event</button>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="retro-footer">
+    <p id="footerText">&copy; 2026 Vi.Vision ART</p>
+    <button class="edit-pencil" data-edit="footer" title="Edit footer text">&#9998;</button>
+  </footer>
+
+  <!-- ============ ADMIN STYLE DRAWER ============ -->
+  <button class="admin-drawer-toggle" id="drawerToggle" title="Style settings">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+
+  <div class="admin-drawer" id="adminDrawer">
+    <div class="drawer-section-label">Heading Font</div>
+    <div class="drawer-pills" id="drawerHeadingFonts">
+      <button class="drawer-pill" data-heading-font="marker" style="font-family:'Permanent Marker'">Permanent Marker</button>
+      <button class="drawer-pill" data-heading-font="shadows" style="font-family:'Shadows Into Light'">Shadows Into Light</button>
+      <button class="drawer-pill" data-heading-font="indie" style="font-family:'Indie Flower'">Indie Flower</button>
+      <button class="drawer-pill" data-heading-font="playfair" style="font-family:'Playfair Display'">Playfair Display</button>
+      <button class="drawer-pill" data-heading-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
+      <button class="drawer-pill" data-heading-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
+      <button class="drawer-pill" data-heading-font="special" style="font-family:'Special Elite'">Special Elite</button>
+      <button class="drawer-pill" data-heading-font="caveat" style="font-family:'Caveat'">Caveat</button>
+    </div>
+
+    <div class="drawer-section-label">Body Font</div>
+    <div class="drawer-pills" id="drawerBodyFonts">
+      <button class="drawer-pill" data-body-font="caveat" style="font-family:'Caveat'">Caveat</button>
+      <button class="drawer-pill" data-body-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
+      <button class="drawer-pill" data-body-font="coming" style="font-family:'Coming Soon'">Coming Soon</button>
+      <button class="drawer-pill" data-body-font="nunito" style="font-family:'Nunito'">Nunito</button>
+      <button class="drawer-pill" data-body-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
+      <button class="drawer-pill" data-body-font="dm" style="font-family:'DM Sans'">DM Sans</button>
+      <button class="drawer-pill" data-body-font="special" style="font-family:'Special Elite'">Special Elite</button>
+      <button class="drawer-pill" data-body-font="courier" style="font-family:'Courier Prime'">Courier Prime</button>
+    </div>
+
+    <div class="drawer-section-label">Colors</div>
+    <div class="drawer-color-row">
+      <label>BG Primary</label>
+      <input type="color" id="colorBgPrimary" value="#f0ebe0">
+    </div>
+    <div class="drawer-color-row">
+      <label>BG Secondary</label>
+      <input type="color" id="colorBgSecondary" value="#e8e0d4">
+    </div>
+    <div class="drawer-color-row">
+      <label>Accent</label>
+      <input type="color" id="colorAccent" value="#80b8a0">
+    </div>
+
+    <div class="drawer-section-label">Cover Colors</div>
+    <div class="drawer-color-row">
+      <label>Birthday</label>
+      <input type="color" id="coverColorBirthday" value="#9a806a">
+    </div>
+    <div class="drawer-color-row">
+      <label>Bachelorette</label>
+      <input type="color" id="coverColorBachelorette" value="#9a806a">
+    </div>
+    <div class="drawer-color-row">
+      <label>Workshop</label>
+      <input type="color" id="coverColorWorkshop" value="#9a806a">
+    </div>
+
+    <div class="drawer-section-label">Cover Texture</div>
+    <div class="drawer-pills" id="drawerTextures">
+      <button class="drawer-pill" data-cover-tex="smooth">Smooth</button>
+      <button class="drawer-pill" data-cover-tex="grain">Grain</button>
+      <button class="drawer-pill" data-cover-tex="leather">Leather</button>
+      <button class="drawer-pill" data-cover-tex="linen">Linen</button>
+      <button class="drawer-pill" data-cover-tex="canvas">Canvas</button>
+      <button class="drawer-pill" data-cover-tex="suede">Suede</button>
+    </div>
+
+    <button class="drawer-save-btn" id="drawerSaveBtn">Save Style</button>
+  </div>
+
   <script>
-    let token = '';
-    let currentSettings = {};
+    /* ==================================================================
+       MAIN SITE JAVASCRIPT (identical to index.html)
+       ================================================================== */
 
-    /* ============================================================
-       Font definitions
-       ============================================================ */
-    const FONT_FAMILY_MAP = {
-      marker:   "'Permanent Marker', cursive",
-      shadows:  "'Shadows Into Light', cursive",
-      indie:    "'Indie Flower', cursive",
-      playfair: "'Playfair Display', serif",
-      quicksand:"'Quicksand', sans-serif",
-      patrick:  "'Patrick Hand', cursive",
-      special:  "'Special Elite', monospace",
-      caveat:   "'Caveat', cursive",
-      coming:   "'Coming Soon', cursive",
-      nunito:   "'Nunito', sans-serif",
-      dm:       "'DM Sans', sans-serif",
-      courier:  "'Courier Prime', monospace",
-    };
-
-    const HEADING_FONTS = [
-      { key: 'marker',   label: 'Permanent Marker' },
-      { key: 'shadows',  label: 'Shadows Into Light' },
-      { key: 'indie',    label: 'Indie Flower' },
-      { key: 'playfair', label: 'Playfair Display' },
-      { key: 'quicksand',label: 'Quicksand' },
-      { key: 'patrick',  label: 'Patrick Hand' },
-      { key: 'special',  label: 'Special Elite' },
-      { key: 'caveat',   label: 'Caveat' },
-    ];
-
-    const BODY_FONTS = [
-      { key: 'caveat',  label: 'Caveat' },
-      { key: 'patrick', label: 'Patrick Hand' },
-      { key: 'coming',  label: 'Coming Soon' },
-      { key: 'nunito',  label: 'Nunito' },
-      { key: 'quicksand',label:'Quicksand' },
-      { key: 'dm',      label: 'DM Sans' },
-      { key: 'special', label: 'Special Elite' },
-      { key: 'courier', label: 'Courier Prime' },
-    ];
-
-    const COVER_TEXTURES = ['smooth', 'grain', 'leather', 'linen', 'canvas', 'suede'];
-
-    /* ============================================================
-       Auth
-       ============================================================ */
-    function doLogin() {
-      token = document.getElementById('password').value;
-      if (!token) return;
-      document.getElementById('loginView').style.display = 'none';
-      document.getElementById('adminView').style.display = 'block';
-      loadSettings();
-      loadEvents();
-      loadArtworks();
-    }
-
-    function doLogout() {
-      token = '';
-      document.getElementById('adminView').style.display = 'none';
-      document.getElementById('loginView').style.display = 'flex';
-      document.getElementById('password').value = '';
-      // Close drawer
-      document.getElementById('drawer').classList.remove('is-open');
-    }
-
-    document.getElementById('password').addEventListener('keydown', e => {
-      if (e.key === 'Enter') doLogin();
-    });
-
-    /* ============================================================
-       Toast
-       ============================================================ */
-    function showToast(msg, isError) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.className = 'toast show ' + (isError ? 'toast-err' : 'toast-ok');
-      setTimeout(() => { el.classList.remove('show'); }, 2500);
-    }
-
-    /* ============================================================
-       Modal helpers
-       ============================================================ */
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.addEventListener('click', e => {
-        if (e.target === m) m.classList.remove('show');
-      });
-    });
-
-    /* ============================================================
-       API helpers
-       ============================================================ */
-    function authHeaders() {
-      return {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      };
-    }
-
-    /* ============================================================
-       Drawer toggle
-       ============================================================ */
-    function toggleDrawer() {
-      document.getElementById('drawer').classList.toggle('is-open');
-    }
-
-    /* ============================================================
-       Build drawer pickers
-       ============================================================ */
-    function buildDrawerPickers() {
-      // Heading fonts
-      const hfEl = document.getElementById('drawerHeadingFonts');
-      hfEl.innerHTML = HEADING_FONTS.map(f =>
-        `<button class="font-pill" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key]}" onclick="pickHeadingFont(this)">${f.label}</button>`
-      ).join('');
-
-      // Body fonts
-      const bfEl = document.getElementById('drawerBodyFonts');
-      bfEl.innerHTML = BODY_FONTS.map(f =>
-        `<button class="font-pill" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key]}" onclick="pickBodyFont(this)">${f.label}</button>`
-      ).join('');
-
-      // Texturees
-      const txEl = document.getElementById('drawerTextureePills');
-      txEl.innerHTML = COVER_TEXTURES.map(t =>
-        `<button class="font-pill" data-key="${t}" onclick="pickTexturee(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
-      ).join('');
-    }
-
-    /* ============================================================
-       Font picking — instant preview
-       ============================================================ */
-    function pickHeadingFont(btn) {
-      document.getElementById('drawerHeadingFonts').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      currentSettings.heading_font = btn.dataset.key;
-      const family = FONT_FAMILY_MAP[btn.dataset.key];
-      document.documentElement.style.setProperty('--font-heading', family);
-    }
-
-    function pickBodyFont(btn) {
-      document.getElementById('drawerBodyFonts').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      currentSettings.body_font = btn.dataset.key;
-      const family = FONT_FAMILY_MAP[btn.dataset.key];
-      document.documentElement.style.setProperty('--font-body', family);
-    }
-
-    /* ============================================================
-       Color picking — instant preview
-       ============================================================ */
-    function setupColorListeners() {
-      document.getElementById('clrBgPrimary').addEventListener('input', function() {
-        document.documentElement.style.setProperty('--bg-primary', this.value);
-        updateSwatches();
-      });
-      document.getElementById('clrBgSecondary').addEventListener('input', function() {
-        document.documentElement.style.setProperty('--bg-secondary', this.value);
-        updateSwatches();
-      });
-      document.getElementById('clrAccent').addEventListener('input', function() {
-        document.documentElement.style.setProperty('--accent', this.value);
-        updateSwatches();
-      });
-      document.getElementById('clrCoverBirthday').addEventListener('input', function() {
-        document.getElementById('bookCoverBirthday').style.backgroundColor = this.value;
-        updateSwatches();
-      });
-      document.getElementById('clrCoverBachelorette').addEventListener('input', function() {
-        document.getElementById('bookCoverBachelorette').style.backgroundColor = this.value;
-        updateSwatches();
-      });
-      document.getElementById('clrCoverWorkshop').addEventListener('input', function() {
-        document.getElementById('bookCoverWorkshop').style.backgroundColor = this.value;
-        updateSwatches();
-      });
-    }
-
-    /* ============================================================
-       Texturee picking
-       ============================================================ */
-    function pickTexturee(btn) {
-      document.getElementById('drawerTextureePills').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      currentSettings.cover_texture = btn.dataset.key;
-      document.documentElement.setAttribute('data-cover-tex', btn.dataset.key);
-    }
-
-    /* ============================================================
-       Update preview swatches
-       ============================================================ */
-    function updateSwatches() {
-      const bgP = document.getElementById('clrBgPrimary').value;
-      const bgS = document.getElementById('clrBgSecondary').value;
-      const acc = document.getElementById('clrAccent').value;
-      const cB  = document.getElementById('clrCoverBirthday').value;
-      const cJ  = document.getElementById('clrCoverBachelorette').value;
-      const cW  = document.getElementById('clrCoverWorkshop').value;
-
-      document.getElementById('swatchBg').style.background = bgP;
-      document.getElementById('swatchBgSec').style.background = bgS;
-      document.getElementById('swatchAccent').style.background = acc;
-      document.getElementById('swatchCoverB').style.background = cB;
-      document.getElementById('swatchCoverJ').style.background = cJ;
-      document.getElementById('swatchCoverW').style.background = cW;
-    }
-
-    /* ============================================================
-       SAVE ALL (drawer save button)
-       ============================================================ */
-    async function saveAll() {
-      const btn = document.getElementById('drawerSaveBtn');
-      btn.disabled = true;
-      btn.textContent = 'Save...';
-
-      const pairs = [];
-
-      // Fonts
-      if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
-      if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
-
-      // Colors
-      pairs.push(['bg_primary', document.getElementById('clrBgPrimary').value]);
-      pairs.push(['bg_secondary', document.getElementById('clrBgSecondary').value]);
-      pairs.push(['accent_primary', document.getElementById('clrAccent').value]);
-      pairs.push(['cover_color_birthday', document.getElementById('clrCoverBirthday').value]);
-      pairs.push(['cover_color_bachelorette', document.getElementById('clrCoverBachelorette').value]);
-      pairs.push(['cover_color_workshop', document.getElementById('clrCoverWorkshop').value]);
-
-      // Texturee
-      if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
-
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Error: ' + (d.error || key), true);
-            btn.disabled = false;
-            btn.textContent = 'Save';
-            return;
-          }
-        }
-        showToast('Design gespeichert');
-      } catch (err) {
-        showToast('Error beim Save', true);
-      }
-      btn.disabled = false;
-      btn.textContent = 'Save';
-    }
-
-    /* ============================================================
-       SAVE CONTENT (Content section)
-       ============================================================ */
-    async function saveContent() {
-      const pairs = [
-        ['about_name', document.getElementById('aboutName').value],
-        ['about_bio', document.getElementById('aboutBio').value],
-        ['instagram_url', document.getElementById('instagramUrl').value],
-        ['footer_text', document.getElementById('footerText').value],
-        ['book_birthday_checks', document.getElementById('bookBirthdayChecks').value],
-        ['book_birthday_desc', document.getElementById('bookBirthdayDesc').value],
-        ['book_birthday_extra', document.getElementById('bookBirthdayExtra').value],
-        ['book_bachelorette_checks', document.getElementById('bookBacheloretteChecks').value],
-        ['book_bachelorette_desc', document.getElementById('bookBacheloretteDesc').value],
-        ['book_bachelorette_extra', document.getElementById('bookBacheloretteExtra').value],
-        ['book_workshop_checks', document.getElementById('bookWorkshopChecks').value],
-        ['book_workshop_desc', document.getElementById('bookWorkshopDesc').value],
-        ['book_workshop_extra', document.getElementById('bookWorkshopExtra').value],
-      ];
-
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Error: ' + (d.error || key), true);
-            return;
-          }
-        }
-        showToast('Content gespeichert');
-      } catch (err) {
-        showToast('Error beim Save', true);
-      }
-    }
-
-    /* ============================================================
-       TERMINE (Events)
-       ============================================================ */
-    async function loadEvents() {
-      try {
-        const res = await fetch('/api/events');
-        const events = await res.json();
-        const list = document.getElementById('eventsList');
-        if (!events.length) {
-          list.innerHTML = '<div class="empty">Keine Calendar vorhanden</div>';
-          return;
-        }
-        list.innerHTML = events.map(e => `
-          <div class="event-item">
-            <div class="event-info">
-              <div class="event-date">${esc(e.date)}</div>
-              <div class="event-title">${esc(e.title)}</div>
-              <div class="event-location">${esc(e.location || '')}</div>
-            </div>
-            <div class="event-actions">
-              <button class="btn btn-sm btn-outline" onclick="openEditEvent(${e.id}, '${escAttr(e.date)}', '${escAttr(e.title)}', '${escAttr(e.location || '')}')">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteEvent(${e.id})">X</button>
-            </div>
-          </div>
-        `).join('');
-      } catch (err) {
-        showToast('Error beim Laden der Calendar', true);
-      }
-    }
-
-    async function addEvent() {
-      const date = document.getElementById('newDate').value.trim();
-      const title = document.getElementById('newTitle').value.trim();
-      const location = document.getElementById('newLocation').value.trim();
-      if (!date || !title) { showToast('Date und Title sind erforderlich', true); return; }
-      try {
-        const res = await fetch('/api/events', {
-          method: 'POST', headers: authHeaders(),
-          body: JSON.stringify({ date, title, location }),
-        });
-        if (res.ok) {
-          showToast('Termin hinzugefuegt');
-          document.getElementById('newDate').value = '';
-          document.getElementById('newTitle').value = '';
-          document.getElementById('newLocation').value = '';
-          loadEvents();
-        } else {
-          const d = await res.json();
-          showToast(d.error || 'Error', true);
-        }
-      } catch (err) { showToast('Error beim Save', true); }
-    }
-
-    async function deleteEvent(id) {
-      if (!confirm('Really delete this event?')) return;
-      try {
-        const res = await fetch('/api/events', {
-          method: 'DELETE', headers: authHeaders(),
-          body: JSON.stringify({ id }),
-        });
-        if (res.ok) { showToast('Termin geloescht'); loadEvents(); }
-        else showToast('Error beim Delete', true);
-      } catch (err) { showToast('Error', true); }
-    }
-
-    function openEditEvent(id, date, title, location) {
-      document.getElementById('editEventId').value = id;
-      document.getElementById('editEventDate').value = date;
-      document.getElementById('editEventTitle').value = title;
-      document.getElementById('editEventLocation').value = location;
-      document.getElementById('editEventModal').classList.add('show');
-    }
-
-    async function saveEditEvent() {
-      const id = parseInt(document.getElementById('editEventId').value);
-      const date = document.getElementById('editEventDate').value.trim();
-      const title = document.getElementById('editEventTitle').value.trim();
-      const location = document.getElementById('editEventLocation').value.trim();
-      try {
-        const res = await fetch('/api/events', {
-          method: 'PUT', headers: authHeaders(),
-          body: JSON.stringify({ id, date, title, location }),
-        });
-        if (res.ok) {
-          showToast('Termin aktualisiert');
-          closeModal('editEventModal');
-          loadEvents();
-        } else {
-          const d = await res.json();
-          showToast(d.error || 'Error', true);
-        }
-      } catch (err) { showToast('Error beim Save', true); }
-    }
-
-    /* ============================================================
-       GALERIE (Artworks)
-       ============================================================ */
-    async function loadArtworks() {
-      try {
-        const res = await fetch('/api/artworks');
-        const artworks = await res.json();
-        const list = document.getElementById('artworksList');
-        if (!artworks.length) {
-          list.innerHTML = '<div class="empty">No Artworks vorhanden</div>';
-          return;
-        }
-        list.innerHTML = artworks.map(a => `
-          <div class="artwork-item">
-            <img class="artwork-thumb" src="${esc(a.image_url)}" alt="${esc(a.title)}" onerror="this.style.background='#ddd'">
-            <div class="artwork-info">
-              <div class="artwork-title">${esc(a.title || 'Ohne Title')}</div>
-              <span class="artwork-status ${a.status === 'sold' ? 'artwork-status--sold' : 'artwork-status--sale'}">
-                ${a.status === 'sold' ? 'Sold' : 'Zu verkaufen'}
-              </span>
-            </div>
-            <div class="artwork-actions">
-              <button class="btn btn-sm btn-outline" onclick="openEditArtwork(${a.id}, '${escAttr(a.title || '')}', '${escAttr(a.image_url)}', '${escAttr(a.status)}')">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteArtwork(${a.id})">X</button>
-            </div>
-          </div>
-        `).join('');
-      } catch (err) {
-        showToast('Error beim Laden der Werke', true);
-      }
-    }
-
-    function previewNewArtImage() {
-      const url = document.getElementById('newArtUrl').value.trim();
-      const container = document.getElementById('newArtPreview');
-      if (url) {
-        container.innerHTML = `<img src="${esc(url)}" alt="Preview" onerror="this.parentElement.innerHTML='<span style=\\'color:#c55;font-size:12px\\'>Bild konnte nicht geladen werden</span>'">`;
-      } else {
-        container.innerHTML = '';
-      }
-    }
-
-    async function addArtwork() {
-      const title = document.getElementById('newArtTitle').value.trim();
-      const image_url = document.getElementById('newArtUrl').value.trim();
-      const status = document.getElementById('newArtStatus').value;
-      if (!image_url) { showToast('Image URL ist erforderlich', true); return; }
-      try {
-        const res = await fetch('/api/artworks', {
-          method: 'POST', headers: authHeaders(),
-          body: JSON.stringify({ title, image_url, status }),
-        });
-        if (res.ok) {
-          showToast('Werk hinzugefuegt');
-          document.getElementById('newArtTitle').value = '';
-          document.getElementById('newArtUrl').value = '';
-          document.getElementById('newArtStatus').value = 'for_sale';
-          document.getElementById('newArtPreview').innerHTML = '';
-          loadArtworks();
-        } else {
-          const d = await res.json();
-          showToast(d.error || 'Error', true);
-        }
-      } catch (err) { showToast('Error beim Save', true); }
-    }
-
-    async function deleteArtwork(id) {
-      if (!confirm('Really delete this artwork?')) return;
-      try {
-        const res = await fetch('/api/artworks', {
-          method: 'DELETE', headers: authHeaders(),
-          body: JSON.stringify({ id }),
-        });
-        if (res.ok) { showToast('Werk geloescht'); loadArtworks(); }
-        else showToast('Error beim Delete', true);
-      } catch (err) { showToast('Error', true); }
-    }
-
-    function openEditArtwork(id, title, url, status) {
-      document.getElementById('editArtId').value = id;
-      document.getElementById('editArtTitle').value = title;
-      document.getElementById('editArtUrl').value = url;
-      document.getElementById('editArtStatus').value = status;
-      document.getElementById('editArtModal').classList.add('show');
-    }
-
-    async function saveEditArtwork() {
-      const id = parseInt(document.getElementById('editArtId').value);
-      const title = document.getElementById('editArtTitle').value.trim();
-      const image_url = document.getElementById('editArtUrl').value.trim();
-      const status = document.getElementById('editArtStatus').value;
-      try {
-        const res = await fetch('/api/artworks', {
-          method: 'PUT', headers: authHeaders(),
-          body: JSON.stringify({ id, title, image_url, status }),
-        });
-        if (res.ok) {
-          showToast('Werk aktualisiert');
-          closeModal('editArtModal');
-          loadArtworks();
-        } else {
-          const d = await res.json();
-          showToast(d.error || 'Error', true);
-        }
-      } catch (err) { showToast('Error beim Save', true); }
-    }
-
-    /* ============================================================
-       Instagram preview
-       ============================================================ */
-    function previewInstagram() {
-      const url = document.getElementById('instagramUrl').value.trim();
-      const container = document.getElementById('instaPreview');
-      if (url) {
-        container.innerHTML = `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a>`;
-      } else {
-        container.innerHTML = '';
-      }
-    }
-
-    /* ============================================================
-       LOAD SETTINGS — apply to preview + drawer
-       ============================================================ */
-    async function loadSettings() {
+    /* ---- Load settings from API and apply to DOM ---- */
+    (async function loadAndApplySettings() {
       try {
         const res = await fetch('/api/settings');
-        const settings = await res.json();
-        currentSettings = { ...settings };
+        if (!res.ok) return;
+        const s = await res.json();
+        const html = document.documentElement;
 
-        // --- Apply fonts to CSS variables + activate pills ---
-        if (settings.heading_font && FONT_FAMILY_MAP[settings.heading_font]) {
-          document.documentElement.style.setProperty('--font-heading', FONT_FAMILY_MAP[settings.heading_font]);
-          activatePill('drawerHeadingFonts', settings.heading_font);
-        }
-        if (settings.body_font && FONT_FAMILY_MAP[settings.body_font]) {
-          document.documentElement.style.setProperty('--font-body', FONT_FAMILY_MAP[settings.body_font]);
-          activatePill('drawerBodyFonts', settings.body_font);
-        }
+        // Style settings
+        if (s.heading_font) html.setAttribute('data-heading-font', s.heading_font);
+        if (s.body_font) html.setAttribute('data-body-font', s.body_font);
+        if (s.bg_color) html.setAttribute('data-site-bg', s.bg_color);
+        if (s.accent_color) html.setAttribute('data-accent', s.accent_color);
+        if (s.cover_texture) html.setAttribute('data-cover-tex', s.cover_texture);
 
-        // --- Apply colors to CSS variables + color inputs ---
-        if (settings.bg_primary) {
-          document.getElementById('clrBgPrimary').value = settings.bg_primary;
-          document.documentElement.style.setProperty('--bg-primary', settings.bg_primary);
+        // Custom color pickers override presets
+        if (s.bg_primary) {
+          html.style.setProperty('--bg-primary', s.bg_primary);
+          html.style.setProperty('--bg-secondary', s.bg_secondary || s.bg_primary);
         }
-        if (settings.bg_secondary) {
-          document.getElementById('clrBgSecondary').value = settings.bg_secondary;
-          document.documentElement.style.setProperty('--bg-secondary', settings.bg_secondary);
-        }
-        if (settings.accent_primary) {
-          document.getElementById('clrAccent').value = settings.accent_primary;
-          document.documentElement.style.setProperty('--accent', settings.accent_primary);
+        if (s.accent_primary) {
+          html.style.setProperty('--accent', s.accent_primary);
+          html.style.setProperty('--accent-alt', s.accent_primary);
+          html.style.setProperty('--pin-color', s.accent_primary);
+          html.style.setProperty('--stamp-bg', s.accent_primary);
+          html.style.setProperty('--heading-bg', s.accent_primary);
         }
 
         // Cover colors
-        if (settings.cover_color_birthday) {
-          document.getElementById('clrCoverBirthday').value = settings.cover_color_birthday;
-          document.getElementById('bookCoverBirthday').style.backgroundColor = settings.cover_color_birthday;
-        } else {
-          document.getElementById('bookCoverBirthday').style.backgroundColor = '#9a806a';
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const color = s['cover_color_' + name];
+          if (!color) return;
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (book) {
+            const cover = book.querySelector('.book__page--cover .book__page-front');
+            if (cover) cover.style.background = color;
+            book.style.setProperty('--cover-bg', color);
+          }
+        });
+
+        // About content
+        if (s.about_name) {
+          const nameEl = document.querySelector('.about-name');
+          if (nameEl) nameEl.textContent = s.about_name;
         }
-        if (settings.cover_color_bachelorette) {
-          document.getElementById('clrCoverBachelorette').value = settings.cover_color_bachelorette;
-          document.getElementById('bookCoverBachelorette').style.backgroundColor = settings.cover_color_bachelorette;
-        } else {
-          document.getElementById('bookCoverBachelorette').style.backgroundColor = '#9a806a';
-        }
-        if (settings.cover_color_workshop) {
-          document.getElementById('clrCoverWorkshop').value = settings.cover_color_workshop;
-          document.getElementById('bookCoverWorkshop').style.backgroundColor = settings.cover_color_workshop;
-        } else {
-          document.getElementById('bookCoverWorkshop').style.backgroundColor = '#9a806a';
+        if (s.about_bio) {
+          const bioContainer = document.querySelector('.about-text');
+          if (bioContainer) {
+            const paras = s.about_bio.split(/\n\s*\n/);
+            const existing = bioContainer.querySelectorAll('.about-bio');
+            existing.forEach(el => el.remove());
+            const nameEl = bioContainer.querySelector('.about-name');
+            let insertAfter = nameEl;
+            paras.forEach(p => {
+              if (!p.trim()) return;
+              const el = document.createElement('p');
+              el.className = 'about-bio';
+              el.textContent = p.trim();
+              if (insertAfter && insertAfter.nextSibling) {
+                insertAfter.parentNode.insertBefore(el, insertAfter.nextSibling);
+              } else if (insertAfter) {
+                insertAfter.parentNode.appendChild(el);
+              }
+              insertAfter = el;
+            });
+          }
         }
 
-        // Texturee
-        if (settings.cover_texture) {
-          document.documentElement.setAttribute('data-cover-tex', settings.cover_texture);
-          activatePill('drawerTextureePills', settings.cover_texture);
+        // Instagram
+        if (s.instagram_url) {
+          const igLink = document.querySelector('.about-instagram__link');
+          if (igLink) igLink.href = s.instagram_url;
         }
 
-        // Update swatches
-        updateSwatches();
-
-        // --- Content fields ---
-        if (settings.about_name) document.getElementById('aboutName').value = settings.about_name;
-        if (settings.about_bio) document.getElementById('aboutBio').value = settings.about_bio;
-        if (settings.instagram_url) {
-          document.getElementById('instagramUrl').value = settings.instagram_url;
-          previewInstagram();
+        // Footer
+        if (s.footer_text) {
+          const footer = document.querySelector('.retro-footer p');
+          if (footer) footer.innerHTML = '&copy; ' + s.footer_text;
         }
-        if (settings.footer_text) document.getElementById('footerText').value = settings.footer_text;
-        if (settings.book_birthday_checks) document.getElementById('bookBirthdayChecks').value = settings.book_birthday_checks;
-        if (settings.book_birthday_desc) document.getElementById('bookBirthdayDesc').value = settings.book_birthday_desc;
-        if (settings.book_birthday_extra) document.getElementById('bookBirthdayExtra').value = settings.book_birthday_extra;
-        if (settings.book_bachelorette_checks) document.getElementById('bookBacheloretteChecks').value = settings.book_bachelorette_checks;
-        if (settings.book_bachelorette_desc) document.getElementById('bookBacheloretteDesc').value = settings.book_bachelorette_desc;
-        if (settings.book_bachelorette_extra) document.getElementById('bookBacheloretteExtra').value = settings.book_bachelorette_extra;
-        if (settings.book_workshop_checks) document.getElementById('bookWorkshopChecks').value = settings.book_workshop_checks;
-        if (settings.book_workshop_desc) document.getElementById('bookWorkshopDesc').value = settings.book_workshop_desc;
-        if (settings.book_workshop_extra) document.getElementById('bookWorkshopExtra').value = settings.book_workshop_extra;
+
+        // Book content
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (!book) return;
+
+          // Cover checkmarks
+          const checksKey = 'book_' + name + '_checks';
+          if (s[checksKey]) {
+            const ul = book.querySelector('.event-spread__includes');
+            if (ul) {
+              ul.innerHTML = s[checksKey].split('\n').filter(l => l.trim()).map(l => '<li>' + l.trim() + '</li>').join('');
+            }
+          }
+
+          // Description
+          const descKey = 'book_' + name + '_desc';
+          if (s[descKey]) {
+            const descEls = book.querySelectorAll('.event-spread__desc');
+            const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
+            descEls.forEach((el, i) => {
+              if (paras[i]) el.textContent = paras[i].trim();
+            });
+          }
+
+          // Extra text
+          const extraKey = 'book_' + name + '_extra';
+          if (s[extraKey]) {
+            const extraEl = book.querySelector('.event-spread__extra');
+            if (extraEl) extraEl.textContent = s[extraKey];
+          }
+        });
+
+        // Store settings for admin use
+        window._siteSettings = s;
 
       } catch (err) {
-        showToast('Error beim Laden der Einstellungen', true);
+        // Settings load failed — use defaults from HTML
       }
-    }
+    })();
 
-    function activatePill(containerId, key) {
-      const el = document.getElementById(containerId);
-      if (!el || !key) return;
-      el.querySelectorAll('.font-pill').forEach(p => {
-        p.classList.toggle('active', p.dataset.key === key);
+    /* ---- Artworks data store for admin ---- */
+    let artworksData = [];
+
+    /* ---- Load artworks from API ---- */
+    (async function loadArtworks() {
+      const board = document.getElementById('galleryBoard');
+      const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
+      const xPositions = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
+      const yPositions = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
+      const attachments = ['polaroid-pin', 'tape-corner'];
+
+      try {
+        const res = await fetch('/api/artworks');
+        if (!res.ok) throw new Error('Failed to load');
+        const artworks = await res.json();
+        artworksData = artworks;
+
+        if (!artworks.length) {
+          board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>';
+          return;
+        }
+
+        board.innerHTML = artworks.map((a, i) => {
+          const rot = rotations[i % rotations.length];
+          const x = xPositions[i % xPositions.length];
+          const y = yPositions[i % yPositions.length];
+          const attach = attachments[i % attachments.length];
+          const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
+          return `
+            <article class="polaroid p${i + 1} fade-in" style="--rot: ${rot}; --x: ${x}; --y: ${y};" data-artwork-id="${a.id}" data-artwork-idx="${i}">
+              <div class="${attach}"></div>
+              <span class="art-sticker">${statusLabel}</span>
+              <div class="polaroid-frame">
+                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy">
+              </div>
+              <p class="polaroid-caption">${a.title || ''}</p>
+              <button class="edit-pencil" data-edit="artwork" data-artwork-id="${a.id}" title="Edit artwork">&#9998;</button>
+            </article>
+          `;
+        }).join('');
+
+        // Re-init lightbox with new polaroids
+        initLightbox();
+
+        // Observe new fade-in elements
+        board.querySelectorAll('.fade-in').forEach(el => {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+            });
+          }, { threshold: 0.15 });
+          obs.observe(el);
+        });
+
+      } catch (err) {
+        board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke konnten nicht geladen werden</p>';
+      }
+    })();
+
+    /* ---- Events data store for admin ---- */
+    let eventsData = [];
+
+    /* ---- Load calendar events from API ---- */
+    (async function() {
+      const rotations = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
+      try {
+        const res = await fetch('/api/events');
+        const events = await res.json();
+        eventsData = events;
+        const list = document.getElementById('datesList');
+        if (events.length === 0) {
+          list.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>';
+        } else {
+          list.innerHTML = events.map((e, i) => `
+            <div class="date-card fade-in" style="--rot: ${rotations[i % rotations.length]};" data-event-id="${e.id}" data-event-idx="${i}">
+              <span class="date-card__date">${e.date}</span>
+              <span class="date-card__what">${e.title}</span>
+              <span class="date-card__where">${e.location || ''}</span>
+              <button class="edit-pencil" data-edit="event" data-event-id="${e.id}" title="Edit event">&#9998;</button>
+            </div>
+          `).join('');
+          // Re-observe for fade-in
+          list.querySelectorAll('.fade-in').forEach(el => {
+            const obs = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+              });
+            }, { threshold: 0.15 });
+            obs.observe(el);
+          });
+        }
+      } catch (err) {
+        // Fallback: keep loading text or show nothing
+      }
+    })();
+
+    /* ---- Scroll-triggered fade-in ---- */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* ---- Active tab tracking on scroll ---- */
+    const sections = document.querySelectorAll('#about, #events, .corkboard, .postcard-section');
+    const tabs = document.querySelectorAll('.tab');
+
+    const tabObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          tabs.forEach(t => {
+            t.classList.toggle('active', t.dataset.tab === id);
+          });
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(s => tabObserver.observe(s));
+
+    /* ---- Book Page Flip ---- */
+    const allBooks = [];
+
+    document.querySelectorAll('.book[data-book]').forEach(book => {
+      const pages = book.querySelectorAll('.book__page');
+      const totalPages = pages.length;
+      const counterCurrent = book.querySelector('.book__current');
+      const counterTotal = book.querySelector('.book__total');
+      let currentPage = 0;
+      let flipping = false;
+
+      if (counterTotal) counterTotal.textContent = totalPages;
+      if (counterCurrent) counterCurrent.textContent = 1;
+
+      function resetBook() {
+        if (currentPage === 0) return;
+        pages.forEach((p, i) => {
+          p.classList.remove('is-flipped');
+          p.style.zIndex = totalPages - i;
+        });
+        currentPage = 0;
+        flipping = false;
+        if (counterCurrent) counterCurrent.textContent = 1;
+      }
+
+      function resetOtherBooks() {
+        allBooks.forEach(b => { if (b.el !== book) b.reset(); });
+      }
+
+      allBooks.push({ el: book, reset: resetBook });
+
+      function flipNext() {
+        if (flipping || currentPage >= totalPages - 1) return;
+        resetOtherBooks();
+        flipping = true;
+        const page = pages[currentPage];
+        page.classList.add('is-flipped');
+        book.classList.add('is-flipping-next');
+        currentPage++;
+        if (counterCurrent) counterCurrent.textContent = Math.min(currentPage + 1, totalPages);
+        page.addEventListener('transitionend', function onEnd(e) {
+          if (e.propertyName !== 'transform') return;
+          page.removeEventListener('transitionend', onEnd);
+          page.style.zIndex = currentPage;
+          book.classList.remove('is-flipping-next');
+          flipping = false;
+        });
+      }
+
+      function flipPrev() {
+        if (flipping || currentPage <= 0) return;
+        resetOtherBooks();
+        flipping = true;
+        currentPage--;
+        const page = pages[currentPage];
+        page.classList.remove('is-flipped');
+        page.style.zIndex = totalPages + 1;
+        book.classList.add('is-flipping-prev');
+        if (counterCurrent) counterCurrent.textContent = currentPage + 1;
+        page.addEventListener('transitionend', function onEnd(e) {
+          if (e.propertyName !== 'transform') return;
+          page.removeEventListener('transitionend', onEnd);
+          page.style.zIndex = totalPages - currentPage;
+          book.classList.remove('is-flipping-prev');
+          flipping = false;
+        });
+      }
+
+      /* Click: right half = next, left half = prev */
+      book.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        if (e.target.closest('.edit-pencil')) return; /* Don't flip on pencil click */
+        const rect = book.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x > rect.width * 0.5) {
+          flipNext();
+        } else {
+          flipPrev();
+        }
+      });
+
+      /* Touch swipe */
+      let touchStartX = 0, touchStartY = 0;
+      book.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }, { passive: true });
+      book.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+        if (dx < 0) flipNext();
+        else flipPrev();
+      }, { passive: true });
+
+      /* Keyboard arrows when book is focused */
+      book.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); flipNext(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); flipPrev(); }
+      });
+    });
+
+    /* ---- Lightbox ---- */
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = lightbox.querySelector('.lightbox__img');
+    const lbCaption = lightbox.querySelector('.lightbox__caption');
+    let lbPolaroids = [];
+    let currentIdx = 0;
+
+    function initLightbox() {
+      lbPolaroids = document.querySelectorAll('.board .polaroid');
+      lbPolaroids.forEach((pol, i) => {
+        pol.style.cursor = 'pointer';
+        pol.addEventListener('click', (e) => {
+          if (e.target.closest('.edit-pencil')) return; /* Don't open lightbox on pencil click */
+          openLightbox(i);
+        });
       });
     }
 
-    /* ============================================================
-       Utility: HTML escape
-       ============================================================ */
-    function esc(s) {
-      const d = document.createElement('div');
-      d.textContent = s;
-      return d.innerHTML;
-    }
-    function escAttr(s) {
-      return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+    function openLightbox(idx) {
+      if (!lbPolaroids.length) return;
+      currentIdx = idx;
+      const pol = lbPolaroids[idx];
+      const img = pol.querySelector('.polaroid-frame img');
+      const caption = pol.querySelector('.polaroid-caption');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCaption.textContent = caption ? caption.textContent : '';
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
     }
 
-    /* ============================================================
-       Init
-       ============================================================ */
-    buildDrawerPickers();
-    setupColorListeners();
-    // Set default cover colors on book previews
-    document.getElementById('bookCoverBirthday').style.backgroundColor = '#9a806a';
-    document.getElementById('bookCoverBachelorette').style.backgroundColor = '#9a806a';
-    document.getElementById('bookCoverWorkshop').style.backgroundColor = '#9a806a';
-    updateSwatches();
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function showPrev() {
+      if (!lbPolaroids.length) return;
+      currentIdx = (currentIdx - 1 + lbPolaroids.length) % lbPolaroids.length;
+      openLightbox(currentIdx);
+    }
+
+    function showNext() {
+      if (!lbPolaroids.length) return;
+      currentIdx = (currentIdx + 1) % lbPolaroids.length;
+      openLightbox(currentIdx);
+    }
+
+    // Init lightbox for any polaroids already in DOM
+    initLightbox();
+
+    lightbox.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
+    lightbox.querySelector('.lightbox__prev').addEventListener('click', showPrev);
+    lightbox.querySelector('.lightbox__next').addEventListener('click', showNext);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    });
+
+    /* ---- Smooth scroll for tabs ---- */
+    tabs.forEach(tab => {
+      tab.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(tab.dataset.tab);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    /* ---- Book texture overlay elements ---- */
+    document.querySelectorAll('.book__page-front').forEach(face => {
+      if (!face.querySelector('.book-texture-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'book-texture-overlay';
+        face.appendChild(overlay);
+      }
+    });
+
+
+    /* ==================================================================
+       ADMIN JAVASCRIPT
+       ================================================================== */
+
+    const ADMIN = {
+      token: null,
+      active: false,
+    };
+
+    /* ---- Toast ---- */
+    function showToast(msg) {
+      const t = document.getElementById('adminToast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    /* ---- Auth helper ---- */
+    function authHeaders() {
+      return { 'Authorization': 'Bearer ' + ADMIN.token, 'Content-Type': 'application/json' };
+    }
+
+    /* ---- Close any open popover ---- */
+    function closeAllPopovers() {
+      document.querySelectorAll('.edit-popover').forEach(p => p.remove());
+      document.querySelectorAll('.popover-backdrop').forEach(b => b.remove());
+    }
+
+    /* ---- Create popover next to element ---- */
+    function createPopover(anchorEl, innerHTML) {
+      closeAllPopovers();
+
+      const backdrop = document.createElement('div');
+      backdrop.className = 'popover-backdrop';
+      backdrop.addEventListener('click', closeAllPopovers);
+      document.body.appendChild(backdrop);
+
+      const pop = document.createElement('div');
+      pop.className = 'edit-popover';
+      pop.innerHTML = innerHTML;
+
+      // Position: if mobile, use fixed centering (CSS handles it)
+      // Desktop: position near the anchor
+      if (window.innerWidth > 600) {
+        const rect = anchorEl.getBoundingClientRect();
+        pop.style.position = 'absolute';
+        pop.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+        pop.style.left = Math.max(8, rect.left + window.scrollX - 80) + 'px';
+      }
+
+      document.body.appendChild(pop);
+      // Focus first input
+      const firstInput = pop.querySelector('input, textarea, select');
+      if (firstInput) setTimeout(() => firstInput.focus(), 50);
+
+      return pop;
+    }
+
+    /* ---- Login ---- */
+    const loginOverlay = document.getElementById('adminLoginOverlay');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const loginPassword = document.getElementById('adminPassword');
+    const loginError = document.getElementById('loginError');
+
+    // Check for stored token
+    const storedToken = sessionStorage.getItem('admin_token');
+    if (storedToken) {
+      ADMIN.token = storedToken;
+      activateAdmin();
+      loginOverlay.style.display = 'none';
+    }
+
+    loginBtn.addEventListener('click', doLogin);
+    loginPassword.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    async function doLogin() {
+      const pw = loginPassword.value.trim();
+      if (!pw) return;
+
+      // Test the password by trying to load settings with auth
+      try {
+        const res = await fetch('/api/settings', {
+          headers: { 'Authorization': 'Bearer ' + pw }
+        });
+        if (res.ok) {
+          ADMIN.token = pw;
+          sessionStorage.setItem('admin_token', pw);
+          loginOverlay.classList.add('fade-out');
+          setTimeout(() => {
+            loginOverlay.style.display = 'none';
+            activateAdmin();
+          }, 500);
+        } else {
+          loginError.style.display = 'block';
+        }
+      } catch (err) {
+        // If settings endpoint doesn't require auth for GET, just store the password
+        ADMIN.token = pw;
+        sessionStorage.setItem('admin_token', pw);
+        loginOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          loginOverlay.style.display = 'none';
+          activateAdmin();
+        }, 500);
+      }
+    }
+
+    function activateAdmin() {
+      ADMIN.active = true;
+      document.body.classList.add('admin-active');
+      initDrawer();
+      initPencilHandlers();
+      initAddButtons();
+    }
+
+    /* ---- Pencil click handlers (delegated) ---- */
+    function initPencilHandlers() {
+      document.addEventListener('click', (e) => {
+        const pencil = e.target.closest('.edit-pencil');
+        if (!pencil || !ADMIN.active) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        const editType = pencil.dataset.edit;
+        switch (editType) {
+          case 'about-name': editAboutName(pencil); break;
+          case 'about-bio': editAboutBio(pencil); break;
+          case 'about-photo': editAboutPhoto(pencil); break;
+          case 'instagram': editInstagram(pencil); break;
+          case 'footer': editFooter(pencil); break;
+          case 'artwork': editArtwork(pencil); break;
+          case 'event': editEvent(pencil); break;
+        }
+      });
+    }
+
+    /* ---- Edit: About Name ---- */
+    function editAboutName(pencil) {
+      const el = document.getElementById('aboutName');
+      const current = el.textContent;
+      const pop = createPopover(el, `
+        <label>Name / Greeting</label>
+        <input type="text" id="editNameInput" value="${escHtml(current)}">
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveNameBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#saveNameBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editNameInput').value.trim();
+        if (!val) return;
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: 'about_name', value: val })
+          });
+          el.textContent = val;
+          showToast('Name updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: About Bio ---- */
+    function editAboutBio(pencil) {
+      const bioWrap = document.getElementById('aboutBioWrap');
+      const bios = bioWrap.querySelectorAll('.about-bio');
+      const current = Array.from(bios).map(p => p.textContent).join('\n\n');
+      const pop = createPopover(bioWrap, `
+        <label>Bio (separate paragraphs with blank lines)</label>
+        <textarea id="editBioInput" rows="10">${escHtml(current)}</textarea>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveBioBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#saveBioBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editBioInput').value.trim();
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: 'about_bio', value: val })
+          });
+          // Update DOM
+          bios.forEach(p => p.remove());
+          const nameEl = bioWrap.querySelector('.about-name') || document.getElementById('aboutName');
+          const paras = val.split(/\n\s*\n/);
+          let insertRef = bioWrap.firstChild;
+          paras.forEach(p => {
+            if (!p.trim()) return;
+            const el = document.createElement('p');
+            el.className = 'about-bio';
+            el.textContent = p.trim();
+            bioWrap.insertBefore(el, bioWrap.querySelector('.edit-pencil'));
+          });
+          showToast('Bio updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: About Photo ---- */
+    function editAboutPhoto(pencil) {
+      const img = document.getElementById('aboutPhoto');
+      const current = img.src;
+      const pop = createPopover(pencil, `
+        <label>Photo URL</label>
+        <input type="text" id="editPhotoInput" value="${escHtml(current)}">
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="savePhotoBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editPhotoInput').value.trim();
+        if (!val) return;
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: 'about_photo', value: val })
+          });
+          img.src = val;
+          showToast('Photo updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Instagram ---- */
+    function editInstagram(pencil) {
+      const link = document.getElementById('instagramLink');
+      const current = link.href;
+      const pop = createPopover(pencil, `
+        <label>Instagram URL</label>
+        <input type="url" id="editIgInput" value="${escHtml(current)}">
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveIgBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#saveIgBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editIgInput').value.trim();
+        if (!val) return;
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: 'instagram_url', value: val })
+          });
+          link.href = val;
+          showToast('Instagram updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Footer ---- */
+    function editFooter(pencil) {
+      const el = document.getElementById('footerText');
+      // Strip the copyright symbol prefix for editing
+      const current = el.textContent.replace(/^©\s*/, '');
+      const pop = createPopover(el, `
+        <label>Footer Text (without &copy;)</label>
+        <input type="text" id="editFooterInput" value="${escHtml(current)}">
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveFooterBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#saveFooterBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editFooterInput').value.trim();
+        if (!val) return;
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: 'footer_text', value: val })
+          });
+          el.innerHTML = '&copy; ' + escHtml(val);
+          showToast('Footer updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Artwork ---- */
+    function editArtwork(pencil) {
+      const id = pencil.dataset.artworkId;
+      const artwork = artworksData.find(a => String(a.id) === String(id));
+      if (!artwork) return;
+
+      const article = pencil.closest('.polaroid');
+      const pop = createPopover(article, `
+        <label>Image URL</label>
+        <input type="text" id="editArtImg" value="${escHtml(artwork.image_url || '')}">
+        <label>Title</label>
+        <input type="text" id="editArtTitle" value="${escHtml(artwork.title || '')}">
+        <label>Status</label>
+        <select id="editArtStatus">
+          <option value="for_sale" ${artwork.status !== 'sold' ? 'selected' : ''}>For Sale</option>
+          <option value="sold" ${artwork.status === 'sold' ? 'selected' : ''}>Sold</option>
+        </select>
+        <div class="btn-row">
+          <button class="btn-delete" id="deleteArtBtn">Delete</button>
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveArtBtn">Save</button>
+        </div>
+      `);
+
+      pop.querySelector('#saveArtBtn').addEventListener('click', async () => {
+        const imgUrl = pop.querySelector('#editArtImg').value.trim();
+        const title = pop.querySelector('#editArtTitle').value.trim();
+        const status = pop.querySelector('#editArtStatus').value;
+        try {
+          await fetch('/api/artworks/' + id, {
+            method: 'PUT',
+            headers: authHeaders(),
+            body: JSON.stringify({ image_url: imgUrl, title, status })
+          });
+          showToast('Artwork updated');
+          closeAllPopovers();
+          location.reload();
+        } catch (err) { showToast('Error saving'); }
+      });
+
+      pop.querySelector('#deleteArtBtn').addEventListener('click', async () => {
+        if (!confirm('Delete this artwork?')) return;
+        try {
+          await fetch('/api/artworks/' + id, {
+            method: 'DELETE',
+            headers: authHeaders()
+          });
+          showToast('Artwork deleted');
+          closeAllPopovers();
+          location.reload();
+        } catch (err) { showToast('Error deleting'); }
+      });
+    }
+
+    /* ---- Edit: Event ---- */
+    function editEvent(pencil) {
+      const id = pencil.dataset.eventId;
+      const event = eventsData.find(e => String(e.id) === String(id));
+      if (!event) return;
+
+      const card = pencil.closest('.date-card');
+      const pop = createPopover(card, `
+        <label>Date</label>
+        <input type="text" id="editEvDate" value="${escHtml(event.date || '')}">
+        <label>Title</label>
+        <input type="text" id="editEvTitle" value="${escHtml(event.title || '')}">
+        <label>Location</label>
+        <input type="text" id="editEvLocation" value="${escHtml(event.location || '')}">
+        <div class="btn-row">
+          <button class="btn-delete" id="deleteEvBtn">Delete</button>
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveEvBtn">Save</button>
+        </div>
+      `);
+
+      pop.querySelector('#saveEvBtn').addEventListener('click', async () => {
+        const date = pop.querySelector('#editEvDate').value.trim();
+        const title = pop.querySelector('#editEvTitle').value.trim();
+        const location = pop.querySelector('#editEvLocation').value.trim();
+        try {
+          await fetch('/api/events/' + id, {
+            method: 'PUT',
+            headers: authHeaders(),
+            body: JSON.stringify({ date, title, location })
+          });
+          showToast('Event updated');
+          closeAllPopovers();
+          window.location.reload();
+        } catch (err) { showToast('Error saving'); }
+      });
+
+      pop.querySelector('#deleteEvBtn').addEventListener('click', async () => {
+        if (!confirm('Delete this event?')) return;
+        try {
+          await fetch('/api/events/' + id, {
+            method: 'DELETE',
+            headers: authHeaders()
+          });
+          showToast('Event deleted');
+          closeAllPopovers();
+          window.location.reload();
+        } catch (err) { showToast('Error deleting'); }
+      });
+    }
+
+    /* ---- Add buttons ---- */
+    function initAddButtons() {
+      document.getElementById('addArtworkBtn').addEventListener('click', () => {
+        const btn = document.getElementById('addArtworkBtn');
+        const pop = createPopover(btn, `
+          <label>Image URL</label>
+          <input type="text" id="newArtImg" placeholder="https://...">
+          <label>Title</label>
+          <input type="text" id="newArtTitle" placeholder="Artwork title">
+          <label>Status</label>
+          <select id="newArtStatus">
+            <option value="for_sale">For Sale</option>
+            <option value="sold">Sold</option>
+          </select>
+          <div class="btn-row">
+            <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+            <button class="btn-save" id="createArtBtn">Add</button>
+          </div>
+        `);
+        pop.querySelector('#createArtBtn').addEventListener('click', async () => {
+          const imgUrl = pop.querySelector('#newArtImg').value.trim();
+          const title = pop.querySelector('#newArtTitle').value.trim();
+          const status = pop.querySelector('#newArtStatus').value;
+          if (!imgUrl) { showToast('Image URL required'); return; }
+          try {
+            await fetch('/api/artworks', {
+              method: 'POST',
+              headers: authHeaders(),
+              body: JSON.stringify({ image_url: imgUrl, title, status })
+            });
+            showToast('Artwork added');
+            closeAllPopovers();
+            location.reload();
+          } catch (err) { showToast('Error adding artwork'); }
+        });
+      });
+
+      document.getElementById('addEventBtn').addEventListener('click', () => {
+        const btn = document.getElementById('addEventBtn');
+        const pop = createPopover(btn, `
+          <label>Date</label>
+          <input type="text" id="newEvDate" placeholder="e.g. 15. Mai 2026">
+          <label>Title</label>
+          <input type="text" id="newEvTitle" placeholder="Event title">
+          <label>Location</label>
+          <input type="text" id="newEvLocation" placeholder="Location">
+          <div class="btn-row">
+            <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+            <button class="btn-save" id="createEvBtn">Add</button>
+          </div>
+        `);
+        pop.querySelector('#createEvBtn').addEventListener('click', async () => {
+          const date = pop.querySelector('#newEvDate').value.trim();
+          const title = pop.querySelector('#newEvTitle').value.trim();
+          const loc = pop.querySelector('#newEvLocation').value.trim();
+          if (!date || !title) { showToast('Date and title required'); return; }
+          try {
+            await fetch('/api/events', {
+              method: 'POST',
+              headers: authHeaders(),
+              body: JSON.stringify({ date, title, location: loc })
+            });
+            showToast('Event added');
+            closeAllPopovers();
+            window.location.reload();
+          } catch (err) { showToast('Error adding event'); }
+        });
+      });
+    }
+
+    /* ---- Style Drawer ---- */
+    function initDrawer() {
+      const drawer = document.getElementById('adminDrawer');
+      const toggle = document.getElementById('drawerToggle');
+      const html = document.documentElement;
+
+      toggle.addEventListener('click', () => {
+        drawer.classList.toggle('is-open');
+      });
+
+      // Close drawer when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#adminDrawer') && !e.target.closest('#drawerToggle')) {
+          drawer.classList.remove('is-open');
+        }
+      });
+
+      /* Heading font pills */
+      const curHeading = html.getAttribute('data-heading-font') || 'marker';
+      document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(btn => {
+        if (btn.dataset.headingFont === curHeading) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          const font = btn.dataset.headingFont;
+          html.setAttribute('data-heading-font', font);
+          document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      /* Body font pills */
+      const curBody = html.getAttribute('data-body-font') || 'caveat';
+      document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(btn => {
+        if (btn.dataset.bodyFont === curBody) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          const font = btn.dataset.bodyFont;
+          html.setAttribute('data-body-font', font);
+          document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      /* Texture pills */
+      const curTex = html.getAttribute('data-cover-tex') || 'leather';
+      document.querySelectorAll('#drawerTextures .drawer-pill').forEach(btn => {
+        if (btn.dataset.coverTex === curTex) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          const tex = btn.dataset.coverTex;
+          html.setAttribute('data-cover-tex', tex);
+          document.querySelectorAll('#drawerTextures .drawer-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      /* Color inputs — live preview */
+      const bgPrimary = document.getElementById('colorBgPrimary');
+      const bgSecondary = document.getElementById('colorBgSecondary');
+      const accentColor = document.getElementById('colorAccent');
+      const coverBirthday = document.getElementById('coverColorBirthday');
+      const coverBachelorette = document.getElementById('coverColorBachelorette');
+      const coverWorkshop = document.getElementById('coverColorWorkshop');
+
+      // Load current computed values into color inputs
+      const cs = getComputedStyle(html);
+      bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
+      bgSecondary.value = rgbToHex(cs.getPropertyValue('--bg-secondary').trim()) || '#e8e0d4';
+      accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
+
+      bgPrimary.addEventListener('input', () => {
+        html.style.setProperty('--bg-primary', bgPrimary.value);
+      });
+      bgSecondary.addEventListener('input', () => {
+        html.style.setProperty('--bg-secondary', bgSecondary.value);
+      });
+      accentColor.addEventListener('input', () => {
+        html.style.setProperty('--accent', accentColor.value);
+        html.style.setProperty('--accent-alt', accentColor.value);
+        html.style.setProperty('--pin-color', accentColor.value);
+        html.style.setProperty('--stamp-bg', accentColor.value);
+        html.style.setProperty('--heading-bg', accentColor.value);
+      });
+
+      // Cover colors: live preview
+      function applyCoverColor(bookName, color) {
+        const book = document.querySelector('[data-book="' + bookName + '"]');
+        if (book) {
+          const cover = book.querySelector('.book__page--cover .book__page-front');
+          if (cover) cover.style.background = color;
+          book.style.setProperty('--cover-bg', color);
+        }
+      }
+
+      coverBirthday.addEventListener('input', () => applyCoverColor('birthday', coverBirthday.value));
+      coverBachelorette.addEventListener('input', () => applyCoverColor('bachelorette', coverBachelorette.value));
+      coverWorkshop.addEventListener('input', () => applyCoverColor('workshop', coverWorkshop.value));
+
+      // Load saved cover colors into pickers
+      if (window._siteSettings) {
+        const s = window._siteSettings;
+        if (s.bg_primary) bgPrimary.value = s.bg_primary;
+        if (s.bg_secondary) bgSecondary.value = s.bg_secondary;
+        if (s.accent_primary) accentColor.value = s.accent_primary;
+        if (s.cover_color_birthday) coverBirthday.value = s.cover_color_birthday;
+        if (s.cover_color_bachelorette) coverBachelorette.value = s.cover_color_bachelorette;
+        if (s.cover_color_workshop) coverWorkshop.value = s.cover_color_workshop;
+      }
+
+      /* Save Style button */
+      document.getElementById('drawerSaveBtn').addEventListener('click', async () => {
+        const activeHeading = document.querySelector('#drawerHeadingFonts .drawer-pill.active');
+        const activeBody = document.querySelector('#drawerBodyFonts .drawer-pill.active');
+        const activeTex = document.querySelector('#drawerTextures .drawer-pill.active');
+
+        const settings = [
+          { key: 'heading_font', value: activeHeading ? activeHeading.dataset.headingFont : 'marker' },
+          { key: 'body_font', value: activeBody ? activeBody.dataset.bodyFont : 'caveat' },
+          { key: 'bg_primary', value: bgPrimary.value },
+          { key: 'bg_secondary', value: bgSecondary.value },
+          { key: 'accent_primary', value: accentColor.value },
+          { key: 'cover_color_birthday', value: coverBirthday.value },
+          { key: 'cover_color_bachelorette', value: coverBachelorette.value },
+          { key: 'cover_color_workshop', value: coverWorkshop.value },
+          { key: 'cover_texture', value: activeTex ? activeTex.dataset.coverTex : 'leather' },
+        ];
+
+        try {
+          for (const s of settings) {
+            await fetch('/api/settings', {
+              method: 'POST',
+              headers: authHeaders(),
+              body: JSON.stringify(s)
+            });
+          }
+          showToast('Style saved!');
+          drawer.classList.remove('is-open');
+        } catch (err) {
+          showToast('Error saving style');
+        }
+      });
+    }
+
+    /* ---- Utility: escape HTML ---- */
+    function escHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML.replace(/"/g, '&quot;');
+    }
+
+    /* ---- Utility: rgb to hex ---- */
+    function rgbToHex(color) {
+      if (!color) return '';
+      if (color.startsWith('#')) return color;
+      const match = color.match(/(\d+)/g);
+      if (!match || match.length < 3) return color;
+      return '#' + match.slice(0, 3).map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
+    }
   </script>
 </body>
 </html>
