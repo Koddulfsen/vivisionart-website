@@ -244,7 +244,7 @@
       opacity: 0.15;
       pointer-events: none;
     }
-    /* Texture overlays */
+    /* Texturee overlays */
     [data-cover-tex="grain"] .preview-book::before {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
@@ -561,7 +561,7 @@
       flex-shrink: 0;
     }
 
-    /* Texture pills */
+    /* Texturee pills */
     .texture-pill-row {
       display: flex;
       flex-wrap: wrap;
@@ -669,7 +669,7 @@
     <div class="login-box">
       <h1>Vi.Vision ART</h1>
       <p class="subtitle">Admin-Bereich</p>
-      <input type="password" id="password" placeholder="Passwort eingeben">
+      <input type="password" id="password" placeholder="Password eingeben">
       <button class="btn login-btn" onclick="doLogin()">Anmelden</button>
     </div>
   </div>
@@ -683,9 +683,9 @@
     <div class="admin-header">
       <div>
         <h1>Vi.Vision ART — Admin</h1>
-        <div class="subtitle">Live-Vorschau</div>
+        <div class="subtitle">Live-Preview</div>
       </div>
-      <button class="logout-btn" onclick="doLogout()">Abmelden</button>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
 
     <!-- ======================== LIVE PREVIEW ======================== -->
@@ -709,7 +709,7 @@
         <div class="preview-label">Buch-Cover</div>
         <div class="preview-books">
           <div class="preview-book" id="bookCoverBirthday">
-            <div class="preview-book__title">Kindergeburtstag</div>
+            <div class="preview-book__title">Kids Birthday</div>
             <div class="preview-book__label">Kreativ-Party</div>
           </div>
           <div class="preview-book" id="bookCoverBachelorette">
@@ -726,30 +726,30 @@
         <div class="preview-label">Innenseite</div>
         <div class="preview-inside-page" id="previewInsidePage">
           <div class="preview-inside-label">Innenseite</div>
-          <p>Alle Materialien sind inklusive. Du brauchst nichts mitzubringen ausser gute Laune und vielleicht ein paar Freunde. Wir kuemmern uns um den Rest -- Farben, Pinsel, Leinwaende und eine entspannte Atmosphaere.</p>
+          <p>Alle Materialien sind inklusive. Du brauchst nichts mitzubringen ausser gute Laune und vielleicht ein paar Freunde. Wir kuemmern uns um den Rest -- Colors, Pinsel, Leinwaende und eine entspannte Atmosphaere.</p>
         </div>
 
         <!-- 5. Accent demo -->
-        <div class="preview-label">Akzentfarbe</div>
+        <div class="preview-label">Accentfarbe</div>
         <div class="preview-accent-demo">
           <button class="preview-accent-btn">Termin buchen</button>
           <span class="preview-accent-link">Mehr erfahren</span>
         </div>
 
         <!-- 6. Color swatches -->
-        <div class="preview-label">Aktuelle Farben</div>
+        <div class="preview-label">Aktuelle Colors</div>
         <div class="preview-swatches">
           <div class="preview-swatch-group">
             <div class="preview-swatch" id="swatchBg"></div>
-            <div class="preview-swatch-label">Hintergrund</div>
+            <div class="preview-swatch-label">Background</div>
           </div>
           <div class="preview-swatch-group">
             <div class="preview-swatch" id="swatchBgSec"></div>
-            <div class="preview-swatch-label">Sekundaer</div>
+            <div class="preview-swatch-label">Secondary</div>
           </div>
           <div class="preview-swatch-group">
             <div class="preview-swatch" id="swatchAccent"></div>
-            <div class="preview-swatch-label">Akzent</div>
+            <div class="preview-swatch-label">Accent</div>
           </div>
           <div class="preview-swatch-group">
             <div class="preview-swatch" id="swatchCoverB"></div>
@@ -770,36 +770,36 @@
       <div class="admin-sections">
 
         <!-- TERMINE -->
-        <h2 class="section-heading">Termine</h2>
+        <h2 class="section-heading">Calendar</h2>
 
         <div class="card">
-          <h3>Aktuelle Termine</h3>
+          <h3>Aktuelle Calendar</h3>
           <div id="eventsList"></div>
         </div>
 
         <div class="card">
-          <h3>Neuen Termin hinzufuegen</h3>
+          <h3>New Event hinzufuegen</h3>
           <div class="field-row">
             <div class="field">
-              <label>Datum</label>
+              <label>Date</label>
               <input type="text" id="newDate" placeholder="z.B. 15. Juni">
             </div>
             <div class="field">
-              <label>Ort</label>
+              <label>Location</label>
               <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
             </div>
           </div>
           <div class="field">
-            <label>Titel</label>
+            <label>Title</label>
             <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
           </div>
           <div class="save-bar">
-            <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
+            <button class="btn" onclick="addEvent()">Add Event</button>
           </div>
         </div>
 
         <!-- GALERIE -->
-        <h2 class="section-heading">Galerie</h2>
+        <h2 class="section-heading">Gallery</h2>
 
         <div class="card">
           <h3>Kunstwerke</h3>
@@ -807,13 +807,13 @@
         </div>
 
         <div class="card">
-          <h3>Neues Werk hinzufuegen</h3>
+          <h3>New Artwork hinzufuegen</h3>
           <div class="field">
-            <label>Titel</label>
+            <label>Title</label>
             <input type="text" id="newArtTitle" placeholder="z.B. Connection">
           </div>
           <div class="field">
-            <label>Bild-URL</label>
+            <label>Image URL</label>
             <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png" oninput="previewNewArtImage()">
             <div class="new-art-preview" id="newArtPreview"></div>
           </div>
@@ -821,7 +821,7 @@
             <label>Status</label>
             <select id="newArtStatus">
               <option value="for_sale">Zu verkaufen</option>
-              <option value="sold">Hat ein Zuhause gefunden</option>
+              <option value="sold">Sold</option>
             </select>
           </div>
           <div class="save-bar">
@@ -830,7 +830,7 @@
         </div>
 
         <!-- INHALTE -->
-        <h2 class="section-heading">Inhalte</h2>
+        <h2 class="section-heading">Content</h2>
 
         <div class="card">
           <h3>Ueber mich</h3>
@@ -858,7 +858,7 @@
         </div>
 
         <div class="card">
-          <h3>Event-Buch: Kindergeburtstag</h3>
+          <h3>Event-Buch: Kids Birthday</h3>
           <div class="field">
             <label>Cover-Punkte (pro Zeile ein Punkt)</label>
             <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
@@ -874,7 +874,7 @@
         </div>
 
         <div class="card">
-          <h3>Event-Buch: Junggesellinnenabschied</h3>
+          <h3>Event-Buch: Bachelorette</h3>
           <div class="field">
             <label>Cover-Punkte (pro Zeile ein Punkt)</label>
             <textarea id="bookBacheloretteChecks" rows="4"></textarea>
@@ -907,7 +907,7 @@
 
         <div class="card">
           <div class="save-bar" style="border:none; padding-top:0; margin-top:0;">
-            <button class="btn" onclick="saveContent()">Inhalte speichern</button>
+            <button class="btn" onclick="saveContent()">Content speichern</button>
           </div>
         </div>
 
@@ -925,34 +925,34 @@
       </div>
       <div class="drawer__content">
 
-        <!-- Schriftart Titel -->
-        <div class="drawer-section-label">Schriftart Titel</div>
+        <!-- Heading Font -->
+        <div class="drawer-section-label">Heading Font</div>
         <div class="font-pill-row" id="drawerHeadingFonts"></div>
 
-        <!-- Schriftart Text -->
-        <div class="drawer-section-label">Schriftart Text</div>
+        <!-- Body Font -->
+        <div class="drawer-section-label">Body Font</div>
         <div class="font-pill-row" id="drawerBodyFonts"></div>
 
-        <!-- Farben -->
-        <div class="drawer-section-label">Farben</div>
+        <!-- Colors -->
+        <div class="drawer-section-label">Colors</div>
         <div class="drawer-color-row">
-          <span>Hintergrund</span>
+          <span>Background</span>
           <input type="color" id="clrBgPrimary" value="#f0ebe0">
         </div>
         <div class="drawer-color-row">
-          <span>Hintergrund Sekundaer</span>
+          <span>Background Secondary</span>
           <input type="color" id="clrBgSecondary" value="#e8e0d4">
         </div>
         <div class="drawer-color-row">
-          <span>Akzent</span>
+          <span>Accent</span>
           <input type="color" id="clrAccent" value="#80b8a0">
         </div>
         <div class="drawer-color-row">
-          <span>Cover Kindergeburtstag</span>
+          <span>Cover Kids Birthday</span>
           <input type="color" id="clrCoverBirthday" value="#9a806a">
         </div>
         <div class="drawer-color-row">
-          <span>Cover Junggesellinnenabschied</span>
+          <span>Cover Bachelorette</span>
           <input type="color" id="clrCoverBachelorette" value="#9a806a">
         </div>
         <div class="drawer-color-row">
@@ -960,13 +960,13 @@
           <input type="color" id="clrCoverWorkshop" value="#9a806a">
         </div>
 
-        <!-- Textur -->
-        <div class="drawer-section-label">Textur</div>
-        <div class="font-pill-row texture-pill-row" id="drawerTexturePills"></div>
+        <!-- Texture -->
+        <div class="drawer-section-label">Texture</div>
+        <div class="font-pill-row texture-pill-row" id="drawerTextureePills"></div>
 
         <!-- Save -->
         <div class="drawer-save-bar">
-          <button class="drawer-save-btn" id="drawerSaveBtn" onclick="saveAll()">Speichern</button>
+          <button class="drawer-save-btn" id="drawerSaveBtn" onclick="saveAll()">Save</button>
         </div>
       </div>
     </div>
@@ -982,20 +982,20 @@
       <h3>Termin bearbeiten</h3>
       <input type="hidden" id="editEventId">
       <div class="field">
-        <label>Datum</label>
+        <label>Date</label>
         <input type="text" id="editEventDate">
       </div>
       <div class="field">
-        <label>Titel</label>
+        <label>Title</label>
         <input type="text" id="editEventTitle">
       </div>
       <div class="field">
-        <label>Ort</label>
+        <label>Location</label>
         <input type="text" id="editEventLocation">
       </div>
       <div class="modal-actions">
-        <button class="btn btn-outline" onclick="closeModal('editEventModal')">Abbrechen</button>
-        <button class="btn" onclick="saveEditEvent()">Speichern</button>
+        <button class="btn btn-outline" onclick="closeModal('editEventModal')">Cancel</button>
+        <button class="btn" onclick="saveEditEvent()">Save</button>
       </div>
     </div>
   </div>
@@ -1006,23 +1006,23 @@
       <h3>Werk bearbeiten</h3>
       <input type="hidden" id="editArtId">
       <div class="field">
-        <label>Titel</label>
+        <label>Title</label>
         <input type="text" id="editArtTitle">
       </div>
       <div class="field">
-        <label>Bild-URL</label>
+        <label>Image URL</label>
         <input type="url" id="editArtUrl">
       </div>
       <div class="field">
         <label>Status</label>
         <select id="editArtStatus">
           <option value="for_sale">Zu verkaufen</option>
-          <option value="sold">Hat ein Zuhause gefunden</option>
+          <option value="sold">Sold</option>
         </select>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-outline" onclick="closeModal('editArtModal')">Abbrechen</button>
-        <button class="btn" onclick="saveEditArtwork()">Speichern</button>
+        <button class="btn btn-outline" onclick="closeModal('editArtModal')">Cancel</button>
+        <button class="btn" onclick="saveEditArtwork()">Save</button>
       </div>
     </div>
   </div>
@@ -1160,10 +1160,10 @@
         `<button class="font-pill" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key]}" onclick="pickBodyFont(this)">${f.label}</button>`
       ).join('');
 
-      // Textures
-      const txEl = document.getElementById('drawerTexturePills');
+      // Texturees
+      const txEl = document.getElementById('drawerTextureePills');
       txEl.innerHTML = COVER_TEXTURES.map(t =>
-        `<button class="font-pill" data-key="${t}" onclick="pickTexture(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
+        `<button class="font-pill" data-key="${t}" onclick="pickTexturee(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
       ).join('');
     }
 
@@ -1217,10 +1217,10 @@
     }
 
     /* ============================================================
-       Texture picking
+       Texturee picking
        ============================================================ */
-    function pickTexture(btn) {
-      document.getElementById('drawerTexturePills').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
+    function pickTexturee(btn) {
+      document.getElementById('drawerTextureePills').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       currentSettings.cover_texture = btn.dataset.key;
       document.documentElement.setAttribute('data-cover-tex', btn.dataset.key);
@@ -1251,7 +1251,7 @@
     async function saveAll() {
       const btn = document.getElementById('drawerSaveBtn');
       btn.disabled = true;
-      btn.textContent = 'Speichern...';
+      btn.textContent = 'Save...';
 
       const pairs = [];
 
@@ -1267,7 +1267,7 @@
       pairs.push(['cover_color_bachelorette', document.getElementById('clrCoverBachelorette').value]);
       pairs.push(['cover_color_workshop', document.getElementById('clrCoverWorkshop').value]);
 
-      // Texture
+      // Texturee
       if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
 
       try {
@@ -1278,22 +1278,22 @@
           });
           if (!res.ok) {
             const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
+            showToast('Error: ' + (d.error || key), true);
             btn.disabled = false;
-            btn.textContent = 'Speichern';
+            btn.textContent = 'Save';
             return;
           }
         }
         showToast('Design gespeichert');
       } catch (err) {
-        showToast('Fehler beim Speichern', true);
+        showToast('Error beim Save', true);
       }
       btn.disabled = false;
-      btn.textContent = 'Speichern';
+      btn.textContent = 'Save';
     }
 
     /* ============================================================
-       SAVE CONTENT (Inhalte section)
+       SAVE CONTENT (Content section)
        ============================================================ */
     async function saveContent() {
       const pairs = [
@@ -1320,13 +1320,13 @@
           });
           if (!res.ok) {
             const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
+            showToast('Error: ' + (d.error || key), true);
             return;
           }
         }
-        showToast('Inhalte gespeichert');
+        showToast('Content gespeichert');
       } catch (err) {
-        showToast('Fehler beim Speichern', true);
+        showToast('Error beim Save', true);
       }
     }
 
@@ -1339,7 +1339,7 @@
         const events = await res.json();
         const list = document.getElementById('eventsList');
         if (!events.length) {
-          list.innerHTML = '<div class="empty">Keine Termine vorhanden</div>';
+          list.innerHTML = '<div class="empty">Keine Calendar vorhanden</div>';
           return;
         }
         list.innerHTML = events.map(e => `
@@ -1350,13 +1350,13 @@
               <div class="event-location">${esc(e.location || '')}</div>
             </div>
             <div class="event-actions">
-              <button class="btn btn-sm btn-outline" onclick="openEditEvent(${e.id}, '${escAttr(e.date)}', '${escAttr(e.title)}', '${escAttr(e.location || '')}')">Bearbeiten</button>
+              <button class="btn btn-sm btn-outline" onclick="openEditEvent(${e.id}, '${escAttr(e.date)}', '${escAttr(e.title)}', '${escAttr(e.location || '')}')">Edit</button>
               <button class="btn btn-sm btn-danger" onclick="deleteEvent(${e.id})">X</button>
             </div>
           </div>
         `).join('');
       } catch (err) {
-        showToast('Fehler beim Laden der Termine', true);
+        showToast('Error beim Laden der Calendar', true);
       }
     }
 
@@ -1364,7 +1364,7 @@
       const date = document.getElementById('newDate').value.trim();
       const title = document.getElementById('newTitle').value.trim();
       const location = document.getElementById('newLocation').value.trim();
-      if (!date || !title) { showToast('Datum und Titel sind erforderlich', true); return; }
+      if (!date || !title) { showToast('Date und Title sind erforderlich', true); return; }
       try {
         const res = await fetch('/api/events', {
           method: 'POST', headers: authHeaders(),
@@ -1378,21 +1378,21 @@
           loadEvents();
         } else {
           const d = await res.json();
-          showToast(d.error || 'Fehler', true);
+          showToast(d.error || 'Error', true);
         }
-      } catch (err) { showToast('Fehler beim Speichern', true); }
+      } catch (err) { showToast('Error beim Save', true); }
     }
 
     async function deleteEvent(id) {
-      if (!confirm('Termin wirklich loeschen?')) return;
+      if (!confirm('Really delete this event?')) return;
       try {
         const res = await fetch('/api/events', {
           method: 'DELETE', headers: authHeaders(),
           body: JSON.stringify({ id }),
         });
         if (res.ok) { showToast('Termin geloescht'); loadEvents(); }
-        else showToast('Fehler beim Loeschen', true);
-      } catch (err) { showToast('Fehler', true); }
+        else showToast('Error beim Delete', true);
+      } catch (err) { showToast('Error', true); }
     }
 
     function openEditEvent(id, date, title, location) {
@@ -1419,9 +1419,9 @@
           loadEvents();
         } else {
           const d = await res.json();
-          showToast(d.error || 'Fehler', true);
+          showToast(d.error || 'Error', true);
         }
-      } catch (err) { showToast('Fehler beim Speichern', true); }
+      } catch (err) { showToast('Error beim Save', true); }
     }
 
     /* ============================================================
@@ -1433,26 +1433,26 @@
         const artworks = await res.json();
         const list = document.getElementById('artworksList');
         if (!artworks.length) {
-          list.innerHTML = '<div class="empty">Keine Werke vorhanden</div>';
+          list.innerHTML = '<div class="empty">No Artworks vorhanden</div>';
           return;
         }
         list.innerHTML = artworks.map(a => `
           <div class="artwork-item">
             <img class="artwork-thumb" src="${esc(a.image_url)}" alt="${esc(a.title)}" onerror="this.style.background='#ddd'">
             <div class="artwork-info">
-              <div class="artwork-title">${esc(a.title || 'Ohne Titel')}</div>
+              <div class="artwork-title">${esc(a.title || 'Ohne Title')}</div>
               <span class="artwork-status ${a.status === 'sold' ? 'artwork-status--sold' : 'artwork-status--sale'}">
-                ${a.status === 'sold' ? 'Hat ein Zuhause gefunden' : 'Zu verkaufen'}
+                ${a.status === 'sold' ? 'Sold' : 'Zu verkaufen'}
               </span>
             </div>
             <div class="artwork-actions">
-              <button class="btn btn-sm btn-outline" onclick="openEditArtwork(${a.id}, '${escAttr(a.title || '')}', '${escAttr(a.image_url)}', '${escAttr(a.status)}')">Bearbeiten</button>
+              <button class="btn btn-sm btn-outline" onclick="openEditArtwork(${a.id}, '${escAttr(a.title || '')}', '${escAttr(a.image_url)}', '${escAttr(a.status)}')">Edit</button>
               <button class="btn btn-sm btn-danger" onclick="deleteArtwork(${a.id})">X</button>
             </div>
           </div>
         `).join('');
       } catch (err) {
-        showToast('Fehler beim Laden der Werke', true);
+        showToast('Error beim Laden der Werke', true);
       }
     }
 
@@ -1460,7 +1460,7 @@
       const url = document.getElementById('newArtUrl').value.trim();
       const container = document.getElementById('newArtPreview');
       if (url) {
-        container.innerHTML = `<img src="${esc(url)}" alt="Vorschau" onerror="this.parentElement.innerHTML='<span style=\\'color:#c55;font-size:12px\\'>Bild konnte nicht geladen werden</span>'">`;
+        container.innerHTML = `<img src="${esc(url)}" alt="Preview" onerror="this.parentElement.innerHTML='<span style=\\'color:#c55;font-size:12px\\'>Bild konnte nicht geladen werden</span>'">`;
       } else {
         container.innerHTML = '';
       }
@@ -1470,7 +1470,7 @@
       const title = document.getElementById('newArtTitle').value.trim();
       const image_url = document.getElementById('newArtUrl').value.trim();
       const status = document.getElementById('newArtStatus').value;
-      if (!image_url) { showToast('Bild-URL ist erforderlich', true); return; }
+      if (!image_url) { showToast('Image URL ist erforderlich', true); return; }
       try {
         const res = await fetch('/api/artworks', {
           method: 'POST', headers: authHeaders(),
@@ -1485,21 +1485,21 @@
           loadArtworks();
         } else {
           const d = await res.json();
-          showToast(d.error || 'Fehler', true);
+          showToast(d.error || 'Error', true);
         }
-      } catch (err) { showToast('Fehler beim Speichern', true); }
+      } catch (err) { showToast('Error beim Save', true); }
     }
 
     async function deleteArtwork(id) {
-      if (!confirm('Werk wirklich loeschen?')) return;
+      if (!confirm('Really delete this artwork?')) return;
       try {
         const res = await fetch('/api/artworks', {
           method: 'DELETE', headers: authHeaders(),
           body: JSON.stringify({ id }),
         });
         if (res.ok) { showToast('Werk geloescht'); loadArtworks(); }
-        else showToast('Fehler beim Loeschen', true);
-      } catch (err) { showToast('Fehler', true); }
+        else showToast('Error beim Delete', true);
+      } catch (err) { showToast('Error', true); }
     }
 
     function openEditArtwork(id, title, url, status) {
@@ -1526,9 +1526,9 @@
           loadArtworks();
         } else {
           const d = await res.json();
-          showToast(d.error || 'Fehler', true);
+          showToast(d.error || 'Error', true);
         }
-      } catch (err) { showToast('Fehler beim Speichern', true); }
+      } catch (err) { showToast('Error beim Save', true); }
     }
 
     /* ============================================================
@@ -1597,10 +1597,10 @@
           document.getElementById('bookCoverWorkshop').style.backgroundColor = '#9a806a';
         }
 
-        // Texture
+        // Texturee
         if (settings.cover_texture) {
           document.documentElement.setAttribute('data-cover-tex', settings.cover_texture);
-          activatePill('drawerTexturePills', settings.cover_texture);
+          activatePill('drawerTextureePills', settings.cover_texture);
         }
 
         // Update swatches
@@ -1625,7 +1625,7 @@
         if (settings.book_workshop_extra) document.getElementById('bookWorkshopExtra').value = settings.book_workshop_extra;
 
       } catch (err) {
-        showToast('Fehler beim Laden der Einstellungen', true);
+        showToast('Error beim Laden der Einstellungen', true);
       }
     }
 
