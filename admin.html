@@ -4,7 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vi.Vision ART — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Coming+Soon&family=Courier+Prime&family=DM+Sans&family=Indie+Flower&family=Nunito:wght@400;600&family=Patrick+Hand&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Quicksand:wght@400;600&family=Shadows+Into+Light&family=Special+Elite&display=swap" rel="stylesheet">
   <style>
+    /* ============================================================
+       CSS Custom Properties (same names as main site)
+       ============================================================ */
+    :root {
+      --font-heading: 'Permanent Marker', cursive;
+      --font-handwriting: 'Caveat', cursive;
+      --font-body: 'Patrick Hand', cursive;
+      --bg-primary: #f0ebe0;
+      --bg-secondary: #e8e0d4;
+      --accent: #80b8a0;
+    }
+
+    /* ============================================================
+       Reset & base
+       ============================================================ */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
@@ -13,41 +31,9 @@
       min-height: 100vh;
     }
 
-    /* Sticky header */
-    .admin-header {
-      background: #fff;
-      border-bottom: 1px solid #e0d8d0;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-    .admin-header h1 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #2c2420;
-    }
-    .admin-header .subtitle {
-      font-size: 12px;
-      color: #999;
-      margin-top: 1px;
-    }
-    .logout-btn {
-      padding: 6px 14px;
-      background: none;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #888;
-      cursor: pointer;
-    }
-    .logout-btn:hover { border-color: #bbb; color: #555; }
-
-    /* Login */
+    /* ============================================================
+       Login
+       ============================================================ */
     .login-wrapper {
       display: flex;
       align-items: center;
@@ -76,27 +62,39 @@
       text-align: center;
     }
     .login-box input:focus { outline: none; border-color: #8a7058; }
-    .login-box .btn { width: 100%; }
+    .login-box .login-btn { width: 100%; }
 
-    /* Scrollable content area */
-    .main-content {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 24px 20px 80px;
+    /* ============================================================
+       Admin header
+       ============================================================ */
+    .admin-header {
+      background: #fff;
+      border-bottom: 1px solid #e0d8d0;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-
-    /* Section headings */
-    .section-heading {
-      font-size: 20px;
-      font-weight: 600;
-      color: #2c2420;
-      margin: 32px 0 16px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e0d8d0;
+    .admin-header h1 { font-size: 18px; font-weight: 600; color: #2c2420; }
+    .admin-header .subtitle { font-size: 12px; color: #999; margin-top: 1px; }
+    .logout-btn {
+      padding: 6px 14px;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #888;
+      cursor: pointer;
     }
-    .section-heading:first-child { margin-top: 0; }
+    .logout-btn:hover { border-color: #bbb; color: #555; }
 
-    /* Common */
+    /* ============================================================
+       Common elements
+       ============================================================ */
     .btn {
       padding: 10px 20px;
       background: #8a7058;
@@ -156,29 +154,239 @@
     }
     .field textarea { resize: vertical; min-height: 80px; }
 
-    .field-row {
-      display: flex;
-      gap: 12px;
-    }
+    .field-row { display: flex; gap: 12px; }
     .field-row .field { flex: 1; }
 
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      z-index: 1000;
-      transition: transform 0.3s ease;
+    .save-bar {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      margin-top: 8px;
+    }
+
+    .empty { text-align: center; color: #bbb; padding: 32px 16px; font-size: 14px; }
+
+    /* ============================================================
+       LIVE PREVIEW SECTION
+       ============================================================ */
+    .preview-page {
+      background: var(--bg-primary);
+      padding: 0 0 120px;
+      min-height: 100vh;
+      transition: background 0.3s;
+    }
+
+    .preview-section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header sample */
+    .preview-header {
+      background: var(--accent);
+      padding: 40px 20px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .preview-header h2 {
+      font-family: var(--font-heading);
+      color: #fff;
+      font-size: 32px;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+    .preview-header .preview-sub {
+      font-family: var(--font-body);
+      color: rgba(255,255,255,0.8);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    /* Body text sample */
+    .preview-body-sample {
+      padding: 32px 0;
+    }
+    .preview-body-sample p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: #2c2420;
+    }
+
+    /* Book covers row */
+    .preview-books {
+      display: flex;
+      gap: 16px;
+      padding: 24px 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .preview-book {
+      width: 140px;
+      height: 190px;
+      border-radius: 4px 12px 12px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 3px 3px 12px rgba(0,0,0,0.15);
+      transition: background-color 0.3s;
+    }
+    .preview-book::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
       pointer-events: none;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast-ok { background: #e8f5e9; color: #2e7d32; }
-    .toast-err { background: #fce4ec; color: #c62828; }
+    /* Texture overlays */
+    [data-cover-tex="grain"] .preview-book::before {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    [data-cover-tex="leather"] .preview-book::before {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.05' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.2;
+    }
+    [data-cover-tex="linen"] .preview-book::before {
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px),
+                  repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      opacity: 1;
+    }
+    [data-cover-tex="canvas"] .preview-book::before {
+      background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 3px),
+                  repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 3px);
+      opacity: 1;
+    }
+    [data-cover-tex="suede"] .preview-book::before {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.1;
+    }
+    .preview-book__title {
+      font-family: var(--font-heading);
+      color: #fff;
+      font-size: 13px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .preview-book__label {
+      font-family: var(--font-body);
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Inside page sample */
+    .preview-inside-page {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.06);
+      transition: background 0.3s;
+    }
+    .preview-inside-page p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      color: #2c2420;
+    }
+    .preview-inside-page .preview-inside-label {
+      font-family: var(--font-handwriting);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    /* Accent demo */
+    .preview-accent-demo {
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .preview-accent-btn {
+      padding: 10px 28px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      cursor: default;
+      transition: background 0.3s;
+    }
+    .preview-accent-link {
+      font-family: var(--font-body);
+      color: var(--accent);
+      text-decoration: underline;
+      font-size: 15px;
+      cursor: default;
+      transition: color 0.3s;
+    }
+
+    /* Color swatches */
+    .preview-swatches {
+      display: flex;
+      gap: 12px;
+      padding: 20px 0 32px;
+      align-items: center;
+    }
+    .preview-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+    .preview-swatch-label {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      margin-top: 4px;
+    }
+    .preview-swatch-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Section label in preview */
+    .preview-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      margin-bottom: 8px;
+      font-family: -apple-system, system-ui, sans-serif;
+    }
+
+    /* ============================================================
+       ADMIN SECTIONS (below preview)
+       ============================================================ */
+    .admin-sections {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 120px;
+    }
+    .section-heading {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c2420;
+      margin: 32px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0d8d0;
+    }
 
     /* Event items */
     .event-item {
@@ -195,102 +403,6 @@
     .event-title { font-size: 14px; }
     .event-location { font-size: 12px; color: #999; }
     .event-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-    .empty { text-align: center; color: #bbb; padding: 32px 16px; font-size: 14px; }
-
-    /* Pill/swatch buttons for fonts and textures */
-    .picker-section {
-      margin-bottom: 16px;
-    }
-    .picker-section label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #666;
-      margin-bottom: 8px;
-    }
-    .swatch-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .text-swatch {
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      background: #faf8f5;
-      font-size: 13px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .text-swatch:hover { border-color: #bbb; }
-    .text-swatch.active {
-      border-color: #8a7058;
-      background: #f0e8dd;
-      font-weight: 600;
-    }
-
-    /* Color input rows */
-    .color-input-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .color-input-row span {
-      font-size: 13px;
-      color: #666;
-      min-width: 140px;
-    }
-    .color-input-row input[type="color"] {
-      width: 40px;
-      height: 32px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 2px;
-      cursor: pointer;
-      background: #fff;
-    }
-
-    /* Preview boxes */
-    .preview-box {
-      background: #faf8f5;
-      border: 1px dashed #e0d8d0;
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin-top: 12px;
-    }
-    .preview-box .preview-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #aaa;
-      margin-bottom: 8px;
-    }
-    .font-preview-title {
-      font-size: 22px;
-      margin-bottom: 4px;
-      color: #2c2420;
-    }
-    .font-preview-body {
-      font-size: 15px;
-      color: #555;
-    }
-    .color-preview-rect {
-      width: 100%;
-      height: 60px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-    .color-preview-rect span {
-      font-size: 13px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
 
     /* Gallery items */
     .artwork-item {
@@ -323,11 +435,7 @@
     .artwork-status--sold { background: #fce4ec; color: #c62828; }
     .artwork-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
-    /* New artwork image preview */
-    .new-art-preview {
-      margin-top: 8px;
-      text-align: center;
-    }
+    .new-art-preview { margin-top: 8px; text-align: center; }
     .new-art-preview img {
       max-width: 120px;
       max-height: 120px;
@@ -336,27 +444,175 @@
       border: 1px solid #e0d8d0;
     }
 
-    /* Instagram preview link */
-    .insta-preview {
-      margin-top: 4px;
-    }
-    .insta-preview a {
-      font-size: 13px;
-      color: #8a7058;
-      text-decoration: underline;
-    }
+    .insta-preview { margin-top: 4px; }
+    .insta-preview a { font-size: 13px; color: #8a7058; text-decoration: underline; }
     .insta-preview a:hover { color: #6b5844; }
 
-    /* Save bar */
-    .save-bar {
-      display: flex;
-      justify-content: flex-end;
-      padding-top: 16px;
-      border-top: 1px solid #eee;
-      margin-top: 8px;
+    /* ============================================================
+       FLOATING DRAWER
+       ============================================================ */
+    .drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #2c2420;
+      color: #f0ebe0;
+      border-radius: 16px 16px 0 0;
+      transform: translateY(calc(100% - 50px));
+      transition: transform 0.3s ease;
+      z-index: 10000;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .drawer.is-open {
+      transform: translateY(0);
+    }
+    .drawer__toggle {
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      user-select: none;
+      position: sticky;
+      top: 0;
+      background: #2c2420;
+      z-index: 1;
+      border-radius: 16px 16px 0 0;
+    }
+    .drawer__toggle-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #d4c8b8;
+    }
+    .drawer__toggle-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .drawer__toggle-bar {
+      width: 36px;
+      height: 4px;
+      background: #5a4e44;
+      border-radius: 2px;
+      margin: 0 auto 6px;
+    }
+    .drawer__content {
+      padding: 0 20px 20px;
     }
 
-    /* Modal */
+    /* Drawer section labels */
+    .drawer-section-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #a89880;
+      margin: 18px 0 10px;
+    }
+    .drawer-section-label:first-child { margin-top: 0; }
+
+    /* Font pill buttons */
+    .font-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .font-pill {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1.5px solid #5a4e44;
+      background: #3a322c;
+      color: #d4c8b8;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .font-pill:hover { border-color: #8a7058; }
+    .font-pill.active {
+      border-color: var(--accent);
+      background: rgba(128, 184, 160, 0.15);
+      color: #fff;
+    }
+
+    /* Color inputs in drawer */
+    .drawer-color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .drawer-color-row span {
+      font-size: 13px;
+      color: #c4b8a8;
+      min-width: 0;
+      flex: 1;
+    }
+    .drawer-color-row input[type="color"] {
+      width: 36px;
+      height: 28px;
+      border: 1px solid #5a4e44;
+      border-radius: 6px;
+      padding: 2px;
+      cursor: pointer;
+      background: #3a322c;
+      flex-shrink: 0;
+    }
+
+    /* Texture pills */
+    .texture-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Save button in drawer */
+    .drawer-save-bar {
+      padding-top: 16px;
+      border-top: 1px solid #5a4e44;
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
+    .drawer-save-btn {
+      padding: 12px 48px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .drawer-save-btn:hover { opacity: 0.85; }
+    .drawer-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ============================================================
+       Toast
+       ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 10001;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-ok { background: #e8f5e9; color: #2e7d32; }
+    .toast-err { background: #fce4ec; color: #c62828; }
+
+    /* ============================================================
+       Modal
+       ============================================================ */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -384,270 +640,342 @@
       margin-top: 16px;
     }
 
-    /* Responsive */
+    /* ============================================================
+       Responsive
+       ============================================================ */
     @media (max-width: 600px) {
       .admin-header { padding: 12px 16px; }
       .admin-header h1 { font-size: 16px; }
-      .main-content { padding: 16px 14px 60px; }
+      .preview-header h2 { font-size: 24px; }
+      .preview-books { gap: 10px; }
+      .preview-book { width: 110px; height: 150px; }
+      .preview-book__title { font-size: 11px; }
+      .admin-sections { padding: 0 14px 120px; }
       .field-row { flex-direction: column; gap: 0; }
       .event-item { flex-wrap: wrap; }
       .artwork-item { flex-wrap: wrap; }
-      .color-input-row span { min-width: 100px; font-size: 12px; }
       .section-heading { font-size: 17px; }
+      .drawer__content { padding: 0 14px 14px; }
+      .drawer-color-row span { font-size: 12px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
+  <!-- ============================================================
+       LOGIN
+       ============================================================ -->
   <div id="loginView" class="login-wrapper">
     <div class="login-box">
       <h1>Vi.Vision ART</h1>
       <p class="subtitle">Admin-Bereich</p>
       <input type="password" id="password" placeholder="Passwort eingeben">
-      <button class="btn" onclick="doLogin()">Anmelden</button>
+      <button class="btn login-btn" onclick="doLogin()">Anmelden</button>
     </div>
   </div>
 
-  <!-- ADMIN (single scrollable page) -->
+  <!-- ============================================================
+       ADMIN VIEW (preview + sections + drawer)
+       ============================================================ -->
   <div id="adminView" style="display:none;">
+
+    <!-- Sticky header -->
     <div class="admin-header">
       <div>
         <h1>Vi.Vision ART — Admin</h1>
-        <div class="subtitle">Admin-Bereich</div>
+        <div class="subtitle">Live-Vorschau</div>
       </div>
       <button class="logout-btn" onclick="doLogout()">Abmelden</button>
     </div>
 
-    <div class="main-content">
+    <!-- ======================== LIVE PREVIEW ======================== -->
+    <div class="preview-page">
 
-      <!-- ============ 1. SCHRIFTARTEN ============ -->
-      <h2 class="section-heading">Schriftarten</h2>
-
-      <div class="card">
-        <div class="picker-section">
-          <label>Titel</label>
-          <div class="swatch-row" id="headingFontPicker"></div>
-        </div>
-        <div class="picker-section">
-          <label>Text</label>
-          <div class="swatch-row" id="bodyFontPicker"></div>
-        </div>
-
-        <!-- Font preview -->
-        <div class="preview-box">
-          <div class="preview-label">Vorschau</div>
-          <div class="font-preview-title" id="fontPreviewTitle">So sieht dein Titel aus</div>
-          <div class="font-preview-body" id="fontPreviewBody">So sieht dein Text aus</div>
-        </div>
-
-        <div class="save-bar">
-          <button class="btn" onclick="saveFonts()">Schriftarten speichern</button>
-        </div>
+      <!-- 1. Header sample -->
+      <div class="preview-header" id="previewHeader">
+        <h2>Vi.Vision ART</h2>
+        <div class="preview-sub">Kunst &amp; kreative Erlebnisse</div>
       </div>
 
-      <!-- ============ 2. FARBEN ============ -->
-      <h2 class="section-heading">Farben</h2>
+      <div class="preview-section">
 
-      <div class="card">
-        <h3>Hintergrund</h3>
-        <div class="color-input-row">
-          <span>Hauptfarbe</span>
-          <input type="color" id="bgPrimary" value="#f0ebe0" oninput="updateColorPreview()">
+        <!-- 2. Body text sample -->
+        <div class="preview-body-sample">
+          <div class="preview-label">Textvorschau</div>
+          <p>Jedes Kunstwerk erzaehlt seine eigene Geschichte. Manche fluesternd, manche laut. Alle Bilder sind Originale -- wenn dir etwas gefaellt, sag einfach hallo. Es gibt keinen Laden, keinen Warenkorb, nur ein Gespraech zwischen Menschen, die schoene Dinge moegen.</p>
         </div>
-        <div class="color-input-row">
-          <span>Sekundaer</span>
-          <input type="color" id="bgSecondary" value="#e8e0d4" oninput="updateColorPreview()">
-        </div>
-      </div>
 
-      <div class="card">
-        <h3>Akzent</h3>
-        <div class="color-input-row">
-          <span>Akzentfarbe</span>
-          <input type="color" id="accentPrimary" value="#80b8a0" oninput="updateColorPreview()">
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Buch-Cover Farben</h3>
-        <div class="color-input-row">
-          <span>Kindergeburtstag</span>
-          <input type="color" id="coverBirthday" value="#9a806a">
-        </div>
-        <div class="color-input-row">
-          <span>Junggesellinnenabschied</span>
-          <input type="color" id="coverBachelorette" value="#9a806a">
-        </div>
-        <div class="color-input-row">
-          <span>Workshop</span>
-          <input type="color" id="coverWorkshop" value="#9a806a">
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Cover-Textur</h3>
-        <div class="swatch-row" id="coverTexturePicker"></div>
-      </div>
-
-      <!-- Color preview -->
-      <div class="card">
-        <div class="preview-box" style="border:none; background:none; padding:0; margin:0;">
-          <div class="preview-label">Vorschau — Hintergrund + Akzent</div>
-          <div class="color-preview-rect" id="colorPreviewRect">
-            <span id="colorPreviewAccent">Akzent</span>
+        <!-- 3. Book cover samples -->
+        <div class="preview-label">Buch-Cover</div>
+        <div class="preview-books">
+          <div class="preview-book" id="bookCoverBirthday">
+            <div class="preview-book__title">Kindergeburtstag</div>
+            <div class="preview-book__label">Kreativ-Party</div>
+          </div>
+          <div class="preview-book" id="bookCoverBachelorette">
+            <div class="preview-book__title">JGA</div>
+            <div class="preview-book__label">Junggesellinnen</div>
+          </div>
+          <div class="preview-book" id="bookCoverWorkshop">
+            <div class="preview-book__title">Workshop</div>
+            <div class="preview-book__label">Erwachsene</div>
           </div>
         </div>
-        <div class="save-bar">
-          <button class="btn" onclick="saveColors()">Farben speichern</button>
+
+        <!-- 4. Inside page sample -->
+        <div class="preview-label">Innenseite</div>
+        <div class="preview-inside-page" id="previewInsidePage">
+          <div class="preview-inside-label">Innenseite</div>
+          <p>Alle Materialien sind inklusive. Du brauchst nichts mitzubringen ausser gute Laune und vielleicht ein paar Freunde. Wir kuemmern uns um den Rest -- Farben, Pinsel, Leinwaende und eine entspannte Atmosphaere.</p>
         </div>
-      </div>
 
-      <!-- ============ 3. TERMINE ============ -->
-      <h2 class="section-heading">Termine</h2>
+        <!-- 5. Accent demo -->
+        <div class="preview-label">Akzentfarbe</div>
+        <div class="preview-accent-demo">
+          <button class="preview-accent-btn">Termin buchen</button>
+          <span class="preview-accent-link">Mehr erfahren</span>
+        </div>
 
-      <div class="card">
-        <h3>Aktuelle Termine</h3>
-        <div id="eventsList"></div>
-      </div>
+        <!-- 6. Color swatches -->
+        <div class="preview-label">Aktuelle Farben</div>
+        <div class="preview-swatches">
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchBg"></div>
+            <div class="preview-swatch-label">Hintergrund</div>
+          </div>
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchBgSec"></div>
+            <div class="preview-swatch-label">Sekundaer</div>
+          </div>
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchAccent"></div>
+            <div class="preview-swatch-label">Akzent</div>
+          </div>
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchCoverB"></div>
+            <div class="preview-swatch-label">Cover K.</div>
+          </div>
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchCoverJ"></div>
+            <div class="preview-swatch-label">Cover J.</div>
+          </div>
+          <div class="preview-swatch-group">
+            <div class="preview-swatch" id="swatchCoverW"></div>
+            <div class="preview-swatch-label">Cover W.</div>
+          </div>
+        </div>
+      </div><!-- /preview-section -->
 
-      <div class="card">
-        <h3>Neuen Termin hinzufuegen</h3>
-        <div class="field-row">
+      <!-- ======================== ADMIN SECTIONS ======================== -->
+      <div class="admin-sections">
+
+        <!-- TERMINE -->
+        <h2 class="section-heading">Termine</h2>
+
+        <div class="card">
+          <h3>Aktuelle Termine</h3>
+          <div id="eventsList"></div>
+        </div>
+
+        <div class="card">
+          <h3>Neuen Termin hinzufuegen</h3>
+          <div class="field-row">
+            <div class="field">
+              <label>Datum</label>
+              <input type="text" id="newDate" placeholder="z.B. 15. Juni">
+            </div>
+            <div class="field">
+              <label>Ort</label>
+              <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
+            </div>
+          </div>
           <div class="field">
-            <label>Datum</label>
-            <input type="text" id="newDate" placeholder="z.B. 15. Juni">
+            <label>Titel</label>
+            <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
+          </div>
+          <div class="save-bar">
+            <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
+          </div>
+        </div>
+
+        <!-- GALERIE -->
+        <h2 class="section-heading">Galerie</h2>
+
+        <div class="card">
+          <h3>Kunstwerke</h3>
+          <div id="artworksList"></div>
+        </div>
+
+        <div class="card">
+          <h3>Neues Werk hinzufuegen</h3>
+          <div class="field">
+            <label>Titel</label>
+            <input type="text" id="newArtTitle" placeholder="z.B. Connection">
           </div>
           <div class="field">
-            <label>Ort</label>
-            <input type="text" id="newLocation" placeholder="z.B. Studio Vivi">
+            <label>Bild-URL</label>
+            <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png" oninput="previewNewArtImage()">
+            <div class="new-art-preview" id="newArtPreview"></div>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="newArtStatus">
+              <option value="for_sale">Zu verkaufen</option>
+              <option value="sold">Hat ein Zuhause gefunden</option>
+            </select>
+          </div>
+          <div class="save-bar">
+            <button class="btn" onclick="addArtwork()">Werk hinzufuegen</button>
           </div>
         </div>
-        <div class="field">
-          <label>Titel</label>
-          <input type="text" id="newTitle" placeholder="z.B. Paint & Sip Abend">
+
+        <!-- INHALTE -->
+        <h2 class="section-heading">Inhalte</h2>
+
+        <div class="card">
+          <h3>Ueber mich</h3>
+          <div class="field">
+            <label>Name / Ueberschrift</label>
+            <input type="text" id="aboutName" placeholder="Hi, ich bin Vivi.">
+          </div>
+          <div class="field">
+            <label>Bio (Absaetze mit Leerzeile trennen)</label>
+            <textarea id="aboutBio" rows="8" placeholder="Kuenstlerin und Gastgeberin kreativer Erlebnisse."></textarea>
+          </div>
         </div>
-        <div class="save-bar">
-          <button class="btn" onclick="addEvent()">Termin hinzufuegen</button>
+
+        <div class="card">
+          <h3>Links &amp; Footer</h3>
+          <div class="field">
+            <label>Instagram URL</label>
+            <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/vi.visionart" oninput="previewInstagram()">
+            <div class="insta-preview" id="instaPreview"></div>
+          </div>
+          <div class="field">
+            <label>Footer-Text</label>
+            <input type="text" id="footerText" placeholder="2026 Vi.Vision ART">
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Event-Buch: Kindergeburtstag</h3>
+          <div class="field">
+            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+            <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
+          </div>
+          <div class="field">
+            <label>Detail-Seite Text</label>
+            <textarea id="bookBirthdayDesc" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Zusatz-Text</label>
+            <textarea id="bookBirthdayExtra" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Event-Buch: Junggesellinnenabschied</h3>
+          <div class="field">
+            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+            <textarea id="bookBacheloretteChecks" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label>Detail-Seite Text</label>
+            <textarea id="bookBacheloretteDesc" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Zusatz-Text</label>
+            <textarea id="bookBacheloretteExtra" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Event-Buch: Workshop</h3>
+          <div class="field">
+            <label>Cover-Punkte (pro Zeile ein Punkt)</label>
+            <textarea id="bookWorkshopChecks" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label>Detail-Seite Text (Absaetze mit Leerzeile trennen)</label>
+            <textarea id="bookWorkshopDesc" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Zusatz-Text</label>
+            <textarea id="bookWorkshopExtra" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="save-bar" style="border:none; padding-top:0; margin-top:0;">
+            <button class="btn" onclick="saveContent()">Inhalte speichern</button>
+          </div>
+        </div>
+
+      </div><!-- /admin-sections -->
+    </div><!-- /preview-page -->
+
+    <!-- ======================== FLOATING DRAWER ======================== -->
+    <div class="drawer" id="drawer">
+      <div class="drawer__toggle" onclick="toggleDrawer()">
+        <div class="drawer__toggle-bar"></div>
+        <div class="drawer__toggle-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span id="drawerToggleLabel">Customizer</span>
         </div>
       </div>
+      <div class="drawer__content">
 
-      <!-- ============ 4. GALERIE ============ -->
-      <h2 class="section-heading">Galerie</h2>
+        <!-- Schriftart Titel -->
+        <div class="drawer-section-label">Schriftart Titel</div>
+        <div class="font-pill-row" id="drawerHeadingFonts"></div>
 
-      <div class="card">
-        <h3>Kunstwerke</h3>
-        <div id="artworksList"></div>
-      </div>
+        <!-- Schriftart Text -->
+        <div class="drawer-section-label">Schriftart Text</div>
+        <div class="font-pill-row" id="drawerBodyFonts"></div>
 
-      <div class="card">
-        <h3>Neues Werk hinzufuegen</h3>
-        <div class="field">
-          <label>Titel</label>
-          <input type="text" id="newArtTitle" placeholder="z.B. Connection">
+        <!-- Farben -->
+        <div class="drawer-section-label">Farben</div>
+        <div class="drawer-color-row">
+          <span>Hintergrund</span>
+          <input type="color" id="clrBgPrimary" value="#f0ebe0">
         </div>
-        <div class="field">
-          <label>Bild-URL</label>
-          <input type="url" id="newArtUrl" placeholder="https://... oder images/name.png" oninput="previewNewArtImage()">
-          <div class="new-art-preview" id="newArtPreview"></div>
+        <div class="drawer-color-row">
+          <span>Hintergrund Sekundaer</span>
+          <input type="color" id="clrBgSecondary" value="#e8e0d4">
         </div>
-        <div class="field">
-          <label>Status</label>
-          <select id="newArtStatus">
-            <option value="for_sale">Zu verkaufen</option>
-            <option value="sold">Hat ein Zuhause gefunden</option>
-          </select>
+        <div class="drawer-color-row">
+          <span>Akzent</span>
+          <input type="color" id="clrAccent" value="#80b8a0">
         </div>
-        <div class="save-bar">
-          <button class="btn" onclick="addArtwork()">Werk hinzufuegen</button>
+        <div class="drawer-color-row">
+          <span>Cover Kindergeburtstag</span>
+          <input type="color" id="clrCoverBirthday" value="#9a806a">
         </div>
-      </div>
+        <div class="drawer-color-row">
+          <span>Cover Junggesellinnenabschied</span>
+          <input type="color" id="clrCoverBachelorette" value="#9a806a">
+        </div>
+        <div class="drawer-color-row">
+          <span>Cover Workshop</span>
+          <input type="color" id="clrCoverWorkshop" value="#9a806a">
+        </div>
 
-      <!-- ============ 5. INHALTE ============ -->
-      <h2 class="section-heading">Inhalte</h2>
+        <!-- Textur -->
+        <div class="drawer-section-label">Textur</div>
+        <div class="font-pill-row texture-pill-row" id="drawerTexturePills"></div>
 
-      <div class="card">
-        <h3>Ueber mich</h3>
-        <div class="field">
-          <label>Name / Ueberschrift</label>
-          <input type="text" id="aboutName" placeholder="Hi, ich bin Vivi.">
-        </div>
-        <div class="field">
-          <label>Bio (Absaetze mit Leerzeile trennen)</label>
-          <textarea id="aboutBio" rows="8" placeholder="Kuenstlerin und Gastgeberin kreativer Erlebnisse."></textarea>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Links &amp; Footer</h3>
-        <div class="field">
-          <label>Instagram URL</label>
-          <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/vi.visionart" oninput="previewInstagram()">
-          <div class="insta-preview" id="instaPreview"></div>
-        </div>
-        <div class="field">
-          <label>Footer-Text</label>
-          <input type="text" id="footerText" placeholder="2026 Vi.Vision ART">
+        <!-- Save -->
+        <div class="drawer-save-bar">
+          <button class="drawer-save-btn" id="drawerSaveBtn" onclick="saveAll()">Speichern</button>
         </div>
       </div>
+    </div>
 
-      <div class="card">
-        <h3>Event-Buch: Kindergeburtstag</h3>
-        <div class="field">
-          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-          <textarea id="bookBirthdayChecks" rows="4" placeholder="Alle Materialien inklusive&#10;Ca. 2 Stunden kreativer Spass"></textarea>
-        </div>
-        <div class="field">
-          <label>Detail-Seite Text</label>
-          <textarea id="bookBirthdayDesc" rows="3"></textarea>
-        </div>
-        <div class="field">
-          <label>Zusatz-Text</label>
-          <textarea id="bookBirthdayExtra" rows="2"></textarea>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Event-Buch: Junggesellinnenabschied</h3>
-        <div class="field">
-          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-          <textarea id="bookBacheloretteChecks" rows="4"></textarea>
-        </div>
-        <div class="field">
-          <label>Detail-Seite Text</label>
-          <textarea id="bookBacheloretteDesc" rows="3"></textarea>
-        </div>
-        <div class="field">
-          <label>Zusatz-Text</label>
-          <textarea id="bookBacheloretteExtra" rows="2"></textarea>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Event-Buch: Workshop</h3>
-        <div class="field">
-          <label>Cover-Punkte (pro Zeile ein Punkt)</label>
-          <textarea id="bookWorkshopChecks" rows="4"></textarea>
-        </div>
-        <div class="field">
-          <label>Detail-Seite Text (Absaetze mit Leerzeile trennen)</label>
-          <textarea id="bookWorkshopDesc" rows="3"></textarea>
-        </div>
-        <div class="field">
-          <label>Zusatz-Text</label>
-          <textarea id="bookWorkshopExtra" rows="2"></textarea>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="save-bar" style="border:none; padding-top:0; margin-top:0;">
-          <button class="btn" onclick="saveContent()">Inhalte speichern</button>
-        </div>
-      </div>
-
-    </div><!-- /main-content -->
   </div><!-- /adminView -->
 
+  <!-- ============================================================
+       MODALS
+       ============================================================ -->
   <!-- Edit Event Modal -->
   <div class="modal-overlay" id="editEventModal">
     <div class="modal-box">
@@ -702,34 +1030,65 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
   <script>
     let token = '';
     let currentSettings = {};
 
-    /* ---- Font map for previews ---- */
+    /* ============================================================
+       Font definitions
+       ============================================================ */
     const FONT_FAMILY_MAP = {
-      marker: "'Permanent Marker', cursive",
-      shadows: "'Shadows Into Light', cursive",
-      indie: "'Indie Flower', cursive",
+      marker:   "'Permanent Marker', cursive",
+      shadows:  "'Shadows Into Light', cursive",
+      indie:    "'Indie Flower', cursive",
       playfair: "'Playfair Display', serif",
-      quicksand: "'Quicksand', sans-serif",
-      patrick: "'Patrick Hand', cursive",
-      special: "'Special Elite', monospace",
-      caveat: "'Caveat', cursive",
-      coming: "'Coming Soon', cursive",
-      nunito: "'Nunito', sans-serif",
-      dm: "'DM Sans', sans-serif",
-      courier: "'Courier Prime', monospace",
+      quicksand:"'Quicksand', sans-serif",
+      patrick:  "'Patrick Hand', cursive",
+      special:  "'Special Elite', monospace",
+      caveat:   "'Caveat', cursive",
+      coming:   "'Coming Soon', cursive",
+      nunito:   "'Nunito', sans-serif",
+      dm:       "'DM Sans', sans-serif",
+      courier:  "'Courier Prime', monospace",
     };
 
-    /* ---- Auth ---- */
+    const HEADING_FONTS = [
+      { key: 'marker',   label: 'Permanent Marker' },
+      { key: 'shadows',  label: 'Shadows Into Light' },
+      { key: 'indie',    label: 'Indie Flower' },
+      { key: 'playfair', label: 'Playfair Display' },
+      { key: 'quicksand',label: 'Quicksand' },
+      { key: 'patrick',  label: 'Patrick Hand' },
+      { key: 'special',  label: 'Special Elite' },
+      { key: 'caveat',   label: 'Caveat' },
+    ];
+
+    const BODY_FONTS = [
+      { key: 'caveat',  label: 'Caveat' },
+      { key: 'patrick', label: 'Patrick Hand' },
+      { key: 'coming',  label: 'Coming Soon' },
+      { key: 'nunito',  label: 'Nunito' },
+      { key: 'quicksand',label:'Quicksand' },
+      { key: 'dm',      label: 'DM Sans' },
+      { key: 'special', label: 'Special Elite' },
+      { key: 'courier', label: 'Courier Prime' },
+    ];
+
+    const COVER_TEXTURES = ['smooth', 'grain', 'leather', 'linen', 'canvas', 'suede'];
+
+    /* ============================================================
+       Auth
+       ============================================================ */
     function doLogin() {
       token = document.getElementById('password').value;
       if (!token) return;
       document.getElementById('loginView').style.display = 'none';
       document.getElementById('adminView').style.display = 'block';
-      loadEvents();
       loadSettings();
+      loadEvents();
       loadArtworks();
     }
 
@@ -738,13 +1097,17 @@
       document.getElementById('adminView').style.display = 'none';
       document.getElementById('loginView').style.display = 'flex';
       document.getElementById('password').value = '';
+      // Close drawer
+      document.getElementById('drawer').classList.remove('is-open');
     }
 
     document.getElementById('password').addEventListener('keydown', e => {
       if (e.key === 'Enter') doLogin();
     });
 
-    /* ---- Toast ---- */
+    /* ============================================================
+       Toast
+       ============================================================ */
     function showToast(msg, isError) {
       const el = document.getElementById('toast');
       el.textContent = msg;
@@ -752,7 +1115,9 @@
       setTimeout(() => { el.classList.remove('show'); }, 2500);
     }
 
-    /* ---- Modal helpers ---- */
+    /* ============================================================
+       Modal helpers
+       ============================================================ */
     function closeModal(id) {
       document.getElementById(id).classList.remove('show');
     }
@@ -762,7 +1127,9 @@
       });
     });
 
-    /* ---- API helpers ---- */
+    /* ============================================================
+       API helpers
+       ============================================================ */
     function authHeaders() {
       return {
         'Content-Type': 'application/json',
@@ -770,122 +1137,137 @@
       };
     }
 
-    /* ======================================================
-       FONTS
-       ====================================================== */
-    const HEADING_FONTS = [
-      { key: 'marker', label: 'Permanent Marker' },
-      { key: 'shadows', label: 'Shadows Into Light' },
-      { key: 'indie', label: 'Indie Flower' },
-      { key: 'playfair', label: 'Playfair Display' },
-      { key: 'quicksand', label: 'Quicksand' },
-      { key: 'patrick', label: 'Patrick Hand' },
-      { key: 'special', label: 'Special Elite' },
-      { key: 'caveat', label: 'Caveat' },
-    ];
-    const BODY_FONTS = [
-      { key: 'caveat', label: 'Caveat' },
-      { key: 'patrick', label: 'Patrick Hand' },
-      { key: 'coming', label: 'Coming Soon' },
-      { key: 'nunito', label: 'Nunito' },
-      { key: 'quicksand', label: 'Quicksand' },
-      { key: 'dm', label: 'DM Sans' },
-      { key: 'special', label: 'Special Elite' },
-      { key: 'courier', label: 'Courier Prime' },
-    ];
+    /* ============================================================
+       Drawer toggle
+       ============================================================ */
+    function toggleDrawer() {
+      document.getElementById('drawer').classList.toggle('is-open');
+    }
 
-    function buildFontPickers() {
-      const hfEl = document.getElementById('headingFontPicker');
+    /* ============================================================
+       Build drawer pickers
+       ============================================================ */
+    function buildDrawerPickers() {
+      // Heading fonts
+      const hfEl = document.getElementById('drawerHeadingFonts');
       hfEl.innerHTML = HEADING_FONTS.map(f =>
-        `<button class="text-swatch" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key] || 'inherit'}" onclick="pickFont(this, 'headingFontPicker', 'heading_font')">${f.label}</button>`
+        `<button class="font-pill" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key]}" onclick="pickHeadingFont(this)">${f.label}</button>`
       ).join('');
 
-      const bfEl = document.getElementById('bodyFontPicker');
+      // Body fonts
+      const bfEl = document.getElementById('drawerBodyFonts');
       bfEl.innerHTML = BODY_FONTS.map(f =>
-        `<button class="text-swatch" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key] || 'inherit'}" onclick="pickFont(this, 'bodyFontPicker', 'body_font')">${f.label}</button>`
+        `<button class="font-pill" data-key="${f.key}" style="font-family:${FONT_FAMILY_MAP[f.key]}" onclick="pickBodyFont(this)">${f.label}</button>`
+      ).join('');
+
+      // Textures
+      const txEl = document.getElementById('drawerTexturePills');
+      txEl.innerHTML = COVER_TEXTURES.map(t =>
+        `<button class="font-pill" data-key="${t}" onclick="pickTexture(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
       ).join('');
     }
 
-    function pickFont(btn, containerId, settingKey) {
-      document.getElementById(containerId).querySelectorAll('.text-swatch').forEach(s => s.classList.remove('active'));
+    /* ============================================================
+       Font picking — instant preview
+       ============================================================ */
+    function pickHeadingFont(btn) {
+      document.getElementById('drawerHeadingFonts').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      currentSettings[settingKey] = btn.dataset.key;
-      updateFontPreview();
+      currentSettings.heading_font = btn.dataset.key;
+      const family = FONT_FAMILY_MAP[btn.dataset.key];
+      document.documentElement.style.setProperty('--font-heading', family);
     }
 
-    function updateFontPreview() {
-      const titleKey = currentSettings.heading_font;
-      const bodyKey = currentSettings.body_font;
-      const titleEl = document.getElementById('fontPreviewTitle');
-      const bodyEl = document.getElementById('fontPreviewBody');
-      if (titleKey && FONT_FAMILY_MAP[titleKey]) {
-        titleEl.style.fontFamily = FONT_FAMILY_MAP[titleKey];
-      }
-      if (bodyKey && FONT_FAMILY_MAP[bodyKey]) {
-        bodyEl.style.fontFamily = FONT_FAMILY_MAP[bodyKey];
-      }
+    function pickBodyFont(btn) {
+      document.getElementById('drawerBodyFonts').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      currentSettings.body_font = btn.dataset.key;
+      const family = FONT_FAMILY_MAP[btn.dataset.key];
+      document.documentElement.style.setProperty('--font-body', family);
     }
 
-    async function saveFonts() {
-      const pairs = [];
-      if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
-      if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
-      if (!pairs.length) { showToast('Keine Aenderungen', true); return; }
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
-            return;
-          }
-        }
-        showToast('Schriftarten gespeichert');
-      } catch (err) {
-        showToast('Fehler beim Speichern', true);
-      }
+    /* ============================================================
+       Color picking — instant preview
+       ============================================================ */
+    function setupColorListeners() {
+      document.getElementById('clrBgPrimary').addEventListener('input', function() {
+        document.documentElement.style.setProperty('--bg-primary', this.value);
+        updateSwatches();
+      });
+      document.getElementById('clrBgSecondary').addEventListener('input', function() {
+        document.documentElement.style.setProperty('--bg-secondary', this.value);
+        updateSwatches();
+      });
+      document.getElementById('clrAccent').addEventListener('input', function() {
+        document.documentElement.style.setProperty('--accent', this.value);
+        updateSwatches();
+      });
+      document.getElementById('clrCoverBirthday').addEventListener('input', function() {
+        document.getElementById('bookCoverBirthday').style.backgroundColor = this.value;
+        updateSwatches();
+      });
+      document.getElementById('clrCoverBachelorette').addEventListener('input', function() {
+        document.getElementById('bookCoverBachelorette').style.backgroundColor = this.value;
+        updateSwatches();
+      });
+      document.getElementById('clrCoverWorkshop').addEventListener('input', function() {
+        document.getElementById('bookCoverWorkshop').style.backgroundColor = this.value;
+        updateSwatches();
+      });
     }
 
-    /* ======================================================
-       COLORS
-       ====================================================== */
-    const COVER_TEXTURES = ['smooth', 'grain', 'leather', 'linen', 'canvas', 'suede'];
-
-    function buildTexturePicker() {
-      const texEl = document.getElementById('coverTexturePicker');
-      texEl.innerHTML = COVER_TEXTURES.map(t =>
-        `<button class="text-swatch" data-key="${t}" onclick="pickTexture(this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`
-      ).join('');
-    }
-
+    /* ============================================================
+       Texture picking
+       ============================================================ */
     function pickTexture(btn) {
-      document.getElementById('coverTexturePicker').querySelectorAll('.text-swatch').forEach(s => s.classList.remove('active'));
+      document.getElementById('drawerTexturePills').querySelectorAll('.font-pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       currentSettings.cover_texture = btn.dataset.key;
+      document.documentElement.setAttribute('data-cover-tex', btn.dataset.key);
     }
 
-    function updateColorPreview() {
-      const bg = document.getElementById('bgPrimary').value;
-      const accent = document.getElementById('accentPrimary').value;
-      const rect = document.getElementById('colorPreviewRect');
-      const accentSpan = document.getElementById('colorPreviewAccent');
-      rect.style.background = bg;
-      accentSpan.style.background = accent;
-      accentSpan.style.color = '#fff';
+    /* ============================================================
+       Update preview swatches
+       ============================================================ */
+    function updateSwatches() {
+      const bgP = document.getElementById('clrBgPrimary').value;
+      const bgS = document.getElementById('clrBgSecondary').value;
+      const acc = document.getElementById('clrAccent').value;
+      const cB  = document.getElementById('clrCoverBirthday').value;
+      const cJ  = document.getElementById('clrCoverBachelorette').value;
+      const cW  = document.getElementById('clrCoverWorkshop').value;
+
+      document.getElementById('swatchBg').style.background = bgP;
+      document.getElementById('swatchBgSec').style.background = bgS;
+      document.getElementById('swatchAccent').style.background = acc;
+      document.getElementById('swatchCoverB').style.background = cB;
+      document.getElementById('swatchCoverJ').style.background = cJ;
+      document.getElementById('swatchCoverW').style.background = cW;
     }
 
-    async function saveColors() {
-      const pairs = [
-        ['bg_primary', document.getElementById('bgPrimary').value],
-        ['bg_secondary', document.getElementById('bgSecondary').value],
-        ['accent_primary', document.getElementById('accentPrimary').value],
-        ['cover_color_birthday', document.getElementById('coverBirthday').value],
-        ['cover_color_bachelorette', document.getElementById('coverBachelorette').value],
-        ['cover_color_workshop', document.getElementById('coverWorkshop').value],
-      ];
+    /* ============================================================
+       SAVE ALL (drawer save button)
+       ============================================================ */
+    async function saveAll() {
+      const btn = document.getElementById('drawerSaveBtn');
+      btn.disabled = true;
+      btn.textContent = 'Speichern...';
+
+      const pairs = [];
+
+      // Fonts
+      if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
+      if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
+
+      // Colors
+      pairs.push(['bg_primary', document.getElementById('clrBgPrimary').value]);
+      pairs.push(['bg_secondary', document.getElementById('clrBgSecondary').value]);
+      pairs.push(['accent_primary', document.getElementById('clrAccent').value]);
+      pairs.push(['cover_color_birthday', document.getElementById('clrCoverBirthday').value]);
+      pairs.push(['cover_color_bachelorette', document.getElementById('clrCoverBachelorette').value]);
+      pairs.push(['cover_color_workshop', document.getElementById('clrCoverWorkshop').value]);
+
+      // Texture
       if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
 
       try {
@@ -897,18 +1279,60 @@
           if (!res.ok) {
             const d = await res.json();
             showToast('Fehler: ' + (d.error || key), true);
+            btn.disabled = false;
+            btn.textContent = 'Speichern';
             return;
           }
         }
-        showToast('Farben gespeichert');
+        showToast('Design gespeichert');
+      } catch (err) {
+        showToast('Fehler beim Speichern', true);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Speichern';
+    }
+
+    /* ============================================================
+       SAVE CONTENT (Inhalte section)
+       ============================================================ */
+    async function saveContent() {
+      const pairs = [
+        ['about_name', document.getElementById('aboutName').value],
+        ['about_bio', document.getElementById('aboutBio').value],
+        ['instagram_url', document.getElementById('instagramUrl').value],
+        ['footer_text', document.getElementById('footerText').value],
+        ['book_birthday_checks', document.getElementById('bookBirthdayChecks').value],
+        ['book_birthday_desc', document.getElementById('bookBirthdayDesc').value],
+        ['book_birthday_extra', document.getElementById('bookBirthdayExtra').value],
+        ['book_bachelorette_checks', document.getElementById('bookBacheloretteChecks').value],
+        ['book_bachelorette_desc', document.getElementById('bookBacheloretteDesc').value],
+        ['book_bachelorette_extra', document.getElementById('bookBacheloretteExtra').value],
+        ['book_workshop_checks', document.getElementById('bookWorkshopChecks').value],
+        ['book_workshop_desc', document.getElementById('bookWorkshopDesc').value],
+        ['book_workshop_extra', document.getElementById('bookWorkshopExtra').value],
+      ];
+
+      try {
+        for (const [key, value] of pairs) {
+          const res = await fetch('/api/settings', {
+            method: 'POST', headers: authHeaders(),
+            body: JSON.stringify({ key, value }),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            showToast('Fehler: ' + (d.error || key), true);
+            return;
+          }
+        }
+        showToast('Inhalte gespeichert');
       } catch (err) {
         showToast('Fehler beim Speichern', true);
       }
     }
 
-    /* ======================================================
+    /* ============================================================
        TERMINE (Events)
-       ====================================================== */
+       ============================================================ */
     async function loadEvents() {
       try {
         const res = await fetch('/api/events');
@@ -1000,9 +1424,9 @@
       } catch (err) { showToast('Fehler beim Speichern', true); }
     }
 
-    /* ======================================================
+    /* ============================================================
        GALERIE (Artworks)
-       ====================================================== */
+       ============================================================ */
     async function loadArtworks() {
       try {
         const res = await fetch('/api/artworks');
@@ -1107,9 +1531,9 @@
       } catch (err) { showToast('Fehler beim Speichern', true); }
     }
 
-    /* ======================================================
-       INHALTE (Content)
-       ====================================================== */
+    /* ============================================================
+       Instagram preview
+       ============================================================ */
     function previewInstagram() {
       const url = document.getElementById('instagramUrl').value.trim();
       const container = document.getElementById('instaPreview');
@@ -1120,66 +1544,69 @@
       }
     }
 
-    async function saveContent() {
-      const pairs = [
-        ['about_name', document.getElementById('aboutName').value],
-        ['about_bio', document.getElementById('aboutBio').value],
-        ['instagram_url', document.getElementById('instagramUrl').value],
-        ['footer_text', document.getElementById('footerText').value],
-        ['book_birthday_checks', document.getElementById('bookBirthdayChecks').value],
-        ['book_birthday_desc', document.getElementById('bookBirthdayDesc').value],
-        ['book_birthday_extra', document.getElementById('bookBirthdayExtra').value],
-        ['book_bachelorette_checks', document.getElementById('bookBacheloretteChecks').value],
-        ['book_bachelorette_desc', document.getElementById('bookBacheloretteDesc').value],
-        ['book_bachelorette_extra', document.getElementById('bookBacheloretteExtra').value],
-        ['book_workshop_checks', document.getElementById('bookWorkshopChecks').value],
-        ['book_workshop_desc', document.getElementById('bookWorkshopDesc').value],
-        ['book_workshop_extra', document.getElementById('bookWorkshopExtra').value],
-      ];
-
-      try {
-        for (const [key, value] of pairs) {
-          const res = await fetch('/api/settings', {
-            method: 'POST', headers: authHeaders(),
-            body: JSON.stringify({ key, value }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            showToast('Fehler: ' + (d.error || key), true);
-            return;
-          }
-        }
-        showToast('Inhalte gespeichert');
-      } catch (err) {
-        showToast('Fehler beim Speichern', true);
-      }
-    }
-
-    /* ======================================================
-       SETTINGS LOAD
-       ====================================================== */
+    /* ============================================================
+       LOAD SETTINGS — apply to preview + drawer
+       ============================================================ */
     async function loadSettings() {
       try {
         const res = await fetch('/api/settings');
         const settings = await res.json();
         currentSettings = { ...settings };
 
-        // Fonts
-        activatePicker('headingFontPicker', settings.heading_font);
-        activatePicker('bodyFontPicker', settings.body_font);
-        updateFontPreview();
+        // --- Apply fonts to CSS variables + activate pills ---
+        if (settings.heading_font && FONT_FAMILY_MAP[settings.heading_font]) {
+          document.documentElement.style.setProperty('--font-heading', FONT_FAMILY_MAP[settings.heading_font]);
+          activatePill('drawerHeadingFonts', settings.heading_font);
+        }
+        if (settings.body_font && FONT_FAMILY_MAP[settings.body_font]) {
+          document.documentElement.style.setProperty('--font-body', FONT_FAMILY_MAP[settings.body_font]);
+          activatePill('drawerBodyFonts', settings.body_font);
+        }
 
-        // Colors
-        if (settings.bg_primary) document.getElementById('bgPrimary').value = settings.bg_primary;
-        if (settings.bg_secondary) document.getElementById('bgSecondary').value = settings.bg_secondary;
-        if (settings.accent_primary) document.getElementById('accentPrimary').value = settings.accent_primary;
-        if (settings.cover_color_birthday) document.getElementById('coverBirthday').value = settings.cover_color_birthday;
-        if (settings.cover_color_bachelorette) document.getElementById('coverBachelorette').value = settings.cover_color_bachelorette;
-        if (settings.cover_color_workshop) document.getElementById('coverWorkshop').value = settings.cover_color_workshop;
-        activatePicker('coverTexturePicker', settings.cover_texture);
-        updateColorPreview();
+        // --- Apply colors to CSS variables + color inputs ---
+        if (settings.bg_primary) {
+          document.getElementById('clrBgPrimary').value = settings.bg_primary;
+          document.documentElement.style.setProperty('--bg-primary', settings.bg_primary);
+        }
+        if (settings.bg_secondary) {
+          document.getElementById('clrBgSecondary').value = settings.bg_secondary;
+          document.documentElement.style.setProperty('--bg-secondary', settings.bg_secondary);
+        }
+        if (settings.accent_primary) {
+          document.getElementById('clrAccent').value = settings.accent_primary;
+          document.documentElement.style.setProperty('--accent', settings.accent_primary);
+        }
 
-        // Content
+        // Cover colors
+        if (settings.cover_color_birthday) {
+          document.getElementById('clrCoverBirthday').value = settings.cover_color_birthday;
+          document.getElementById('bookCoverBirthday').style.backgroundColor = settings.cover_color_birthday;
+        } else {
+          document.getElementById('bookCoverBirthday').style.backgroundColor = '#9a806a';
+        }
+        if (settings.cover_color_bachelorette) {
+          document.getElementById('clrCoverBachelorette').value = settings.cover_color_bachelorette;
+          document.getElementById('bookCoverBachelorette').style.backgroundColor = settings.cover_color_bachelorette;
+        } else {
+          document.getElementById('bookCoverBachelorette').style.backgroundColor = '#9a806a';
+        }
+        if (settings.cover_color_workshop) {
+          document.getElementById('clrCoverWorkshop').value = settings.cover_color_workshop;
+          document.getElementById('bookCoverWorkshop').style.backgroundColor = settings.cover_color_workshop;
+        } else {
+          document.getElementById('bookCoverWorkshop').style.backgroundColor = '#9a806a';
+        }
+
+        // Texture
+        if (settings.cover_texture) {
+          document.documentElement.setAttribute('data-cover-tex', settings.cover_texture);
+          activatePill('drawerTexturePills', settings.cover_texture);
+        }
+
+        // Update swatches
+        updateSwatches();
+
+        // --- Content fields ---
         if (settings.about_name) document.getElementById('aboutName').value = settings.about_name;
         if (settings.about_bio) document.getElementById('aboutBio').value = settings.about_bio;
         if (settings.instagram_url) {
@@ -1196,20 +1623,23 @@
         if (settings.book_workshop_checks) document.getElementById('bookWorkshopChecks').value = settings.book_workshop_checks;
         if (settings.book_workshop_desc) document.getElementById('bookWorkshopDesc').value = settings.book_workshop_desc;
         if (settings.book_workshop_extra) document.getElementById('bookWorkshopExtra').value = settings.book_workshop_extra;
+
       } catch (err) {
         showToast('Fehler beim Laden der Einstellungen', true);
       }
     }
 
-    function activatePicker(containerId, key) {
+    function activatePill(containerId, key) {
       const el = document.getElementById(containerId);
       if (!el || !key) return;
-      el.querySelectorAll('.text-swatch').forEach(s => {
-        s.classList.toggle('active', s.dataset.key === key);
+      el.querySelectorAll('.font-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.key === key);
       });
     }
 
-    /* ---- Utility: HTML escape ---- */
+    /* ============================================================
+       Utility: HTML escape
+       ============================================================ */
     function esc(s) {
       const d = document.createElement('div');
       d.textContent = s;
@@ -1219,10 +1649,16 @@
       return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
     }
 
-    /* ---- Init ---- */
-    buildFontPickers();
-    buildTexturePicker();
-    updateColorPreview();
+    /* ============================================================
+       Init
+       ============================================================ */
+    buildDrawerPickers();
+    setupColorListeners();
+    // Set default cover colors on book previews
+    document.getElementById('bookCoverBirthday').style.backgroundColor = '#9a806a';
+    document.getElementById('bookCoverBachelorette').style.backgroundColor = '#9a806a';
+    document.getElementById('bookCoverWorkshop').style.backgroundColor = '#9a806a';
+    updateSwatches();
   </script>
 </body>
 </html>
