@@ -1517,10 +1517,11 @@
 
         try {
           const url = await uploadImage(file);
+          console.log('Upload URL:', url);
           hidden.value = url;
           preview.src = url;
           preview.style.display = 'block';
-          status.textContent = 'Uploaded!';
+          status.textContent = 'Uploaded! ' + url;
           status.className = 'upload-status success';
         } catch (err) {
           status.textContent = 'Error: ' + (err.message || 'upload failed');
