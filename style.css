@@ -607,11 +607,10 @@ html[data-palette="blush"] {
 }
 
 /* ============================================================
-   FONT STYLES (via data-style on html)
+   FONT STYLES (separate heading + body pickers)
    ============================================================ */
 
-/* Scrapbook — default (Permanent Marker + Caveat + Special Elite) */
-[data-style="scrapbook"],
+/* Defaults */
 :root {
   --font-heading: 'Permanent Marker', cursive;
   --font-handwriting: 'Caveat', cursive;
@@ -620,87 +619,25 @@ html[data-palette="blush"] {
   --event-includes-size: 1rem;
 }
 
-/* Handwritten — all hand-drawn feel (Shadows Into Light + Patrick Hand) */
-[data-style="handwritten"] {
-  --font-heading: 'Shadows Into Light', cursive;
-  --font-handwriting: 'Patrick Hand', cursive;
-  --font-body: 'Patrick Hand', cursive;
-  --event-desc-size: 0.9rem;
-  --event-includes-size: 1rem;
-}
+/* Header fonts */
+html[data-heading-font="marker"] { --font-heading: 'Permanent Marker', cursive; }
+html[data-heading-font="shadows"] { --font-heading: 'Shadows Into Light', cursive; }
+html[data-heading-font="indie"] { --font-heading: 'Indie Flower', cursive; }
+html[data-heading-font="playfair"] { --font-heading: 'Playfair Display', serif; }
+html[data-heading-font="quicksand"] { --font-heading: 'Quicksand', sans-serif; }
+html[data-heading-font="patrick"] { --font-heading: 'Patrick Hand', cursive; }
+html[data-heading-font="special"] { --font-heading: 'Special Elite', monospace; }
+html[data-heading-font="caveat"] { --font-heading: 'Caveat', cursive; }
 
-/* Playful — bubbly and fun (Indie Flower + Coming Soon) */
-[data-style="playful"] {
-  --font-heading: 'Indie Flower', cursive;
-  --font-handwriting: 'Coming Soon', cursive;
-  --font-body: 'Coming Soon', cursive;
-  --event-desc-size: 0.7rem;
-  --event-desc-mb: 12px;
-  --event-desc-lh-desktop: 1.9;
-  --event-includes-size: 0.85rem;
-  --event-extra-size: 0.7rem;
-  --event-cta-size: 0.75rem;
-  --event-hint-size: 0.8rem;
-}
-
-/* Soft — rounded, gentle, Scandinavian feel (Quicksand + Nunito) */
-[data-style="soft"] {
-  --font-heading: 'Quicksand', sans-serif;
-  --font-handwriting: 'Nunito', sans-serif;
-  --font-body: 'Nunito', sans-serif;
-}
-
-/* Minimal — clean, modern (DM Sans) */
-[data-style="minimal"] {
-  --font-heading: 'DM Sans', sans-serif;
-  --font-handwriting: 'DM Sans', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-}
-
-/* Elegant — serif heading, clean body (Playfair Display + Nunito) */
-[data-style="elegant"] {
-  --font-heading: 'Playfair Display', serif;
-  --font-handwriting: 'Nunito', sans-serif;
-  --font-body: 'Nunito', sans-serif;
-  --event-desc-size: 0.8rem;
-  --event-includes-size: 0.95rem;
-}
-
-/* Cozy — all Patrick Hand, warm and friendly */
-[data-style="cozy"] {
-  --font-heading: 'Patrick Hand', cursive;
-  --font-handwriting: 'Patrick Hand', cursive;
-  --font-body: 'Patrick Hand', cursive;
-  --event-desc-size: 0.85rem;
-  --event-includes-size: 1rem;
-}
-
-/* Vintage — typewriter feel (Special Elite + Courier Prime) */
-[data-style="vintage"] {
-  --font-heading: 'Special Elite', 'Courier Prime', monospace;
-  --font-handwriting: 'Courier Prime', monospace;
-  --font-body: 'Courier Prime', monospace;
-  --event-desc-size: 0.75rem;
-  --event-includes-size: 0.9rem;
-}
-
-/* Modern — rounded geometric (Quicksand + DM Sans) */
-[data-style="modern"] {
-  --font-heading: 'Quicksand', sans-serif;
-  --font-handwriting: 'Quicksand', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --event-desc-size: 0.8rem;
-  --event-includes-size: 0.95rem;
-}
-
-/* Whimsical — dreamy and loose (Shadows Into Light + Caveat + Coming Soon) */
-[data-style="whimsical"] {
-  --font-heading: 'Shadows Into Light', cursive;
-  --font-handwriting: 'Caveat', cursive;
-  --font-body: 'Coming Soon', cursive;
-  --event-desc-size: 0.7rem;
-  --event-includes-size: 0.85rem;
-}
+/* Body fonts */
+html[data-body-font="caveat"] { --font-handwriting: 'Caveat', cursive; --font-body: 'Caveat', cursive; }
+html[data-body-font="patrick"] { --font-handwriting: 'Patrick Hand', cursive; --font-body: 'Patrick Hand', cursive; }
+html[data-body-font="coming"] { --font-handwriting: 'Coming Soon', cursive; --font-body: 'Coming Soon', cursive; }
+html[data-body-font="nunito"] { --font-handwriting: 'Nunito', sans-serif; --font-body: 'Nunito', sans-serif; }
+html[data-body-font="quicksand"] { --font-handwriting: 'Quicksand', sans-serif; --font-body: 'Quicksand', sans-serif; }
+html[data-body-font="dm"] { --font-handwriting: 'DM Sans', sans-serif; --font-body: 'DM Sans', sans-serif; }
+html[data-body-font="special"] { --font-handwriting: 'Special Elite', monospace; --font-body: 'Special Elite', monospace; }
+html[data-body-font="courier"] { --font-handwriting: 'Courier Prime', monospace; --font-body: 'Courier Prime', monospace; }
 
 /* ============================================================
    RESET & BASE
@@ -2626,7 +2563,9 @@ a {
   flex-wrap: wrap;
 }
 
-.style-swatch {
+.style-swatch,
+.heading-font-swatch,
+.body-font-swatch {
   font-size: 0.75rem;
   color: var(--picker-text);
   background: transparent;
@@ -2637,11 +2576,15 @@ a {
   transition: all 0.2s;
 }
 
-.style-swatch:hover {
+.style-swatch:hover,
+.heading-font-swatch:hover,
+.body-font-swatch:hover {
   border-color: rgba(255,255,255,0.5);
 }
 
-.style-swatch.active {
+.style-swatch.active,
+.heading-font-swatch.active,
+.body-font-swatch.active {
   background: rgba(255,255,255,0.2);
   border-color: rgba(255,255,255,0.5);
 }
@@ -2656,17 +2599,6 @@ a {
   margin: 2px 0;
 }
 
-/* Give each style button its own font preview */
-.style-swatch[data-style="scrapbook"] { font-family: 'Permanent Marker', cursive; }
-.style-swatch[data-style="handwritten"] { font-family: 'Shadows Into Light', cursive; }
-.style-swatch[data-style="playful"] { font-family: 'Indie Flower', cursive; }
-.style-swatch[data-style="soft"] { font-family: 'Quicksand', sans-serif; }
-.style-swatch[data-style="minimal"] { font-family: 'DM Sans', sans-serif; }
-.style-swatch[data-style="elegant"] { font-family: 'Playfair Display', serif; }
-.style-swatch[data-style="cozy"] { font-family: 'Patrick Hand', cursive; }
-.style-swatch[data-style="vintage"] { font-family: 'Special Elite', monospace; }
-.style-swatch[data-style="modern"] { font-family: 'Quicksand', sans-serif; }
-.style-swatch[data-style="whimsical"] { font-family: 'Shadows Into Light', cursive; }
 
 .palette-swatch {
   width: 28px;
@@ -3827,45 +3759,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     padding: 20px 16px;
   }
 
-  [data-style="scrapbook"],
   :root {
     --event-desc-size: 0.65rem;
-  }
-
-  [data-style="handwritten"] {
-    --event-desc-size: 0.85rem;
-    --event-desc-lh: 1.3;
-  }
-
-  [data-style="playful"] {
-    --event-desc-size: 0.7rem;
-    --event-includes-size: 0.65rem;
-    --event-includes-lh: 1.8;
-  }
-
-  [data-style="elegant"] {
-    --event-desc-size: 0.7rem;
-    --event-includes-size: 0.85rem;
-  }
-
-  [data-style="cozy"] {
-    --event-desc-size: 0.75rem;
-    --event-includes-size: 0.9rem;
-  }
-
-  [data-style="vintage"] {
-    --event-desc-size: 0.65rem;
-    --event-includes-size: 0.8rem;
-  }
-
-  [data-style="modern"] {
-    --event-desc-size: 0.7rem;
-    --event-includes-size: 0.85rem;
-  }
-
-  [data-style="whimsical"] {
-    --event-desc-size: 0.65rem;
-    --event-includes-size: 0.75rem;
   }
 
   .section-heading--whatido {
