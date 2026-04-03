@@ -632,6 +632,19 @@
         if (s.accent_color) html.setAttribute('data-accent', s.accent_color);
         if (s.cover_texture) html.setAttribute('data-cover-tex', s.cover_texture);
 
+        // Custom color pickers override presets
+        if (s.bg_primary) {
+          html.style.setProperty('--bg-primary', s.bg_primary);
+          html.style.setProperty('--bg-secondary', s.bg_secondary || s.bg_primary);
+        }
+        if (s.accent_primary) {
+          html.style.setProperty('--accent', s.accent_primary);
+          html.style.setProperty('--accent-alt', s.accent_primary);
+          html.style.setProperty('--pin-color', s.accent_primary);
+          html.style.setProperty('--stamp-bg', s.accent_primary);
+          html.style.setProperty('--heading-bg', s.accent_primary);
+        }
+
         // Cover colors
         ['birthday', 'bachelorette', 'workshop'].forEach(name => {
           const color = s['cover_color_' + name];

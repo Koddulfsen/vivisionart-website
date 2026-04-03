@@ -441,11 +441,21 @@
           <h3>Farben</h3>
           <div class="picker-section">
             <label>Hintergrundfarbe</label>
-            <div class="swatch-row" id="bgColorPicker"></div>
+            <div class="color-input-row">
+              <span>Hauptfarbe</span>
+              <input type="color" id="bgPrimary" value="#f0ebe0">
+            </div>
+            <div class="color-input-row">
+              <span>Sekundaer</span>
+              <input type="color" id="bgSecondary" value="#e8e0d4">
+            </div>
           </div>
           <div class="picker-section">
-            <label>Akzentfarbe</label>
-            <div class="swatch-row" id="accentColorPicker"></div>
+            <label>Akzentfarbe (Highlights, Buttons, etc.)</label>
+            <div class="color-input-row">
+              <span>Akzent</span>
+              <input type="color" id="accentPrimary" value="#80b8a0">
+            </div>
           </div>
         </div>
         <div class="card">
@@ -857,17 +867,7 @@
         `<button class="text-swatch" data-key="${f.key}" onclick="pickStyle(this, 'bodyFontPicker', 'body_font')">${f.label}</button>`
       ).join('');
 
-      // BG colors
-      const bgEl = document.getElementById('bgColorPicker');
-      bgEl.innerHTML = BG_COLORS.map(c =>
-        `<button class="swatch" data-key="${c.key}" style="background:${c.hex}" title="${c.label}" onclick="pickStyle(this, 'bgColorPicker', 'bg_color')"></button>`
-      ).join('');
-
-      // Accent colors
-      const acEl = document.getElementById('accentColorPicker');
-      acEl.innerHTML = ACCENT_COLORS.map(c =>
-        `<button class="swatch" data-key="${c.key}" style="background:${c.hex}" title="${c.key}" onclick="pickStyle(this, 'accentColorPicker', 'accent_color')"></button>`
-      ).join('');
+      // BG and accent colors are now <input type="color"> — no swatches needed
 
       // Cover textures
       const texEl = document.getElementById('coverTexturePicker');
@@ -895,9 +895,12 @@
       }
       activate('headingFontPicker', settings.heading_font);
       activate('bodyFontPicker', settings.body_font);
-      activate('bgColorPicker', settings.bg_color);
-      activate('accentColorPicker', settings.accent_color);
       activate('coverTexturePicker', settings.cover_texture);
+
+      // Color pickers
+      if (settings.bg_primary) document.getElementById('bgPrimary').value = settings.bg_primary;
+      if (settings.bg_secondary) document.getElementById('bgSecondary').value = settings.bg_secondary;
+      if (settings.accent_primary) document.getElementById('accentPrimary').value = settings.accent_primary;
 
       // Cover color pickers
       if (settings.cover_color_birthday) document.getElementById('coverBirthday').value = settings.cover_color_birthday;
@@ -910,9 +913,12 @@
       // From pickers
       if (currentSettings.heading_font) pairs.push(['heading_font', currentSettings.heading_font]);
       if (currentSettings.body_font) pairs.push(['body_font', currentSettings.body_font]);
-      if (currentSettings.bg_color) pairs.push(['bg_color', currentSettings.bg_color]);
-      if (currentSettings.accent_color) pairs.push(['accent_color', currentSettings.accent_color]);
       if (currentSettings.cover_texture) pairs.push(['cover_texture', currentSettings.cover_texture]);
+
+      // Color pickers
+      pairs.push(['bg_primary', document.getElementById('bgPrimary').value]);
+      pairs.push(['bg_secondary', document.getElementById('bgSecondary').value]);
+      pairs.push(['accent_primary', document.getElementById('accentPrimary').value]);
 
       // Cover colors from color pickers
       pairs.push(['cover_color_birthday', document.getElementById('coverBirthday').value]);
