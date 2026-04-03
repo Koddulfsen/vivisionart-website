@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css?v=7">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -576,6 +576,17 @@
         <button class="cover-tex-swatch" data-cover-tex="canvas">Canvas</button>
         <button class="cover-tex-swatch" data-cover-tex="suede">Suede</button>
       </div>
+      <div class="picker-label">Font</div>
+      <div class="style-options">
+        <button class="style-swatch" data-style="scrapbook" style="font-family: 'Permanent Marker', cursive">Scrapbook</button>
+        <button class="style-swatch" data-style="handwritten" style="font-family: 'Shadows Into Light', cursive">Handwritten</button>
+        <button class="style-swatch" data-style="playful" style="font-family: 'Indie Flower', cursive">Playful</button>
+        <button class="style-swatch" data-style="elegant" style="font-family: 'Playfair Display', serif">Elegant</button>
+        <button class="style-swatch" data-style="cozy" style="font-family: 'Patrick Hand', cursive">Cozy</button>
+        <button class="style-swatch" data-style="vintage" style="font-family: 'Special Elite', monospace">Vintage</button>
+        <button class="style-swatch" data-style="modern" style="font-family: 'Quicksand', sans-serif">Modern</button>
+        <button class="style-swatch" data-style="whimsical" style="font-family: 'Shadows Into Light', cursive">Whimsical</button>
+      </div>
       <div class="picker-label">Accent</div>
       <div class="book-accent-options">
         <button class="book-accent-swatch" data-accent="apricot" style="background: #e8a870;" title="Apricot"></button>
@@ -607,6 +618,13 @@
         <button class="book-accent-swatch" data-accent="cinnamon" style="background: #a06840;" title="Cinnamon"></button>
         <button class="book-accent-swatch" data-accent="blush" style="background: #c8899c;" title="Blush"></button>
         <button class="book-accent-swatch" data-accent="rose" style="background: #b88090;" title="Rose"></button>
+      </div>
+      <div class="picker-label">Aktuelle Auswahl</div>
+      <div class="current-selection" id="currentSelection">
+        <p id="selFont">Font: Scrapbook</p>
+        <p id="selCover">Cover: Latte</p>
+        <p id="selTexture">Texture: Leather</p>
+        <p id="selAccent">Accent: Mint</p>
       </div>
     </div>
   </div>
@@ -856,6 +874,59 @@
       const toggle = document.getElementById('bookPickerToggle');
       const panel = document.getElementById('bookPickerPanel');
 
+      /* Current selection display elements */
+      const selFont = document.getElementById('selFont');
+      const selCover = document.getElementById('selCover');
+      const selTexture = document.getElementById('selTexture');
+      const selAccent = document.getElementById('selAccent');
+
+      /* Style name map for display */
+      const styleNames = {
+        scrapbook: 'Scrapbook',
+        handwritten: 'Handwritten',
+        playful: 'Playful',
+        elegant: 'Elegant',
+        cozy: 'Cozy',
+        vintage: 'Vintage',
+        modern: 'Modern',
+        whimsical: 'Whimsical',
+        soft: 'Soft',
+        minimal: 'Minimal'
+      };
+
+      /* Book label map */
+      const bookLabels = {
+        birthday: 'Birthday',
+        bachelorette: 'Bachelorette',
+        workshop: 'Workshop'
+      };
+
+      /* Update current selection display */
+      function updateSelectionDisplay() {
+        // Font
+        const curStyle = html.getAttribute('data-style') || 'scrapbook';
+        if (selFont) selFont.textContent = 'Font: ' + (styleNames[curStyle] || curStyle);
+
+        // Cover colors per book
+        const coverParts = [];
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const activeBtn = document.querySelector('.book-color-options .book-cover-swatch.active[data-target="' + name + '"]');
+          const colorName = activeBtn ? (activeBtn.getAttribute('title') || '?') : 'Latte';
+          coverParts.push(bookLabels[name] + ': ' + colorName);
+        });
+        if (selCover) selCover.textContent = 'Cover: ' + coverParts.join(', ');
+
+        // Texture
+        const activeTexBtn = document.querySelector('.cover-tex-swatch.active');
+        const texName = activeTexBtn ? activeTexBtn.textContent : 'Leather';
+        if (selTexture) selTexture.textContent = 'Texture: ' + texName;
+
+        // Accent
+        const activeAccentBtn = document.querySelector('.book-accent-swatch.active');
+        const accentName = activeAccentBtn ? (activeAccentBtn.getAttribute('title') || '?') : 'None';
+        if (selAccent) selAccent.textContent = 'Accent: ' + accentName;
+      }
+
       /* Toggle panel */
       toggle.addEventListener('click', () => {
         panel.classList.toggle('is-open');
@@ -866,6 +937,23 @@
         if (!e.target.closest('#bookPicker')) {
           panel.classList.remove('is-open');
         }
+      });
+
+      /* ---- Font style switching ---- */
+      const savedStyle = localStorage.getItem('viviStyle');
+      if (savedStyle) html.setAttribute('data-style', savedStyle);
+
+      const curStyle = html.getAttribute('data-style') || 'scrapbook';
+      document.querySelectorAll('.style-swatch').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-style') === curStyle);
+        btn.addEventListener('click', () => {
+          const style = btn.getAttribute('data-style');
+          html.setAttribute('data-style', style);
+          localStorage.setItem('viviStyle', style);
+          document.querySelectorAll('.style-swatch').forEach(s => s.classList.remove('active'));
+          btn.classList.add('active');
+          updateSelectionDisplay();
+        });
       });
 
       /* Restore from localStorage */
@@ -896,6 +984,7 @@
           localStorage.setItem('coverTex', tex);
           document.querySelectorAll('.cover-tex-swatch').forEach(s => s.classList.remove('active'));
           btn.classList.add('active');
+          updateSelectionDisplay();
         });
         // Mark active on load
         if (btn.getAttribute('data-cover-tex') === (savedCoverTex || 'leather')) {
@@ -941,6 +1030,7 @@
             s.classList.remove('active');
           });
           btn.classList.add('active');
+          updateSelectionDisplay();
         });
       });
 
@@ -957,8 +1047,34 @@
             localStorage.setItem('accentColor', accent);
           }
           updateActive();
+          updateSelectionDisplay();
         });
       });
+
+      /* Mark active cover swatches on load */
+      function colorToHex(color) {
+        const el = document.createElement('div');
+        el.style.color = color;
+        document.body.appendChild(el);
+        const computed = getComputedStyle(el).color;
+        document.body.removeChild(el);
+        const match = computed.match(/(\d+)/g);
+        if (!match) return color;
+        return '#' + match.slice(0, 3).map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
+      }
+      ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+        const saved = localStorage.getItem('cover-' + name) || defaultCover;
+        const savedHex = colorToHex(saved);
+        document.querySelectorAll('.book-cover-swatch[data-target="' + name + '"]').forEach(btn => {
+          const btnHex = colorToHex(btn.style.background);
+          if (btnHex === savedHex) {
+            btn.classList.add('active');
+          }
+        });
+      });
+
+      /* Initial selection display */
+      updateSelectionDisplay();
 
       /* Texture swatch clicks */
     })();

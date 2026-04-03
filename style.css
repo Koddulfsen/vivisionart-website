@@ -657,6 +657,51 @@ html[data-palette="blush"] {
   --font-body: 'DM Sans', sans-serif;
 }
 
+/* Elegant — serif heading, clean body (Playfair Display + Nunito) */
+[data-style="elegant"] {
+  --font-heading: 'Playfair Display', serif;
+  --font-handwriting: 'Nunito', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --event-desc-size: 0.8rem;
+  --event-includes-size: 0.95rem;
+}
+
+/* Cozy — all Patrick Hand, warm and friendly */
+[data-style="cozy"] {
+  --font-heading: 'Patrick Hand', cursive;
+  --font-handwriting: 'Patrick Hand', cursive;
+  --font-body: 'Patrick Hand', cursive;
+  --event-desc-size: 0.85rem;
+  --event-includes-size: 1rem;
+}
+
+/* Vintage — typewriter feel (Special Elite + Courier Prime) */
+[data-style="vintage"] {
+  --font-heading: 'Special Elite', 'Courier Prime', monospace;
+  --font-handwriting: 'Courier Prime', monospace;
+  --font-body: 'Courier Prime', monospace;
+  --event-desc-size: 0.75rem;
+  --event-includes-size: 0.9rem;
+}
+
+/* Modern — rounded geometric (Quicksand + DM Sans) */
+[data-style="modern"] {
+  --font-heading: 'Quicksand', sans-serif;
+  --font-handwriting: 'Quicksand', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --event-desc-size: 0.8rem;
+  --event-includes-size: 0.95rem;
+}
+
+/* Whimsical — dreamy and loose (Shadows Into Light + Caveat + Coming Soon) */
+[data-style="whimsical"] {
+  --font-heading: 'Shadows Into Light', cursive;
+  --font-handwriting: 'Caveat', cursive;
+  --font-body: 'Coming Soon', cursive;
+  --event-desc-size: 0.7rem;
+  --event-includes-size: 0.85rem;
+}
+
 /* ============================================================
    RESET & BASE
    ============================================================ */
@@ -2601,12 +2646,27 @@ a {
   border-color: rgba(255,255,255,0.5);
 }
 
+.current-selection {
+  font-size: 0.7rem;
+  color: var(--picker-text);
+  opacity: 0.8;
+  line-height: 1.5;
+}
+.current-selection p {
+  margin: 2px 0;
+}
+
 /* Give each style button its own font preview */
 .style-swatch[data-style="scrapbook"] { font-family: 'Permanent Marker', cursive; }
 .style-swatch[data-style="handwritten"] { font-family: 'Shadows Into Light', cursive; }
 .style-swatch[data-style="playful"] { font-family: 'Indie Flower', cursive; }
 .style-swatch[data-style="soft"] { font-family: 'Quicksand', sans-serif; }
 .style-swatch[data-style="minimal"] { font-family: 'DM Sans', sans-serif; }
+.style-swatch[data-style="elegant"] { font-family: 'Playfair Display', serif; }
+.style-swatch[data-style="cozy"] { font-family: 'Patrick Hand', cursive; }
+.style-swatch[data-style="vintage"] { font-family: 'Special Elite', monospace; }
+.style-swatch[data-style="modern"] { font-family: 'Quicksand', sans-serif; }
+.style-swatch[data-style="whimsical"] { font-family: 'Shadows Into Light', cursive; }
 
 .palette-swatch {
   width: 28px;
@@ -3781,6 +3841,31 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     --event-desc-size: 0.7rem;
     --event-includes-size: 0.65rem;
     --event-includes-lh: 1.8;
+  }
+
+  [data-style="elegant"] {
+    --event-desc-size: 0.7rem;
+    --event-includes-size: 0.85rem;
+  }
+
+  [data-style="cozy"] {
+    --event-desc-size: 0.75rem;
+    --event-includes-size: 0.9rem;
+  }
+
+  [data-style="vintage"] {
+    --event-desc-size: 0.65rem;
+    --event-includes-size: 0.8rem;
+  }
+
+  [data-style="modern"] {
+    --event-desc-size: 0.7rem;
+    --event-includes-size: 0.85rem;
+  }
+
+  [data-style="whimsical"] {
+    --event-desc-size: 0.65rem;
+    --event-includes-size: 0.75rem;
   }
 
   .section-heading--whatido {
