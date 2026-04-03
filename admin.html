@@ -358,6 +358,32 @@
       }
     }
 
+    /* ---- Upload field ---- */
+    .upload-field { margin-bottom: 12px; }
+    .upload-preview {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .upload-preview[src=""] { display: none; }
+    .upload-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #8a7058;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Patrick Hand', cursive;
+    }
+    .upload-btn:hover { opacity: 0.85; }
+    .upload-status { font-size: 12px; color: #888; margin-left: 8px; }
+    .upload-status.error { color: #c44; }
+    .upload-status.success { color: #5a8; }
+
     /* ---- Notification toast ---- */
     .admin-toast {
       position: fixed;
@@ -1415,6 +1441,94 @@
       return { 'Authorization': 'Bearer ' + ADMIN.token, 'Content-Type': 'application/json' };
     }
 
+    /* ---- Reusable image upload with client-side compression ---- */
+    async function uploadImage(file) {
+      const canvas = document.createElement('canvas');
+      const img = new Image();
+
+      return new Promise((resolve, reject) => {
+        img.onload = () => {
+          let w = img.width;
+          let h = img.height;
+          if (w > 1200) {
+            h = Math.round(h * 1200 / w);
+            w = 1200;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(async (blob) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + ADMIN.token,
+                  'X-Filename': file.name || 'image.jpg',
+                },
+                body: blob,
+              });
+              const data = await res.json();
+              if (res.ok) {
+                resolve(data.url);
+              } else {
+                reject(new Error(data.error || 'Upload failed'));
+              }
+            } catch (err) {
+              reject(err);
+            }
+          }, 'image/jpeg', 0.85);
+        };
+        img.onerror = () => reject(new Error('Could not read image'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    /* ---- Helper: create upload field HTML ---- */
+    function makeUploadFieldHtml(currentSrc, hiddenId) {
+      return `
+        <div class="upload-field">
+          <img class="upload-preview" src="${escHtml(currentSrc || '')}" alt="Preview"${currentSrc ? '' : ' style="display:none"'}>
+          <label class="upload-btn">
+            Choose Photo
+            <input type="file" accept="image/*" style="display:none" data-upload-for="${hiddenId}">
+          </label>
+          <span class="upload-status" data-status-for="${hiddenId}"></span>
+          <input type="hidden" id="${hiddenId}" value="${escHtml(currentSrc || '')}">
+        </div>
+      `;
+    }
+
+    /* ---- Helper: wire up file input change handler ---- */
+    function wireUploadField(popover, hiddenId) {
+      const fileInput = popover.querySelector('input[data-upload-for="' + hiddenId + '"]');
+      const preview = fileInput.closest('.upload-field').querySelector('.upload-preview');
+      const status = popover.querySelector('span[data-status-for="' + hiddenId + '"]');
+      const hidden = popover.querySelector('#' + hiddenId);
+
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        status.textContent = 'Uploading...';
+        status.className = 'upload-status';
+        preview.style.display = 'none';
+
+        try {
+          const url = await uploadImage(file);
+          hidden.value = url;
+          preview.src = url;
+          preview.style.display = 'block';
+          status.textContent = 'Uploaded!';
+          status.className = 'upload-status success';
+        } catch (err) {
+          status.textContent = 'Error: ' + (err.message || 'upload failed');
+          status.className = 'upload-status error';
+        }
+      });
+    }
+
     /* ---- Close any open popover ---- */
     function closeAllPopovers() {
       document.querySelectorAll('.edit-popover').forEach(p => p.remove());
@@ -1603,15 +1717,16 @@
       const img = document.getElementById('aboutPhoto');
       const current = img.src;
       const pop = createPopover(pencil, `
-        <label>Photo URL</label>
-        <input type="text" id="editPhotoInput" value="${escHtml(current)}">
+        <label>Photo</label>
+        ${makeUploadFieldHtml(current, 'editPhotoUrl')}
         <div class="btn-row">
           <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
           <button class="btn-save" id="savePhotoBtn">Save</button>
         </div>
       `);
+      wireUploadField(pop, 'editPhotoUrl');
       pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
-        const val = pop.querySelector('#editPhotoInput').value.trim();
+        const val = pop.querySelector('#editPhotoUrl').value.trim();
         if (!val) return;
         try {
           await fetch('/api/settings', {
@@ -1691,8 +1806,8 @@
 
       const article = pencil.closest('.polaroid');
       const pop = createPopover(article, `
-        <label>Image URL</label>
-        <input type="text" id="editArtImg" value="${escHtml(artwork.image_url || '')}">
+        <label>Image</label>
+        ${makeUploadFieldHtml(artwork.image_url || '', 'editArtImg')}
         <label>Title</label>
         <input type="text" id="editArtTitle" value="${escHtml(artwork.title || '')}">
         <label>Status</label>
@@ -1706,6 +1821,7 @@
           <button class="btn-save" id="saveArtBtn">Save</button>
         </div>
       `);
+      wireUploadField(pop, 'editArtImg');
 
       pop.querySelector('#saveArtBtn').addEventListener('click', async () => {
         const imgUrl = pop.querySelector('#editArtImg').value.trim();
@@ -1793,8 +1909,8 @@
       document.getElementById('addArtworkBtn').addEventListener('click', () => {
         const btn = document.getElementById('addArtworkBtn');
         const pop = createPopover(btn, `
-          <label>Image URL</label>
-          <input type="text" id="newArtImg" placeholder="https://...">
+          <label>Image</label>
+          ${makeUploadFieldHtml('', 'newArtImg')}
           <label>Title</label>
           <input type="text" id="newArtTitle" placeholder="Artwork title">
           <label>Status</label>
@@ -1807,11 +1923,12 @@
             <button class="btn-save" id="createArtBtn">Add</button>
           </div>
         `);
+        wireUploadField(pop, 'newArtImg');
         pop.querySelector('#createArtBtn').addEventListener('click', async () => {
           const imgUrl = pop.querySelector('#newArtImg').value.trim();
           const title = pop.querySelector('#newArtTitle').value.trim();
           const status = pop.querySelector('#newArtStatus').value;
-          if (!imgUrl) { showToast('Image URL required'); return; }
+          if (!imgUrl) { showToast('Please upload an image first'); return; }
           try {
             await fetch('/api/artworks', {
               method: 'POST',
