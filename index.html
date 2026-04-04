@@ -657,6 +657,19 @@
           }
         });
 
+        // Inline element colors
+        if (s.torn_page_color) {
+          const tp = document.querySelector('.torn-page');
+          if (tp) tp.style.background = s.torn_page_color;
+        }
+        if (s.postcard_color) {
+          const pc = document.querySelector('.postcard');
+          if (pc) pc.style.background = s.postcard_color;
+        }
+        if (s.date_card_color) {
+          document.querySelectorAll('.date-card').forEach(c => c.style.background = s.date_card_color);
+        }
+
         // About content
         if (s.about_name) {
           const nameEl = document.querySelector('.about-name');

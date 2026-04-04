@@ -128,6 +128,50 @@
     .admin-active .date-card { position: relative; }
     .admin-active .polaroid { position: relative; }
 
+    /* ---- Inline Color Pickers ---- */
+    .inline-color-pick {
+      display: none;
+      position: absolute;
+      top: -12px;
+      right: 12px;
+      z-index: 100;
+    }
+    .admin-active .inline-color-pick {
+      display: block;
+    }
+    .inline-color-pick input[type="color"] {
+      width: 32px;
+      height: 32px;
+      border: 2px solid white;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      padding: 0;
+      -webkit-appearance: none;
+      appearance: none;
+      vertical-align: middle;
+    }
+    .inline-color-pick input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 50%;
+    }
+    .inline-color-pick input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+    .inline-color-pick input[type="text"] {
+      width: 70px;
+      padding: 4px 6px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      font-size: 11px;
+      font-family: monospace;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
     /* ---- Edit Popover ---- */
     .edit-popover {
       position: absolute;
@@ -316,6 +360,16 @@
       cursor: pointer;
       padding: 2px;
       background: white;
+    }
+    .drawer-color-row .hex-input {
+      width: 72px;
+      padding: 4px 6px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+      color: #2c2420;
+      margin-left: 4px;
     }
 
     .drawer-save-btn {
@@ -737,7 +791,11 @@
     </div>
 
     <!-- EVENT 4: Torn page CTA -->
-    <div class="torn-page fade-in">
+    <div class="torn-page fade-in" id="tornPage">
+      <div class="inline-color-pick" data-target="tornPage" data-setting="torn_page_color">
+        <input type="color" value="#e8dcc8" title="Card color">
+        <input type="text" value="#e8dcc8" placeholder="#hex">
+      </div>
       <div class="torn-page__inner">
         <div class="event-spread__sticker"></div>
         <h3 class="torn-page__title">Etwas anderes im Sinn?</h3>
@@ -785,7 +843,11 @@
       Kontaktformular &ndash; plane dein kreatives Event
     </h2>
 
-    <div class="postcard fade-in">
+    <div class="postcard fade-in" id="postcardEl">
+      <div class="inline-color-pick" data-target="postcardEl" data-setting="postcard_color">
+        <input type="color" value="#f8f4f0" title="Form background">
+        <input type="text" value="#f8f4f0" placeholder="#hex">
+      </div>
       <div class="letter-header">
         <p class="letter-greeting">Ich freue mich auf deine Anfrage!</p>
         <div class="postcard-stamp">
@@ -895,7 +957,11 @@
       Komm vorbei
     </h2>
 
-    <div class="dates-list" id="datesList">
+    <div class="dates-list" id="datesList" style="position: relative;">
+      <div class="inline-color-pick" data-target="datesList" data-setting="date_card_color">
+        <input type="color" value="#f8f4f0" title="Date card color">
+        <input type="text" value="#f8f4f0" placeholder="#hex">
+      </div>
       <p style="color: var(--text-light); font-family: var(--font-handwriting);">Termine werden geladen...</p>
     </div>
 
@@ -942,28 +1008,34 @@
     <div class="drawer-color-row">
       <label>BG Primary</label>
       <input type="color" id="colorBgPrimary" value="#f0ebe0">
+      <input type="text" class="hex-input" data-sync="colorBgPrimary" value="#f0ebe0" placeholder="#hex">
     </div>
     <div class="drawer-color-row">
       <label>BG Secondary</label>
       <input type="color" id="colorBgSecondary" value="#e8e0d4">
+      <input type="text" class="hex-input" data-sync="colorBgSecondary" value="#e8e0d4" placeholder="#hex">
     </div>
     <div class="drawer-color-row">
       <label>Accent</label>
       <input type="color" id="colorAccent" value="#80b8a0">
+      <input type="text" class="hex-input" data-sync="colorAccent" value="#80b8a0" placeholder="#hex">
     </div>
 
     <div class="drawer-section-label">Cover Colors</div>
     <div class="drawer-color-row">
       <label>Birthday</label>
       <input type="color" id="coverColorBirthday" value="#9a806a">
+      <input type="text" class="hex-input" data-sync="coverColorBirthday" value="#9a806a" placeholder="#hex">
     </div>
     <div class="drawer-color-row">
       <label>Bachelorette</label>
       <input type="color" id="coverColorBachelorette" value="#9a806a">
+      <input type="text" class="hex-input" data-sync="coverColorBachelorette" value="#9a806a" placeholder="#hex">
     </div>
     <div class="drawer-color-row">
       <label>Workshop</label>
       <input type="color" id="coverColorWorkshop" value="#9a806a">
+      <input type="text" class="hex-input" data-sync="coverColorWorkshop" value="#9a806a" placeholder="#hex">
     </div>
 
     <div class="drawer-section-label">Cover Texture</div>
@@ -1096,12 +1168,18 @@
           }
         });
 
+        // Apply inline color pickers
+        applyInlineColors(s);
+
         // Store settings for admin use
         window._siteSettings = s;
 
       } catch (err) {
         // Settings load failed — use defaults from HTML
       }
+
+      // Init inline color pickers after settings load
+      initInlineColorPickers();
     })();
 
     /* ---- Artworks data store for admin ---- */
@@ -2082,6 +2160,29 @@
         if (s.cover_color_workshop) coverWorkshop.value = s.cover_color_workshop;
       }
 
+      // Sync hex text inputs with color pickers
+      document.querySelectorAll('.hex-input').forEach(hexInput => {
+        const colorId = hexInput.dataset.sync;
+        const colorInput = document.getElementById(colorId);
+        if (!colorInput) return;
+
+        // Sync initial value
+        hexInput.value = colorInput.value;
+
+        // Color picker → text
+        colorInput.addEventListener('input', () => {
+          hexInput.value = colorInput.value;
+        });
+
+        // Text → color picker
+        hexInput.addEventListener('input', () => {
+          if (/^#[0-9a-fA-F]{6}$/.test(hexInput.value)) {
+            colorInput.value = hexInput.value;
+            colorInput.dispatchEvent(new Event('input'));
+          }
+        });
+      });
+
       /* Save Style button */
       document.getElementById('drawerSaveBtn').addEventListener('click', async () => {
         const activeHeading = document.querySelector('#drawerHeadingFonts .drawer-pill.active');
@@ -2131,6 +2232,83 @@
       if (!match || match.length < 3) return color;
       return '#' + match.slice(0, 3).map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
     }
+
+    /* ---- Inline Color Pickers (torn page, postcard, date cards) ---- */
+    function initInlineColorPickers() {
+      document.querySelectorAll('.inline-color-pick').forEach(pick => {
+        const colorInput = pick.querySelector('input[type="color"]');
+        const textInput = pick.querySelector('input[type="text"]');
+        const targetId = pick.dataset.target;
+        const settingKey = pick.dataset.setting;
+        const targetEl = document.getElementById(targetId);
+
+        function applyColor(val) {
+          if (targetEl) {
+            targetEl.style.background = val;
+            if (settingKey === 'date_card_color') {
+              targetEl.querySelectorAll('.date-card').forEach(card => {
+                card.style.background = val;
+              });
+            }
+          }
+        }
+
+        // Color picker → live preview + sync text
+        colorInput.addEventListener('input', () => {
+          textInput.value = colorInput.value;
+          applyColor(colorInput.value);
+        });
+
+        // Text input → sync color picker + live preview
+        textInput.addEventListener('input', () => {
+          const val = textInput.value;
+          if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+            colorInput.value = val;
+            applyColor(val);
+          }
+        });
+
+        // Save on change (when either input loses focus or picker closes)
+        async function saveColor() {
+          try {
+            await fetch('/api/settings', {
+              method: 'POST',
+              headers: authHeaders(),
+              body: JSON.stringify({ key: settingKey, value: colorInput.value }),
+            });
+            showToast('Color saved!');
+          } catch (err) {
+            showToast('Error saving color');
+          }
+        }
+        colorInput.addEventListener('change', saveColor);
+        textInput.addEventListener('change', saveColor);
+      });
+    }
+
+    // Load saved inline colors from settings
+    function applyInlineColors(settings) {
+      if (settings.torn_page_color) {
+        const el = document.getElementById('tornPage');
+        if (el) el.style.background = settings.torn_page_color;
+        const pick = document.querySelector('[data-setting="torn_page_color"] input');
+        if (pick) pick.value = settings.torn_page_color;
+      }
+      if (settings.postcard_color) {
+        const el = document.getElementById('postcardEl');
+        if (el) el.style.background = settings.postcard_color;
+        const pick = document.querySelector('[data-setting="postcard_color"] input');
+        if (pick) pick.value = settings.postcard_color;
+      }
+      if (settings.date_card_color) {
+        const pick = document.querySelector('[data-setting="date_card_color"] input');
+        if (pick) pick.value = settings.date_card_color;
+        document.querySelectorAll('.date-card').forEach(card => {
+          card.style.background = settings.date_card_color;
+        });
+      }
+    }
+
   </script>
 </body>
 </html>
