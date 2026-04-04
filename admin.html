@@ -467,7 +467,7 @@
       display: none;
       position: fixed;
       bottom: 24px;
-      right: 24px;
+      right: 80px;
       z-index: 11000;
       background: #4a7c6f;
       color: #fff;
@@ -503,7 +503,7 @@
   <div class="admin-toast" id="adminToast"></div>
 
   <!-- ============ PUBLISH BUTTON ============ -->
-  <button class="publish-btn" id="publishBtn" title="Publish changes to live site">Publish to Live</button>
+  <button class="publish-btn" id="publishBtn" title="Publish changes to live site">Publish</button>
 
   <!-- ============ NOTEBOOK TAB NAV ============ -->
   <nav class="tab-nav" aria-label="Main navigation">
@@ -1096,7 +1096,6 @@
       <button class="drawer-pill" data-cover-tex="suede">Suede</button>
     </div>
 
-    <button class="drawer-save-btn" id="drawerSaveBtn">Save Style</button>
   </div>
 
   <script>
@@ -2410,40 +2409,6 @@
       });
 
       /* Save Style button */
-      document.getElementById('drawerSaveBtn').addEventListener('click', async () => {
-        const activeHeading = document.querySelector('#drawerHeadingFonts .drawer-pill.active');
-        const activeBody = document.querySelector('#drawerBodyFonts .drawer-pill.active');
-        const activeTex = document.querySelector('#drawerTextures .drawer-pill.active');
-
-        const settings = [
-          { key: 'heading_font', value: activeHeading ? activeHeading.dataset.headingFont : 'marker' },
-          { key: 'body_font', value: activeBody ? activeBody.dataset.bodyFont : 'caveat' },
-          { key: 'bg_primary', value: bgPrimary.value },
-          { key: 'bg_secondary', value: bgSecondary.value },
-          { key: 'accent_primary', value: accentColor.value },
-          { key: 'cover_color_birthday', value: coverBirthday.value },
-          { key: 'cover_color_bachelorette', value: coverBachelorette.value },
-          { key: 'cover_color_workshop', value: coverWorkshop.value },
-          { key: 'cover_texture', value: activeTex ? activeTex.dataset.coverTex : 'leather' },
-          { key: 'torn_page_color', value: colorTornPage.value },
-          { key: 'postcard_color', value: colorPostcard.value },
-          { key: 'date_card_color', value: colorDateCards.value },
-        ];
-
-        try {
-          for (const s of settings) {
-            await fetch('/api/settings', {
-              method: 'POST',
-              headers: authHeaders(),
-              body: JSON.stringify(s)
-            });
-          }
-          showToast('Style saved!');
-          drawer.classList.remove('is-open');
-        } catch (err) {
-          showToast('Error saving style');
-        }
-      });
     }
 
     /* ---- Utility: escape HTML ---- */
@@ -2547,10 +2512,10 @@
 
       function updateBtn() {
         if (!getHook()) {
-          btn.textContent = 'Setup Publish';
+          btn.textContent = 'Setup';
           btn.classList.add('needs-setup');
         } else {
-          btn.textContent = 'Publish to Live';
+          btn.textContent = 'Publish';
           btn.classList.remove('needs-setup');
         }
       }
