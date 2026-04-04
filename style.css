@@ -999,7 +999,8 @@ a {
 .about-instagram__line {
   height: 1px;
   background: var(--line-color);
-  margin-bottom: 16px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 
 .about-instagram__link {
@@ -3273,8 +3274,9 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 }
 
 .book__cover-front .event-spread__header h3 {
+  font-size: 1.5rem;
   line-height: 28px;
-  margin: 0 0 40px 0;
+  margin: 0 0 25px 0;
   color: rgba(255, 255, 255, 0.85);
   text-shadow:
     0 -1px 1px rgba(0, 0, 0, 0.3),
@@ -3378,9 +3380,9 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 /* Cover polaroid preview */
 .cover-polaroid {
-  margin: 15px auto 10px;
-  width: 55%;
-  max-width: 200px;
+  margin: 15px auto 30px;
+  width: 75%;
+  max-width: 250px;
   transform: rotate(var(--rot, 0deg));
   position: relative;
   z-index: 1;
@@ -3429,6 +3431,15 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   padding-left: 20px;
 }
 
+/* Inner pages: checkmarks use accent color, not white */
+.book__page:not(.book__page--cover) .event-spread__includes {
+  color: var(--text);
+}
+
+.book__page:not(.book__page--cover) .event-spread__includes li::before {
+  color: var(--accent);
+}
+
 .book__cover-front .event-spread__extra {
   line-height: 22px;
   margin: 0;
@@ -3459,6 +3470,28 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 .book__cover-front .event-spread__body::-webkit-scrollbar {
   display: none;
+}
+
+/* Cover: vertically center content with spacing between title and polaroid */
+.book__page--cover .book__cover-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 0px;
+  padding-bottom: 20px;
+}
+
+.book__page--cover .book__cover-front .event-spread__header {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.book__page--cover .book__cover-front .event-spread__body {
+  flex: 0 0 auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: visible;
 }
 
 /* --- Hint to flip --- */

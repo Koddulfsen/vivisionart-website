@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-palette="splatter3" data-heading-font="marker" data-body-font="caveat" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="mint">
+<html lang="en" data-palette="splatter3" data-heading-font="special" data-body-font="quicksand" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="ice" data-cover-tex="leather">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +87,7 @@
       <div class="book__rings"></div>
       
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -95,14 +95,8 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r bis zu 10 Kinder</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 2deg;">
-                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_cover_img"></div>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -113,40 +107,58 @@
           
         </div>
       </div>
-      <!-- Page 1: Details -->
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <ul class="event-spread__includes">
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r bis zu 10 Kinder</li>
+            </ul>
+            <div class="cover-polaroid" style="--rot: -1.5deg;">
+              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_details_img"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
             <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
-            <div class="cover-polaroid" style="--rot: -1.5deg;">
-              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy"></div>
-            </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
         <div class="book__page-back">
-          
+
         </div>
       </div>
-      <!-- Page 2: Photos -->
+      <!-- Page 3: Photos -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
           <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 8%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo1_img"></div>
               <p class="polaroid-caption">Kleine K&uuml;nstler</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 52%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo2_img"></div>
               <p class="polaroid-caption">Farbenfroh</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 42%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo3_img"></div>
               <p class="polaroid-caption">Dschungel-Welt</p>
             </div>
           </div>
@@ -165,7 +177,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -173,15 +185,8 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r Gruppen bis zu 10 Personen</li>
-                <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: -2deg;">
-                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy" data-img-key="book_bachelorette_cover_img"></div>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -192,40 +197,59 @@
           
         </div>
       </div>
-      <!-- Page 1: Details -->
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <ul class="event-spread__includes">
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r Gruppen bis zu 10 Personen</li>
+              <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
+            </ul>
+            <div class="cover-polaroid" style="--rot: 2deg;">
+              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy" data-img-key="book_bachelorette_details_img"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
             <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
-            <div class="cover-polaroid" style="--rot: 2deg;">
-              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy"></div>
-            </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
         <div class="book__page-back">
-          
+
         </div>
       </div>
-      <!-- Page 2: Gemeinsam kreativ -->
+      <!-- Page 3: Gemeinsam kreativ -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy" data-img-key="book_bachelorette_photo1_img"></div>
               <p class="polaroid-caption">Cheers!</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 50%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy" data-img-key="book_bachelorette_photo2_img"></div>
               <p class="polaroid-caption">Gemeinsam</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy" data-img-key="book_bachelorette_photo3_img"></div>
               <p class="polaroid-caption">Unvergesslich</p>
             </div>
           </div>
@@ -244,7 +268,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -252,14 +276,8 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
-                <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
-                <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
-                <li>Gruppen bis 30 Personen m&ouml;glich</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 1.5deg;">
-                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_cover_img"></div>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -270,41 +288,59 @@
           
         </div>
       </div>
-      <!-- Page 1: Details -->
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <ul class="event-spread__includes">
+              <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
+              <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
+              <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
+              <li>Gruppen bis 30 Personen m&ouml;glich</li>
+            </ul>
+            <div class="cover-polaroid" style="--rot: -1deg;">
+              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_details_img"></div>
+            </div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
             <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
             <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
-            <div class="cover-polaroid" style="--rot: -1deg;">
-              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy"></div>
-            </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
         <div class="book__page-back">
-          
+
         </div>
       </div>
-      <!-- Page 2: Teamwork -->
+      <!-- Page 3: Teamwork -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy" data-img-key="book_workshop_photo1_img"></div>
               <p class="polaroid-caption">Gemeinsam</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 10%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy" data-img-key="book_workshop_photo2_img"></div>
               <p class="polaroid-caption">Kreativ-Power</p>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 41%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy" data-img-key="book_workshop_photo3_img"></div>
               <p class="polaroid-caption">Inspiration</p>
             </div>
           </div>
@@ -740,6 +776,15 @@
             const extraEl = book.querySelector('.event-spread__extra');
             if (extraEl) extraEl.textContent = s[extraKey];
           }
+
+          // Book images
+          ['cover', 'details', 'photo1', 'photo2', 'photo3'].forEach(slot => {
+            const imgKey = 'book_' + name + '_' + slot + '_img';
+            if (s[imgKey]) {
+              const imgEl = book.querySelector('img[data-img-key="' + imgKey + '"]');
+              if (imgEl) imgEl.src = s[imgKey];
+            }
+          });
         });
 
       } catch (err) {
@@ -1170,7 +1215,7 @@
       if (savedAccent) html.setAttribute('data-accent', savedAccent);
 
       // Restore per-book cover colors (default: latte #9a806a)
-      const defaultCover = '#9a806a';
+      const defaultCover = '#8a7058';
       ['birthday', 'bachelorette', 'workshop'].forEach(name => {
         const saved = localStorage.getItem('cover-' + name);
         const color = saved || defaultCover;
