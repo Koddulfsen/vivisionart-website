@@ -1683,19 +1683,24 @@
         const file = e.target.files[0];
         if (!file) return;
 
+        // Show local preview immediately — don't wait for CDN
+        const localUrl = URL.createObjectURL(file);
+        preview.src = localUrl;
+        preview.style.display = 'block';
+
         status.textContent = 'Uploading...';
         status.className = 'upload-status';
-        preview.style.display = 'none';
 
         try {
           const url = await uploadImage(file);
-          console.log('Upload URL:', url);
           hidden.value = url;
-          preview.src = url;
-          preview.style.display = 'block';
-          status.textContent = 'Uploaded! ' + url;
+          status.textContent = '✓ Ready';
           status.className = 'upload-status success';
         } catch (err) {
+          // Revert preview on failure
+          preview.style.display = 'none';
+          preview.src = '';
+          URL.revokeObjectURL(localUrl);
           status.textContent = 'Error: ' + (err.message || 'upload failed');
           status.className = 'upload-status error';
         }
@@ -2547,13 +2552,8 @@
       function getHook() { return localStorage.getItem(HOOK_KEY); }
 
       function updateBtn() {
-        if (!getHook()) {
-          btn.textContent = 'Setup';
-          btn.classList.add('needs-setup');
-        } else {
-          btn.textContent = 'Publish';
-          btn.classList.remove('needs-setup');
-        }
+        btn.textContent = 'Publish';
+        btn.classList.toggle('needs-setup', !getHook());
       }
       updateBtn();
 
