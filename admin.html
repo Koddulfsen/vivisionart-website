@@ -792,10 +792,6 @@
 
     <!-- EVENT 4: Torn page CTA -->
     <div class="torn-page fade-in" id="tornPage">
-      <div class="inline-color-pick" data-target="tornPage" data-setting="torn_page_color">
-        <input type="color" value="#e8dcc8" title="Card color">
-        <input type="text" value="#e8dcc8" placeholder="#hex">
-      </div>
       <div class="torn-page__inner">
         <div class="event-spread__sticker"></div>
         <h3 class="torn-page__title">Etwas anderes im Sinn?</h3>
@@ -844,10 +840,6 @@
     </h2>
 
     <div class="postcard fade-in" id="postcardEl">
-      <div class="inline-color-pick" data-target="postcardEl" data-setting="postcard_color">
-        <input type="color" value="#f8f4f0" title="Form background">
-        <input type="text" value="#f8f4f0" placeholder="#hex">
-      </div>
       <div class="letter-header">
         <p class="letter-greeting">Ich freue mich auf deine Anfrage!</p>
         <div class="postcard-stamp">
@@ -957,11 +949,7 @@
       Komm vorbei
     </h2>
 
-    <div class="dates-list" id="datesList" style="position: relative;">
-      <div class="inline-color-pick" data-target="datesList" data-setting="date_card_color">
-        <input type="color" value="#f8f4f0" title="Date card color">
-        <input type="text" value="#f8f4f0" placeholder="#hex">
-      </div>
+    <div class="dates-list" id="datesList">
       <p style="color: var(--text-light); font-family: var(--font-handwriting);">Termine werden geladen...</p>
     </div>
 
@@ -1036,6 +1024,23 @@
       <label>Workshop</label>
       <input type="color" id="coverColorWorkshop" value="#9a806a">
       <input type="text" class="hex-input" data-sync="coverColorWorkshop" value="#9a806a" placeholder="#hex">
+    </div>
+
+    <div class="drawer-section-label">Page Elements</div>
+    <div class="drawer-color-row">
+      <label>CTA Card</label>
+      <input type="color" id="colorTornPage" value="#e8dcc8">
+      <input type="text" class="hex-input" data-sync="colorTornPage" value="#e8dcc8" placeholder="#hex">
+    </div>
+    <div class="drawer-color-row">
+      <label>Contact Form</label>
+      <input type="color" id="colorPostcard" value="#f8f4f0">
+      <input type="text" class="hex-input" data-sync="colorPostcard" value="#f8f4f0" placeholder="#hex">
+    </div>
+    <div class="drawer-color-row">
+      <label>Calendar Cards</label>
+      <input type="color" id="colorDateCards" value="#f8f4f0">
+      <input type="text" class="hex-input" data-sync="colorDateCards" value="#f8f4f0" placeholder="#hex">
     </div>
 
     <div class="drawer-section-label">Cover Texture</div>
@@ -2149,6 +2154,23 @@
       coverBachelorette.addEventListener('input', () => applyCoverColor('bachelorette', coverBachelorette.value));
       coverWorkshop.addEventListener('input', () => applyCoverColor('workshop', coverWorkshop.value));
 
+      // Page element colors — live preview
+      const colorTornPage = document.getElementById('colorTornPage');
+      const colorPostcard = document.getElementById('colorPostcard');
+      const colorDateCards = document.getElementById('colorDateCards');
+
+      colorTornPage.addEventListener('input', () => {
+        const el = document.getElementById('tornPage');
+        if (el) el.style.background = colorTornPage.value;
+      });
+      colorPostcard.addEventListener('input', () => {
+        const el = document.getElementById('postcardEl');
+        if (el) el.style.background = colorPostcard.value;
+      });
+      colorDateCards.addEventListener('input', () => {
+        document.querySelectorAll('.date-card').forEach(c => c.style.background = colorDateCards.value);
+      });
+
       // Load saved cover colors into pickers
       if (window._siteSettings) {
         const s = window._siteSettings;
@@ -2158,6 +2180,9 @@
         if (s.cover_color_birthday) coverBirthday.value = s.cover_color_birthday;
         if (s.cover_color_bachelorette) coverBachelorette.value = s.cover_color_bachelorette;
         if (s.cover_color_workshop) coverWorkshop.value = s.cover_color_workshop;
+        if (s.torn_page_color) colorTornPage.value = s.torn_page_color;
+        if (s.postcard_color) colorPostcard.value = s.postcard_color;
+        if (s.date_card_color) colorDateCards.value = s.date_card_color;
       }
 
       // Sync hex text inputs with color pickers
@@ -2199,6 +2224,9 @@
           { key: 'cover_color_bachelorette', value: coverBachelorette.value },
           { key: 'cover_color_workshop', value: coverWorkshop.value },
           { key: 'cover_texture', value: activeTex ? activeTex.dataset.coverTex : 'leather' },
+          { key: 'torn_page_color', value: colorTornPage.value },
+          { key: 'postcard_color', value: colorPostcard.value },
+          { key: 'date_card_color', value: colorDateCards.value },
         ];
 
         try {
