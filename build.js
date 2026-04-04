@@ -1,0 +1,136 @@
+import { createClient } from '@libsql/client';
+import { readFileSync, writeFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const db = createClient({
+  url: process.env.TURSO_URL,
+  authToken: process.env.TURSO_TOKEN,
+});
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function inject(html, key, content) {
+  const re = new RegExp(`<!-- INJECT:${key} -->[\\s\\S]*?<!-- /INJECT:${key} -->`, 'g');
+  return html.replace(re, `<!-- INJECT:${key} -->${content}<!-- /INJECT:${key} -->`);
+}
+
+async function build() {
+  console.log('Fetching data from DB...');
+
+  const [settingsRes, artworksRes, eventsRes] = await Promise.all([
+    db.execute('SELECT key, value FROM settings'),
+    db.execute('SELECT id, title, image_url, status FROM artworks ORDER BY sort_order ASC, id ASC'),
+    db.execute('SELECT id, title, date, location FROM events ORDER BY id DESC'),
+  ]);
+
+  const s = {};
+  settingsRes.rows.forEach(r => { s[r.key] = r.value; });
+
+  const artworks = artworksRes.rows;
+  const events = eventsRes.rows;
+
+  let html = readFileSync(join(__dirname, 'index.html'), 'utf-8');
+
+  // About name
+  if (s.about_name) {
+    html = inject(html, 'about_name', escapeHtml(s.about_name));
+  }
+
+  // About bio — split on blank lines into paragraphs
+  if (s.about_bio) {
+    const bioHtml = s.about_bio.split(/\n\s*\n/).filter(p => p.trim())
+      .map(p => `\n          <p class="about-bio">${escapeHtml(p.trim())}</p>`).join('') + '\n          ';
+    html = inject(html, 'about_bio', bioHtml);
+  }
+
+  // Instagram URL — update href attribute directly
+  if (s.instagram_url) {
+    html = html.replace(
+      /(<a[^>]+data-inject-href="instagram_url"[^>]+href=")[^"]*(")/,
+      `$1${s.instagram_url}$2`
+    );
+    html = html.replace(
+      /(<a[^>]+href=")[^"]*("[^>]+data-inject-href="instagram_url")/,
+      `$1${s.instagram_url}$2`
+    );
+  }
+
+  // Footer
+  if (s.footer_text) {
+    html = inject(html, 'footer_text', `&copy; ${escapeHtml(s.footer_text)}`);
+  }
+
+  // Book content
+  for (const name of ['birthday', 'bachelorette', 'workshop']) {
+    // Checkmarks
+    const checksKey = `book_${name}_checks`;
+    if (s[checksKey]) {
+      const items = s[checksKey].split('\n').filter(l => l.trim())
+        .map(l => `\n              <li>${escapeHtml(l.trim())}</li>`).join('');
+      html = inject(html, checksKey, items + '\n            ');
+    }
+
+    // Description paragraphs
+    const descKey = `book_${name}_desc`;
+    if (s[descKey]) {
+      const descHtml = s[descKey].split(/\n\s*\n/).filter(p => p.trim())
+        .map(p => `<p class="event-spread__desc">${escapeHtml(p.trim())}</p>\n            `).join('');
+      html = inject(html, descKey, descHtml);
+    }
+
+    // Extra text
+    const extraKey = `book_${name}_extra`;
+    if (s[extraKey]) {
+      html = inject(html, extraKey, escapeHtml(s[extraKey]));
+    }
+  }
+
+  // Artworks gallery
+  const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
+  const xPos = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
+  const yPos = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
+  const attachments = ['polaroid-pin', 'tape-corner'];
+
+  const artworksHtml = artworks.length === 0
+    ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>\n      '
+    : '\n      ' + artworks.map((a, i) => `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
+        <div class="${attachments[i % attachments.length]}"></div>
+        <span class="art-sticker">${a.status === 'sold' ? 'verkauft' : 'zu verkaufen'}</span>
+        <div class="polaroid-frame">
+          <img src="${a.image_url}" alt="${escapeHtml(a.title || '')}" loading="lazy">
+        </div>
+        <p class="polaroid-caption">${escapeHtml(a.title || '')}</p>
+      </article>`).join('\n      ') + '\n      ';
+
+  html = inject(html, 'artworks', artworksHtml);
+
+  // Events / dates
+  const eventRots = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
+  const eventsHtml = events.length === 0
+    ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
+    : '\n      ' + events.map((e, i) => `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
+        <span class="date-card__date">${escapeHtml(e.date)}</span>
+        <span class="date-card__what">${escapeHtml(e.title)}</span>
+        <span class="date-card__where">${escapeHtml(e.location || '')}</span>
+      </div>`).join('\n      ') + '\n      ';
+
+  html = inject(html, 'events', eventsHtml);
+
+  writeFileSync(join(__dirname, 'index.html'), html);
+  console.log('✓ Build complete — content baked in from DB');
+}
+
+build().catch(err => {
+  console.error('Build error (deploying with default content):', err.message);
+  process.exit(0); // Don't block deploy if DB is temporarily unreachable
+});

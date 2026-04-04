@@ -127,6 +127,8 @@
     .admin-active .retro-footer { position: relative; }
     .admin-active .date-card { position: relative; }
     .admin-active .polaroid { position: relative; }
+    .admin-active .cover-polaroid { position: relative; }
+    .admin-active .scrapbook__polaroid { position: relative; }
 
     /* ---- Inline Color Pickers ---- */
     .inline-color-pick {
@@ -459,6 +461,29 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* ---- Publish button ---- */
+    .publish-btn {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 11000;
+      background: #4a7c6f;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .admin-active .publish-btn { display: block; }
+    .publish-btn:hover { background: #3d6b5e; transform: translateY(-1px); }
+    .publish-btn:disabled { background: #888; cursor: default; transform: none; }
+    .publish-btn.needs-setup { background: #8a6a30; }
   </style>
 </head>
 <body>
@@ -476,6 +501,9 @@
 
   <!-- ============ ADMIN TOAST ============ -->
   <div class="admin-toast" id="adminToast"></div>
+
+  <!-- ============ PUBLISH BUTTON ============ -->
+  <button class="publish-btn" id="publishBtn" title="Publish changes to live site">Publish to Live</button>
 
   <!-- ============ NOTEBOOK TAB NAV ============ -->
   <nav class="tab-nav" aria-label="Main navigation">
@@ -574,7 +602,8 @@
                 <li>F&uuml;r bis zu 10 Kinder</li>
               </ul>
               <div class="cover-polaroid" style="--rot: 2deg;">
-                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_cover_img"></div>
+                <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -592,7 +621,8 @@
             <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
             <div class="cover-polaroid" style="--rot: -1.5deg;">
-              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_details_img"></div>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
@@ -608,18 +638,21 @@
           <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 8%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo1_img"></div>
               <p class="polaroid-caption">Kleine K&uuml;nstler</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 52%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo2_img"></div>
               <p class="polaroid-caption">Farbenfroh</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 42%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo3_img"></div>
               <p class="polaroid-caption">Dschungel-Welt</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
           <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
@@ -653,7 +686,8 @@
                 <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
               </ul>
               <div class="cover-polaroid" style="--rot: -2deg;">
-                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy" data-img-key="book_bachelorette_cover_img"></div>
+                <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -671,7 +705,8 @@
             <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
             <div class="cover-polaroid" style="--rot: 2deg;">
-              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy" data-img-key="book_bachelorette_details_img"></div>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
@@ -687,18 +722,21 @@
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy" data-img-key="book_bachelorette_photo1_img"></div>
               <p class="polaroid-caption">Cheers!</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 50%; --y: 12%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy" data-img-key="book_bachelorette_photo2_img"></div>
               <p class="polaroid-caption">Gemeinsam</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy" data-img-key="book_bachelorette_photo3_img"></div>
               <p class="polaroid-caption">Unvergesslich</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
           <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
@@ -731,7 +769,8 @@
                 <li>Gruppen bis 30 Personen m&ouml;glich</li>
               </ul>
               <div class="cover-polaroid" style="--rot: 1.5deg;">
-                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy"></div>
+                <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_cover_img"></div>
+                <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
             </div>
@@ -750,7 +789,8 @@
             <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
             <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
             <div class="cover-polaroid" style="--rot: -1deg;">
-              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_details_img"></div>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
@@ -766,18 +806,21 @@
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
-              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy" data-img-key="book_workshop_photo1_img"></div>
               <p class="polaroid-caption">Gemeinsam</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 10%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy" data-img-key="book_workshop_photo2_img"></div>
               <p class="polaroid-caption">Kreativ-Power</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 41%;">
               <div class="polaroid-pin"></div>
-              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy"></div>
+              <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy" data-img-key="book_workshop_photo3_img"></div>
               <p class="polaroid-caption">Inspiration</p>
+              <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
           <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
@@ -1171,7 +1214,52 @@
             const extraEl = book.querySelector('.event-spread__extra');
             if (extraEl) extraEl.textContent = s[extraKey];
           }
+
+          // Book images and captions
+          ['cover', 'details', 'photo1', 'photo2', 'photo3'].forEach(slot => {
+            const imgKey = 'book_' + name + '_' + slot + '_img';
+            const captionKey = 'book_' + name + '_' + slot + '_caption';
+            const imgEl = book.querySelector('img[data-img-key="' + imgKey + '"]');
+            if (imgEl) {
+              if (s[imgKey]) imgEl.src = s[imgKey];
+              if (captionKey in s) {
+                const container = imgEl.closest('.scrapbook__polaroid, .cover-polaroid');
+                if (container) {
+                  let captionEl = container.querySelector('.polaroid-caption');
+                  if (s[captionKey]) {
+                    if (!captionEl) {
+                      captionEl = document.createElement('p');
+                      captionEl.className = 'polaroid-caption';
+                      const pencilBtn = container.querySelector('.edit-pencil');
+                      pencilBtn ? container.insertBefore(captionEl, pencilBtn) : container.appendChild(captionEl);
+                    }
+                    captionEl.textContent = s[captionKey];
+                  } else if (captionEl) {
+                    captionEl.textContent = '';
+                  }
+                }
+              }
+            }
+          });
         });
+
+        // About photo caption
+        if ('about_photo_caption' in s) {
+          const polaroid = document.querySelector('.about-polaroid');
+          if (polaroid) {
+            let captionEl = polaroid.querySelector('.polaroid-caption');
+            if (s.about_photo_caption) {
+              if (!captionEl) {
+                captionEl = document.createElement('p');
+                captionEl.className = 'polaroid-caption';
+                polaroid.appendChild(captionEl);
+              }
+              captionEl.textContent = s.about_photo_caption;
+            } else if (captionEl) {
+              captionEl.textContent = '';
+            }
+          }
+        }
 
         // Apply inline color pickers
         applyInlineColors(s);
@@ -1725,6 +1813,7 @@
           case 'footer': editFooter(pencil); break;
           case 'artwork': editArtwork(pencil); break;
           case 'event': editEvent(pencil); break;
+          case 'book-image': editBookImage(pencil); break;
         }
       });
     }
@@ -1800,25 +1889,55 @@
     function editAboutPhoto(pencil) {
       const img = document.getElementById('aboutPhoto');
       const current = img.src;
+      const polaroid = document.querySelector('.about-polaroid');
+      const existingCaptionEl = polaroid ? polaroid.querySelector('.polaroid-caption') : null;
+      const currentCaption = (window._siteSettings && 'about_photo_caption' in window._siteSettings)
+        ? window._siteSettings['about_photo_caption']
+        : (existingCaptionEl ? existingCaptionEl.textContent.trim() : '');
       const pop = createPopover(pencil, `
         <label>Photo</label>
         ${makeUploadFieldHtml(current, 'editPhotoUrl')}
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <input type="checkbox" id="editPhotoHasCaption" ${currentCaption ? 'checked' : ''} style="width:auto;margin:0;">
+          <label for="editPhotoHasCaption" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
+        </div>
+        <div id="editPhotoCaptionWrap" style="display:${currentCaption ? 'block' : 'none'};">
+          <label>Title</label>
+          <input type="text" id="editPhotoCaption" value="${escHtml(currentCaption)}">
+        </div>
         <div class="btn-row">
           <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
           <button class="btn-save" id="savePhotoBtn">Save</button>
         </div>
       `);
       wireUploadField(pop, 'editPhotoUrl');
+      pop.querySelector('#editPhotoHasCaption').addEventListener('change', function() {
+        pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
+      });
       pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editPhotoUrl').value.trim();
         if (!val) return;
+        const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
+        const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
         try {
-          await fetch('/api/settings', {
-            method: 'POST',
-            headers: authHeaders(),
-            body: JSON.stringify({ key: 'about_photo', value: val })
-          });
+          await Promise.all([
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo', value: val }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) })
+          ]);
           img.src = val;
+          if (polaroid) {
+            let captionEl = polaroid.querySelector('.polaroid-caption');
+            if (captionText) {
+              if (!captionEl) {
+                captionEl = document.createElement('p');
+                captionEl.className = 'polaroid-caption';
+                polaroid.appendChild(captionEl);
+              }
+              captionEl.textContent = captionText;
+            } else if (captionEl) {
+              captionEl.textContent = '';
+            }
+          }
           showToast('Photo updated');
           closeAllPopovers();
         } catch (err) { showToast('Error saving'); }
@@ -1882,6 +2001,67 @@
       });
     }
 
+    /* ---- Edit: Book Image ---- */
+    function editBookImage(pencil) {
+      const key = pencil.dataset.imgKey;
+      const captionKey = key.replace(/_img$/, '_caption');
+      const container = pencil.closest('.cover-polaroid, .scrapbook__polaroid');
+      const img = container ? container.querySelector('img') : null;
+      if (!img) return;
+      const current = img.src;
+      const existingCaptionEl = container.querySelector('.polaroid-caption');
+      const currentCaption = (window._siteSettings && captionKey in window._siteSettings)
+        ? window._siteSettings[captionKey]
+        : (existingCaptionEl ? existingCaptionEl.textContent.trim() : '');
+      const pop = createPopover(pencil, `
+        <label>Image</label>
+        ${makeUploadFieldHtml(current, 'editBookImg')}
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <input type="checkbox" id="editBookImgHasCaption" ${currentCaption ? 'checked' : ''} style="width:auto;margin:0;">
+          <label for="editBookImgHasCaption" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
+        </div>
+        <div id="editBookImgCaptionWrap" style="display:${currentCaption ? 'block' : 'none'};">
+          <label>Title</label>
+          <input type="text" id="editBookImgCaption" value="${escHtml(currentCaption)}">
+        </div>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveBookImgBtn">Save</button>
+        </div>
+      `);
+      wireUploadField(pop, 'editBookImg');
+      pop.querySelector('#editBookImgHasCaption').addEventListener('change', function() {
+        pop.querySelector('#editBookImgCaptionWrap').style.display = this.checked ? 'block' : 'none';
+      });
+      pop.querySelector('#saveBookImgBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editBookImg').value.trim();
+        if (!val) return;
+        const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
+        const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
+        try {
+          await Promise.all([
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, value: val }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: captionKey, value: captionText }) })
+          ]);
+          img.src = val;
+          let captionEl = container.querySelector('.polaroid-caption');
+          if (captionText) {
+            if (!captionEl) {
+              captionEl = document.createElement('p');
+              captionEl.className = 'polaroid-caption';
+              const pencilBtn = container.querySelector('.edit-pencil');
+              pencilBtn ? container.insertBefore(captionEl, pencilBtn) : container.appendChild(captionEl);
+            }
+            captionEl.textContent = captionText;
+          } else if (captionEl) {
+            captionEl.textContent = '';
+          }
+          showToast('Image updated');
+          closeAllPopovers();
+        } catch (err) { showToast('Error saving'); }
+      });
+    }
+
     /* ---- Edit: Artwork ---- */
     function editArtwork(pencil) {
       const id = pencil.dataset.artworkId;
@@ -1889,11 +2069,18 @@
       if (!artwork) return;
 
       const article = pencil.closest('.polaroid');
+      const currentTitle = artwork.title || '';
       const pop = createPopover(article, `
         <label>Image</label>
         ${makeUploadFieldHtml(artwork.image_url || '', 'editArtImg')}
-        <label>Title</label>
-        <input type="text" id="editArtTitle" value="${escHtml(artwork.title || '')}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <input type="checkbox" id="editArtHasTitle" ${currentTitle ? 'checked' : ''} style="width:auto;margin:0;">
+          <label for="editArtHasTitle" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
+        </div>
+        <div id="editArtTitleWrap" style="display:${currentTitle ? 'block' : 'none'};">
+          <label>Title</label>
+          <input type="text" id="editArtTitle" value="${escHtml(currentTitle)}">
+        </div>
         <label>Status</label>
         <select id="editArtStatus">
           <option value="for_sale" ${artwork.status !== 'sold' ? 'selected' : ''}>For Sale</option>
@@ -1906,10 +2093,14 @@
         </div>
       `);
       wireUploadField(pop, 'editArtImg');
+      pop.querySelector('#editArtHasTitle').addEventListener('change', function() {
+        pop.querySelector('#editArtTitleWrap').style.display = this.checked ? 'block' : 'none';
+      });
 
       pop.querySelector('#saveArtBtn').addEventListener('click', async () => {
         const imgUrl = pop.querySelector('#editArtImg').value.trim();
-        const title = pop.querySelector('#editArtTitle').value.trim();
+        const hasTitle = pop.querySelector('#editArtHasTitle').checked;
+        const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
         const status = pop.querySelector('#editArtStatus').value;
         try {
           await fetch('/api/artworks/' + id, {
@@ -1995,8 +2186,14 @@
         const pop = createPopover(btn, `
           <label>Image</label>
           ${makeUploadFieldHtml('', 'newArtImg')}
-          <label>Title</label>
-          <input type="text" id="newArtTitle" placeholder="Artwork title">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <input type="checkbox" id="newArtHasTitle" style="width:auto;margin:0;">
+            <label for="newArtHasTitle" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
+          </div>
+          <div id="newArtTitleWrap" style="display:none;">
+            <label>Title</label>
+            <input type="text" id="newArtTitle" placeholder="Artwork title">
+          </div>
           <label>Status</label>
           <select id="newArtStatus">
             <option value="for_sale">For Sale</option>
@@ -2008,9 +2205,13 @@
           </div>
         `);
         wireUploadField(pop, 'newArtImg');
+        pop.querySelector('#newArtHasTitle').addEventListener('change', function() {
+          pop.querySelector('#newArtTitleWrap').style.display = this.checked ? 'block' : 'none';
+        });
         pop.querySelector('#createArtBtn').addEventListener('click', async () => {
           const imgUrl = pop.querySelector('#newArtImg').value.trim();
-          const title = pop.querySelector('#newArtTitle').value.trim();
+          const hasTitle = pop.querySelector('#newArtHasTitle').checked;
+          const title = hasTitle ? pop.querySelector('#newArtTitle').value.trim() : '';
           const status = pop.querySelector('#newArtStatus').value;
           if (!imgUrl) { showToast('Please upload an image first'); return; }
           try {
@@ -2336,6 +2537,52 @@
         });
       }
     }
+
+    /* ---- Publish to Live ---- */
+    (function() {
+      const btn = document.getElementById('publishBtn');
+      const HOOK_KEY = 'vv_deploy_hook';
+
+      function getHook() { return localStorage.getItem(HOOK_KEY); }
+
+      function updateBtn() {
+        if (!getHook()) {
+          btn.textContent = 'Setup Publish';
+          btn.classList.add('needs-setup');
+        } else {
+          btn.textContent = 'Publish to Live';
+          btn.classList.remove('needs-setup');
+        }
+      }
+      updateBtn();
+
+      btn.addEventListener('click', async () => {
+        let hook = getHook();
+
+        if (!hook) {
+          hook = prompt('Paste your Vercel Deploy Hook URL:\n(Vercel Dashboard → Project → Settings → Git → Deploy Hooks)');
+          if (!hook || !hook.startsWith('https://')) { showToast('Invalid URL — not saved'); return; }
+          localStorage.setItem(HOOK_KEY, hook);
+          updateBtn();
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Publishing...';
+        try {
+          const res = await fetch(hook, { method: 'POST' });
+          if (res.ok) {
+            showToast('Deploy triggered — live in ~1 min');
+          } else {
+            showToast('Deploy failed (' + res.status + ')');
+          }
+        } catch (err) {
+          showToast('Error: ' + err.message);
+        } finally {
+          btn.disabled = false;
+          updateBtn();
+        }
+      });
+    })();
 
   </script>
 </body>

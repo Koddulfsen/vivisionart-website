@@ -48,7 +48,8 @@
         </div>
 
         <div class="about-text">
-          <h3 class="about-name">Hi, ich bin Vivi.</h3>
+          <h3 class="about-name"><!-- INJECT:about_name -->Hi, ich bin Vivi.<!-- /INJECT:about_name --></h3>
+          <!-- INJECT:about_bio -->
           <p class="about-bio">K&uuml;nstlerin und Gastgeberin kreativer Erlebnisse.</p>
           <p class="about-bio">Ich male nicht einfach nur &ndash; ich erschaffe R&auml;ume, in denen Kreativit&auml;t frei werden darf.</p>
           <p class="about-bio">Meine Kunst entsteht intuitiv. Ohne feste Regeln, ohne klare Grenzen. Es geht nicht darum, was &bdquo;richtig&ldquo; ist, sondern darum, den Moment bewusst zu erleben und in eine eigene Welt einzutauchen &ndash; eine neue Perspektive auf das, was entsteht.</p>
@@ -56,10 +57,11 @@
           <p class="about-bio">Mit Vi.Vision Art gestalte ich kreative Erlebnisse, die &uuml;ber das Gew&ouml;hnliche hinausgehen. Stilvolle Events, bei denen nicht nur das Ergebnis z&auml;hlt, sondern vor allem das Erleben selbst.</p>
           <p class="about-bio">Ob ein liebevoll gestalteter Kindergeburtstag, ein besonderer Junggesellinnenabschied oder ein inspirierender Workshop &ndash; jedes Event ist durchdacht, hochwertig und mit viel Gesp&uuml;r f&uuml;r Details umgesetzt.</p>
           <p class="about-bio">Ich bringe alles mit, was es braucht: ausgew&auml;hlte Materialien, ein stimmiges Konzept und die passende Atmosph&auml;re. Ihr kommt an &ndash; und taucht ein in eure eigene kreative Welt.</p>
+          <!-- /INJECT:about_bio -->
 
           <div class="about-instagram">
             <div class="about-instagram__line"></div>
-            <a href="https://www.instagram.com/vi.visionart" target="_blank" rel="noopener" class="about-instagram__link">
+            <a href="https://www.instagram.com/vi.visionart" target="_blank" rel="noopener" class="about-instagram__link" data-inject-href="instagram_url">
               <svg class="about-instagram__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
               <span>Schau auf meinem Instagram vorbei</span>
             </a>
@@ -111,12 +113,12 @@
       <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <ul class="event-spread__includes">
+            <ul class="event-spread__includes"><!-- INJECT:book_birthday_checks -->
               <li>Alle Materialien inklusive</li>
               <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
               <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
               <li>F&uuml;r bis zu 10 Kinder</li>
-            </ul>
+            <!-- /INJECT:book_birthday_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1.5deg;">
               <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_details_img"></div>
             </div>
@@ -132,8 +134,8 @@
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
+            <!-- INJECT:book_birthday_desc --><p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p><!-- /INJECT:book_birthday_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_birthday_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.<!-- /INJECT:book_birthday_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -201,13 +203,13 @@
       <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <ul class="event-spread__includes">
+            <ul class="event-spread__includes"><!-- INJECT:book_bachelorette_checks -->
               <li>Alle Materialien inklusive</li>
               <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
               <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
               <li>F&uuml;r Gruppen bis zu 10 Personen</li>
               <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
-            </ul>
+            <!-- /INJECT:book_bachelorette_checks --></ul>
             <div class="cover-polaroid" style="--rot: 2deg;">
               <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy" data-img-key="book_bachelorette_details_img"></div>
             </div>
@@ -223,8 +225,8 @@
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
+            <!-- INJECT:book_bachelorette_desc --><p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p><!-- /INJECT:book_bachelorette_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_bachelorette_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.<!-- /INJECT:book_bachelorette_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -292,12 +294,12 @@
       <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <ul class="event-spread__includes">
+            <ul class="event-spread__includes"><!-- INJECT:book_workshop_checks -->
               <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
               <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
               <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
               <li>Gruppen bis 30 Personen m&ouml;glich</li>
-            </ul>
+            <!-- /INJECT:book_workshop_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1deg;">
               <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_details_img"></div>
             </div>
@@ -313,9 +315,9 @@
       <div class="book__page" style="z-index: 2;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
-            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
+            <!-- INJECT:book_workshop_desc --><p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
+            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p><!-- /INJECT:book_workshop_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_workshop_extra -->Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).<!-- /INJECT:book_workshop_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -378,8 +380,9 @@
     <p class="gallery-note fade-in">Alle Werke sind Originale &mdash; wenn dir etwas gef&auml;llt, schreib mir einfach</p>
 
     <div class="board" id="galleryBoard">
-      <!-- Artworks loaded dynamically from /api/artworks -->
+      <!-- INJECT:artworks -->
       <p class="gallery-loading" style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke werden geladen...</p>
+      <!-- /INJECT:artworks -->
     </div>
 
   </section>
@@ -510,242 +513,18 @@
     </h2>
 
     <div class="dates-list" id="datesList">
-      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Termine werden geladen...</p>
+      <!-- INJECT:events -->
+      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>
+      <!-- /INJECT:events -->
     </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
   <footer class="retro-footer">
-    <p>&copy; 2026 Vi.Vision ART</p>
+    <p><!-- INJECT:footer_text -->&copy; 2026 Vi.Vision ART<!-- /INJECT:footer_text --></p>
   </footer>
 
   <script>
-    /* ---- Load settings from API and apply to DOM ---- */
-    (async function loadAndApplySettings() {
-      try {
-        const res = await fetch('/api/settings');
-        if (!res.ok) return;
-        const s = await res.json();
-        // Inline element colors
-        if (s.torn_page_color) {
-          const tp = document.querySelector('.torn-page');
-          if (tp) tp.style.background = s.torn_page_color;
-        }
-        if (s.postcard_color) {
-          const pc = document.querySelector('.postcard');
-          if (pc) pc.style.background = s.postcard_color;
-        }
-        if (s.date_card_color) {
-          document.querySelectorAll('.date-card').forEach(c => c.style.background = s.date_card_color);
-        }
-
-        // About content
-        if (s.about_name) {
-          const nameEl = document.querySelector('.about-name');
-          if (nameEl) nameEl.textContent = s.about_name;
-        }
-        if (s.about_bio) {
-          const bioContainer = document.querySelector('.about-text');
-          if (bioContainer) {
-            const paras = s.about_bio.split(/\n\s*\n/);
-            const existing = bioContainer.querySelectorAll('.about-bio');
-            existing.forEach(el => el.remove());
-            const nameEl = bioContainer.querySelector('.about-name');
-            let insertAfter = nameEl;
-            paras.forEach(p => {
-              if (!p.trim()) return;
-              const el = document.createElement('p');
-              el.className = 'about-bio';
-              el.textContent = p.trim();
-              if (insertAfter && insertAfter.nextSibling) {
-                insertAfter.parentNode.insertBefore(el, insertAfter.nextSibling);
-              } else if (insertAfter) {
-                insertAfter.parentNode.appendChild(el);
-              }
-              insertAfter = el;
-            });
-          }
-        }
-
-        // Instagram
-        if (s.instagram_url) {
-          const igLink = document.querySelector('.about-instagram__link');
-          if (igLink) igLink.href = s.instagram_url;
-        }
-
-        // Footer
-        if (s.footer_text) {
-          const footer = document.querySelector('.retro-footer p');
-          if (footer) footer.innerHTML = '&copy; ' + s.footer_text;
-        }
-
-        // Book content
-        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
-          const book = document.querySelector('[data-book="' + name + '"]');
-          if (!book) return;
-
-          // Cover checkmarks
-          const checksKey = 'book_' + name + '_checks';
-          if (s[checksKey]) {
-            const ul = book.querySelector('.event-spread__includes');
-            if (ul) {
-              ul.innerHTML = s[checksKey].split('\n').filter(l => l.trim()).map(l => '<li>' + l.trim() + '</li>').join('');
-            }
-          }
-
-          // Description
-          const descKey = 'book_' + name + '_desc';
-          if (s[descKey]) {
-            const descEls = book.querySelectorAll('.event-spread__desc');
-            const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
-            descEls.forEach((el, i) => {
-              if (paras[i]) el.textContent = paras[i].trim();
-            });
-          }
-
-          // Extra text
-          const extraKey = 'book_' + name + '_extra';
-          if (s[extraKey]) {
-            const extraEl = book.querySelector('.event-spread__extra');
-            if (extraEl) extraEl.textContent = s[extraKey];
-          }
-
-          // Book images and captions
-          ['cover', 'details', 'photo1', 'photo2', 'photo3'].forEach(slot => {
-            const imgKey = 'book_' + name + '_' + slot + '_img';
-            const captionKey = 'book_' + name + '_' + slot + '_caption';
-            const imgEl = book.querySelector('img[data-img-key="' + imgKey + '"]');
-            if (imgEl) {
-              if (s[imgKey]) imgEl.src = s[imgKey];
-              if (captionKey in s) {
-                const container = imgEl.closest('.scrapbook__polaroid, .cover-polaroid');
-                if (container) {
-                  let captionEl = container.querySelector('.polaroid-caption');
-                  if (s[captionKey]) {
-                    if (!captionEl) {
-                      captionEl = document.createElement('p');
-                      captionEl.className = 'polaroid-caption';
-                      container.appendChild(captionEl);
-                    }
-                    captionEl.textContent = s[captionKey];
-                  } else if (captionEl) {
-                    captionEl.textContent = '';
-                  }
-                }
-              }
-            }
-          });
-        });
-
-        // About photo caption
-        if ('about_photo_caption' in s) {
-          const polaroid = document.querySelector('.about-polaroid');
-          if (polaroid) {
-            let captionEl = polaroid.querySelector('.polaroid-caption');
-            if (s.about_photo_caption) {
-              if (!captionEl) {
-                captionEl = document.createElement('p');
-                captionEl.className = 'polaroid-caption';
-                polaroid.appendChild(captionEl);
-              }
-              captionEl.textContent = s.about_photo_caption;
-            } else if (captionEl) {
-              captionEl.textContent = '';
-            }
-          }
-        }
-
-      } catch (err) {
-        // Settings load failed — use defaults from HTML
-      }
-    })();
-
-    /* ---- Load artworks from API ---- */
-    (async function loadArtworks() {
-      const board = document.getElementById('galleryBoard');
-      const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
-      const xPositions = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
-      const yPositions = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
-      const attachments = ['polaroid-pin', 'tape-corner'];
-
-      try {
-        const res = await fetch('/api/artworks');
-        if (!res.ok) throw new Error('Failed to load');
-        const artworks = await res.json();
-
-        if (!artworks.length) {
-          board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>';
-          return;
-        }
-
-        board.innerHTML = artworks.map((a, i) => {
-          const rot = rotations[i % rotations.length];
-          const x = xPositions[i % xPositions.length];
-          const y = yPositions[i % yPositions.length];
-          const attach = attachments[i % attachments.length];
-          const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
-          return `
-            <article class="polaroid p${i + 1} fade-in" style="--rot: ${rot}; --x: ${x}; --y: ${y};">
-              <div class="${attach}"></div>
-              <span class="art-sticker">${statusLabel}</span>
-              <div class="polaroid-frame">
-                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy">
-              </div>
-              <p class="polaroid-caption">${a.title || ''}</p>
-            </article>
-          `;
-        }).join('');
-
-        // Re-init lightbox with new polaroids
-        initLightbox();
-
-        // Observe new fade-in elements
-        board.querySelectorAll('.fade-in').forEach(el => {
-          const obs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
-            });
-          }, { threshold: 0.15 });
-          obs.observe(el);
-        });
-
-      } catch (err) {
-        board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke konnten nicht geladen werden</p>';
-      }
-    })();
-
-    /* ---- Load calendar events from API ---- */
-    (async function() {
-      const rotations = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
-      try {
-        const res = await fetch('/api/events');
-        const events = await res.json();
-        const list = document.getElementById('datesList');
-        if (events.length === 0) {
-          list.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>';
-        } else {
-          list.innerHTML = events.map((e, i) => `
-            <div class="date-card fade-in" style="--rot: ${rotations[i % rotations.length]};">
-              <span class="date-card__date">${e.date}</span>
-              <span class="date-card__what">${e.title}</span>
-              <span class="date-card__where">${e.location || ''}</span>
-            </div>
-          `).join('');
-          // Re-observe for fade-in
-          list.querySelectorAll('.fade-in').forEach(el => {
-            const obs = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
-              });
-            }, { threshold: 0.15 });
-            obs.observe(el);
-          });
-        }
-      } catch (err) {
-        // Fallback: keep loading text or show nothing
-      }
-    })();
-
     /* ---- Scroll-triggered fade-in ---- */
     const fadeEls = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {
