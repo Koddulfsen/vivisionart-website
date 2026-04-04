@@ -24,6 +24,14 @@ function inject(html, key, content) {
   return html.replace(re, `<!-- INJECT:${key} -->${content}<!-- /INJECT:${key} -->`);
 }
 
+// Replace the src attribute of an img that has a matching data-img-key attribute
+function injectImgSrc(html, key, url) {
+  return html.replace(
+    new RegExp(`(<img(?=[^>]*data-img-key="${key}")[^>]*\\bsrc=")[^"]*(")`),
+    `$1${url}$2`
+  );
+}
+
 async function build() {
   console.log('Fetching data from DB...');
 
@@ -39,71 +47,103 @@ async function build() {
   const artworks = artworksRes.rows;
   const events = eventsRes.rows;
 
-  let html = readFileSync(join(__dirname, 'index.html'), 'utf-8');
-
-  // About name
-  if (s.about_name) {
-    html = inject(html, 'about_name', escapeHtml(s.about_name));
-  }
-
-  // About bio — split on blank lines into paragraphs
-  if (s.about_bio) {
-    const bioHtml = s.about_bio.split(/\n\s*\n/).filter(p => p.trim())
-      .map(p => `\n          <p class="about-bio">${escapeHtml(p.trim())}</p>`).join('') + '\n          ';
-    html = inject(html, 'about_bio', bioHtml);
-  }
-
-  // Instagram URL — update href attribute directly
-  if (s.instagram_url) {
-    html = html.replace(
-      /(<a[^>]+data-inject-href="instagram_url"[^>]+href=")[^"]*(")/,
-      `$1${s.instagram_url}$2`
-    );
-    html = html.replace(
-      /(<a[^>]+href=")[^"]*("[^>]+data-inject-href="instagram_url")/,
-      `$1${s.instagram_url}$2`
-    );
-  }
-
-  // Footer
-  if (s.footer_text) {
-    html = inject(html, 'footer_text', `&copy; ${escapeHtml(s.footer_text)}`);
-  }
-
-  // Book content
-  for (const name of ['birthday', 'bachelorette', 'workshop']) {
-    // Checkmarks
-    const checksKey = `book_${name}_checks`;
-    if (s[checksKey]) {
-      const items = s[checksKey].split('\n').filter(l => l.trim())
-        .map(l => `\n              <li>${escapeHtml(l.trim())}</li>`).join('');
-      html = inject(html, checksKey, items + '\n            ');
+  function applyContent(html) {
+    // About name
+    if (s.about_name) {
+      html = inject(html, 'about_name', escapeHtml(s.about_name));
     }
 
-    // Description paragraphs
-    const descKey = `book_${name}_desc`;
-    if (s[descKey]) {
-      const descHtml = s[descKey].split(/\n\s*\n/).filter(p => p.trim())
-        .map(p => `<p class="event-spread__desc">${escapeHtml(p.trim())}</p>\n            `).join('');
-      html = inject(html, descKey, descHtml);
+    // About bio — split on blank lines into paragraphs
+    if (s.about_bio) {
+      const bioHtml = s.about_bio.split(/\n\s*\n/).filter(p => p.trim())
+        .map(p => `\n          <p class="about-bio">${escapeHtml(p.trim())}</p>`).join('') + '\n          ';
+      html = inject(html, 'about_bio', bioHtml);
     }
 
-    // Extra text
-    const extraKey = `book_${name}_extra`;
-    if (s[extraKey]) {
-      html = inject(html, extraKey, escapeHtml(s[extraKey]));
+    // Instagram URL — update href attribute directly
+    if (s.instagram_url) {
+      html = html.replace(
+        /(<a[^>]+data-inject-href="instagram_url"[^>]+href=")[^"]*(")/,
+        `$1${s.instagram_url}$2`
+      );
+      html = html.replace(
+        /(<a[^>]+href=")[^"]*("[^>]+data-inject-href="instagram_url")/,
+        `$1${s.instagram_url}$2`
+      );
     }
-  }
 
-  // Artworks gallery
-  const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
-  const xPos = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
-  const yPos = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
-  const attachments = ['polaroid-pin', 'tape-corner'];
+    // Footer
+    if (s.footer_text) {
+      html = inject(html, 'footer_text', `&copy; ${escapeHtml(s.footer_text)}`);
+    }
 
-  const artworksHtml = artworks.length === 0
-    ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>\n      '
-    : '\n      ' + artworks.map((a, i) => `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
+    // About photo
+    if (s.about_photo) {
+      html = html.replace(
+        /(<img(?=[^>]*id="aboutPhoto")[^>]*\bsrc=")[^"]*(")/,
+        `$1${s.about_photo}$2`
+      );
+    }
+
+    // About photo caption
+    if ('about_photo_caption' in s) {
+      const captionHtml = s.about_photo_caption
+        ? `<p class="polaroid-caption">${escapeHtml(s.about_photo_caption)}</p>`
+        : '';
+      html = inject(html, 'about_photo_caption', captionHtml);
+    }
+
+    // Book content
+    for (const name of ['birthday', 'bachelorette', 'workshop']) {
+      // Checkmarks
+      const checksKey = `book_${name}_checks`;
+      if (s[checksKey]) {
+        const items = s[checksKey].split('\n').filter(l => l.trim())
+          .map(l => `\n              <li>${escapeHtml(l.trim())}</li>`).join('');
+        html = inject(html, checksKey, items + '\n            ');
+      }
+
+      // Description paragraphs
+      const descKey = `book_${name}_desc`;
+      if (s[descKey]) {
+        const descHtml = s[descKey].split(/\n\s*\n/).filter(p => p.trim())
+          .map(p => `<p class="event-spread__desc">${escapeHtml(p.trim())}</p>\n            `).join('');
+        html = inject(html, descKey, descHtml);
+      }
+
+      // Extra text
+      const extraKey = `book_${name}_extra`;
+      if (s[extraKey]) {
+        html = inject(html, extraKey, escapeHtml(s[extraKey]));
+      }
+
+      // Book images (cover, details, photo1-3)
+      for (const slot of ['cover', 'details', 'photo1', 'photo2', 'photo3']) {
+        const imgKey = `book_${name}_${slot}_img`;
+        if (s[imgKey]) {
+          html = injectImgSrc(html, imgKey, s[imgKey]);
+        }
+
+        // Book captions (optional — inject full <p> or nothing)
+        const captionKey = `book_${name}_${slot}_caption`;
+        if (captionKey in s) {
+          const captionHtml = s[captionKey]
+            ? `<p class="polaroid-caption">${escapeHtml(s[captionKey])}</p>`
+            : '';
+          html = inject(html, captionKey, captionHtml);
+        }
+      }
+    }
+
+    // Artworks gallery
+    const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
+    const xPos = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
+    const yPos = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
+    const attachments = ['polaroid-pin', 'tape-corner'];
+
+    const artworksHtml = artworks.length === 0
+      ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>\n      '
+      : '\n      ' + artworks.map((a, i) => `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
         <div class="${attachments[i % attachments.length]}"></div>
         <span class="art-sticker">${a.status === 'sold' ? 'verkauft' : 'zu verkaufen'}</span>
         <div class="polaroid-frame">
@@ -112,21 +152,35 @@ async function build() {
         <p class="polaroid-caption">${escapeHtml(a.title || '')}</p>
       </article>`).join('\n      ') + '\n      ';
 
-  html = inject(html, 'artworks', artworksHtml);
+    html = inject(html, 'artworks', artworksHtml);
 
-  // Events / dates
-  const eventRots = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
-  const eventsHtml = events.length === 0
-    ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
-    : '\n      ' + events.map((e, i) => `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
+    // Events / dates
+    const eventRots = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
+    const eventsHtml = events.length === 0
+      ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
+      : '\n      ' + events.map((e, i) => `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
         <span class="date-card__date">${escapeHtml(e.date)}</span>
         <span class="date-card__what">${escapeHtml(e.title)}</span>
         <span class="date-card__where">${escapeHtml(e.location || '')}</span>
       </div>`).join('\n      ') + '\n      ';
 
-  html = inject(html, 'events', eventsHtml);
+    html = inject(html, 'events', eventsHtml);
 
-  writeFileSync(join(__dirname, 'index.html'), html);
+    return html;
+  }
+
+  // Process index.html
+  let indexHtml = readFileSync(join(__dirname, 'index.html'), 'utf-8');
+  indexHtml = applyContent(indexHtml);
+  writeFileSync(join(__dirname, 'index.html'), indexHtml);
+  console.log('✓ index.html updated');
+
+  // Process admin.html
+  let adminHtml = readFileSync(join(__dirname, 'admin.html'), 'utf-8');
+  adminHtml = applyContent(adminHtml);
+  writeFileSync(join(__dirname, 'admin.html'), adminHtml);
+  console.log('✓ admin.html updated');
+
   console.log('✓ Build complete — content baked in from DB');
 }
 

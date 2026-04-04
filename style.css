@@ -1229,6 +1229,10 @@ a {
   transform: rotate(0deg) scale(1.04);
 }
 
+.about-polaroid:has(.polaroid-caption) .polaroid-frame {
+  padding-bottom: 40px;
+}
+
 .about-polaroid .polaroid-frame {
   background: var(--polaroid-bg);
   padding: 12px;
@@ -3403,6 +3407,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   transform: rotate(var(--rot, 0deg));
   position: relative;
   z-index: 1;
+}
+
+.cover-polaroid:has(.polaroid-caption) .polaroid-frame {
+  padding-bottom: 36px;
 }
 
 .cover-polaroid .polaroid-frame {
