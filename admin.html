@@ -241,6 +241,8 @@
     .edit-popover .btn-save:hover { opacity: 0.85; }
     .edit-popover .btn-cancel:hover { background: #ddd4c8; }
     .edit-popover .btn-delete:hover { background: #b33; }
+    .edit-popover .btn-save:disabled,
+    .edit-popover .btn-delete:disabled { opacity: 0.55; cursor: not-allowed; }
 
     /* ---- Add Buttons ---- */
     .admin-add-btn {
@@ -1602,6 +1604,19 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
+    /* ---- Save button loading state ---- */
+    /* Usage: const done = setSaving(btn); ...await fetch...; done() or done('Error') */
+    function setSaving(btn, label) {
+      const orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = label || 'Saving...';
+      return function restore(errMsg) {
+        btn.disabled = false;
+        btn.textContent = orig;
+        if (errMsg) showToast(errMsg);
+      };
+    }
+
     /* ---- Auth helper ---- */
     function authHeaders() {
       return { 'Authorization': 'Bearer ' + ADMIN.token, 'Content-Type': 'application/json' };
@@ -1856,6 +1871,7 @@
       pop.querySelector('#saveNameBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editNameInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveNameBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1865,7 +1881,7 @@
           el.textContent = val;
           showToast('Name updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1884,6 +1900,7 @@
       `);
       pop.querySelector('#saveBioBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editBioInput').value.trim();
+        const done = setSaving(pop.querySelector('#saveBioBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1892,9 +1909,7 @@
           });
           // Update DOM
           bios.forEach(p => p.remove());
-          const nameEl = bioWrap.querySelector('.about-name') || document.getElementById('aboutName');
           const paras = val.split(/\n\s*\n/);
-          let insertRef = bioWrap.firstChild;
           paras.forEach(p => {
             if (!p.trim()) return;
             const el = document.createElement('p');
@@ -1904,7 +1919,7 @@
           });
           showToast('Bio updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1942,6 +1957,7 @@
         if (!val) return;
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
+        const done = setSaving(pop.querySelector('#savePhotoBtn'));
         try {
           await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo', value: val }) }),
@@ -1963,7 +1979,7 @@
           }
           showToast('Photo updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1982,6 +1998,7 @@
       pop.querySelector('#saveIgBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editIgInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveIgBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1991,7 +2008,7 @@
           link.href = val;
           showToast('Instagram updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -2011,6 +2028,7 @@
       pop.querySelector('#saveFooterBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editFooterInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveFooterBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -2020,7 +2038,7 @@
           el.innerHTML = '&copy; ' + escHtml(val);
           showToast('Footer updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -2061,6 +2079,7 @@
         if (!val) return;
         const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
+        const done = setSaving(pop.querySelector('#saveBookImgBtn'));
         try {
           await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, value: val }) }),
@@ -2081,7 +2100,7 @@
           }
           showToast('Image updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -2125,6 +2144,7 @@
         const hasTitle = pop.querySelector('#editArtHasTitle').checked;
         const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
         const status = pop.querySelector('#editArtStatus').value;
+        const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
           await fetch('/api/artworks/' + id, {
             method: 'PUT',
@@ -2134,11 +2154,12 @@
           showToast('Artwork updated');
           closeAllPopovers();
           location.reload();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
 
       pop.querySelector('#deleteArtBtn').addEventListener('click', async () => {
         if (!confirm('Delete this artwork?')) return;
+        const done = setSaving(pop.querySelector('#deleteArtBtn'), 'Deleting...');
         try {
           await fetch('/api/artworks/' + id, {
             method: 'DELETE',
@@ -2147,7 +2168,7 @@
           showToast('Artwork deleted');
           closeAllPopovers();
           location.reload();
-        } catch (err) { showToast('Error deleting'); }
+        } catch (err) { done('Error deleting'); }
       });
     }
 
@@ -2176,6 +2197,7 @@
         const date = pop.querySelector('#editEvDate').value.trim();
         const title = pop.querySelector('#editEvTitle').value.trim();
         const location = pop.querySelector('#editEvLocation').value.trim();
+        const done = setSaving(pop.querySelector('#saveEvBtn'));
         try {
           await fetch('/api/events/' + id, {
             method: 'PUT',
@@ -2185,11 +2207,12 @@
           showToast('Event updated');
           closeAllPopovers();
           window.location.reload();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
 
       pop.querySelector('#deleteEvBtn').addEventListener('click', async () => {
         if (!confirm('Delete this event?')) return;
+        const done = setSaving(pop.querySelector('#deleteEvBtn'), 'Deleting...');
         try {
           await fetch('/api/events/' + id, {
             method: 'DELETE',
@@ -2198,7 +2221,7 @@
           showToast('Event deleted');
           closeAllPopovers();
           window.location.reload();
-        } catch (err) { showToast('Error deleting'); }
+        } catch (err) { done('Error deleting'); }
       });
     }
 
@@ -2237,6 +2260,7 @@
           const title = hasTitle ? pop.querySelector('#newArtTitle').value.trim() : '';
           const status = pop.querySelector('#newArtStatus').value;
           if (!imgUrl) { showToast('Please upload an image first'); return; }
+          const done = setSaving(pop.querySelector('#createArtBtn'), 'Adding...');
           try {
             await fetch('/api/artworks', {
               method: 'POST',
@@ -2246,7 +2270,7 @@
             showToast('Artwork added');
             closeAllPopovers();
             location.reload();
-          } catch (err) { showToast('Error adding artwork'); }
+          } catch (err) { done('Error adding artwork'); }
         });
       });
 
@@ -2269,6 +2293,7 @@
           const title = pop.querySelector('#newEvTitle').value.trim();
           const loc = pop.querySelector('#newEvLocation').value.trim();
           if (!date || !title) { showToast('Date and title required'); return; }
+          const done = setSaving(pop.querySelector('#createEvBtn'), 'Adding...');
           try {
             await fetch('/api/events', {
               method: 'POST',
@@ -2278,7 +2303,7 @@
             showToast('Event added');
             closeAllPopovers();
             window.location.reload();
-          } catch (err) { showToast('Error adding event'); }
+          } catch (err) { done('Error adding event'); }
         });
       });
     }
