@@ -738,6 +738,23 @@ a {
 
 
 /* ============================================================
+   BACKGROUND WATERMARK
+   ============================================================ */
+.bg-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  max-width: 45vw;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+/* ============================================================
    NOTEBOOK TAB NAV
    ============================================================ */
 .tab-nav {
