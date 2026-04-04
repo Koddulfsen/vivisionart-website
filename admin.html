@@ -1042,11 +1042,6 @@
       <input type="text" class="hex-input" data-sync="colorBgPrimary" value="#f0ebe0" placeholder="#hex">
     </div>
     <div class="drawer-color-row">
-      <label>BG Secondary</label>
-      <input type="color" id="colorBgSecondary" value="#e8e0d4">
-      <input type="text" class="hex-input" data-sync="colorBgSecondary" value="#e8e0d4" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
       <label>Accent</label>
       <input type="color" id="colorAccent" value="#80b8a0">
       <input type="text" class="hex-input" data-sync="colorAccent" value="#80b8a0" placeholder="#hex">
@@ -1123,7 +1118,6 @@
         // Custom color pickers override presets
         if (s.bg_primary) {
           html.style.setProperty('--bg-primary', s.bg_primary);
-          html.style.setProperty('--bg-secondary', s.bg_secondary || s.bg_primary);
         }
         if (s.accent_primary) {
           html.style.setProperty('--accent', s.accent_primary);
@@ -2321,7 +2315,6 @@
 
       /* Color inputs — live preview */
       const bgPrimary = document.getElementById('colorBgPrimary');
-      const bgSecondary = document.getElementById('colorBgSecondary');
       const accentColor = document.getElementById('colorAccent');
       const coverBirthday = document.getElementById('coverColorBirthday');
       const coverBachelorette = document.getElementById('coverColorBachelorette');
@@ -2330,14 +2323,10 @@
       // Load current computed values into color inputs
       const cs = getComputedStyle(html);
       bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
-      bgSecondary.value = rgbToHex(cs.getPropertyValue('--bg-secondary').trim()) || '#e8e0d4';
       accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
 
       bgPrimary.addEventListener('input', () => {
         html.style.setProperty('--bg-primary', bgPrimary.value);
-      });
-      bgSecondary.addEventListener('input', () => {
-        html.style.setProperty('--bg-secondary', bgSecondary.value);
       });
       accentColor.addEventListener('input', () => {
         html.style.setProperty('--accent', accentColor.value);
@@ -2382,7 +2371,6 @@
       if (window._siteSettings) {
         const s = window._siteSettings;
         if (s.bg_primary) bgPrimary.value = s.bg_primary;
-        if (s.bg_secondary) bgSecondary.value = s.bg_secondary;
         if (s.accent_primary) accentColor.value = s.accent_primary;
         if (s.cover_color_birthday) coverBirthday.value = s.cover_color_birthday;
         if (s.cover_color_bachelorette) coverBachelorette.value = s.cover_color_bachelorette;
@@ -2425,7 +2413,6 @@
           { key: 'heading_font', value: activeHeading ? activeHeading.dataset.headingFont : 'marker' },
           { key: 'body_font', value: activeBody ? activeBody.dataset.bodyFont : 'caveat' },
           { key: 'bg_primary', value: bgPrimary.value },
-          { key: 'bg_secondary', value: bgSecondary.value },
           { key: 'accent_primary', value: accentColor.value },
           { key: 'cover_color_birthday', value: coverBirthday.value },
           { key: 'cover_color_bachelorette', value: coverBachelorette.value },
