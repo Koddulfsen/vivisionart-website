@@ -1988,16 +1988,29 @@
       });
       pop.querySelector('#saveBookImgBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editBookImg').value.trim();
-        if (!val) return;
+        const localUrl = bookImgUpload.getLocalUrl();
+        console.log('[admin] book-image save', { key, val, localUrl, imgSrc: img && img.src });
+        if (!val) { console.warn('[admin] val empty, aborting'); return; }
         const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
         const done = setSaving(pop.querySelector('#saveBookImgBtn'));
         try {
-          await Promise.all([
+          const [r1, r2] = await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, value: val }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: captionKey, value: captionText }) })
           ]);
-          setImgSrcSafe(img, val, bookImgUpload.getLocalUrl());
+          if (!r1.ok) { const e = await r1.text(); console.error('[admin] img key save failed', r1.status, e); throw new Error('Save failed'); }
+          if (!r2.ok) { const e = await r2.text(); console.error('[admin] caption key save failed', r2.status, e); throw new Error('Save failed'); }
+          console.log('[admin] API save OK, updating DOM', { val, localUrl });
+          if (localUrl) img.src = localUrl;
+          else img.src = val;
+          if (window._siteSettings) window._siteSettings[key] = val;
+          // Swap to CDN URL once loaded (only if val is a new URL, not the original)
+          if (localUrl && val !== current) {
+            const preloader = new Image();
+            preloader.onload = () => { img.src = val; };
+            preloader.src = val;
+          }
           let captionEl = container.querySelector('.polaroid-caption');
           if (captionText) {
             if (!captionEl) {
