@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 
   // DELETE — remove event
   if (req.method === 'DELETE') {
-    const { id } = req.body;
+    const id = req.query?.id || req.body?.id;
     if (!id) {
       return res.status(400).json({ error: 'ID is required' });
     }

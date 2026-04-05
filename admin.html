@@ -2175,10 +2175,9 @@
         if (!confirm('Delete this artwork?')) return;
         const done = setSaving(pop.querySelector('#deleteArtBtn'), 'Deleting...');
         try {
-          await fetch('/api/artworks/' + id, {
+          await fetch('/api/artworks?id=' + encodeURIComponent(id), {
             method: 'DELETE',
-            headers: authHeaders(),
-            body: JSON.stringify({ id })
+            headers: authHeaders()
           });
           showToast('Artwork deleted');
           closeAllPopovers();
@@ -2229,10 +2228,9 @@
         if (!confirm('Delete this event?')) return;
         const done = setSaving(pop.querySelector('#deleteEvBtn'), 'Deleting...');
         try {
-          await fetch('/api/events/' + id, {
+          await fetch('/api/events?id=' + encodeURIComponent(id), {
             method: 'DELETE',
-            headers: authHeaders(),
-            body: JSON.stringify({ id })
+            headers: authHeaders()
           });
           showToast('Event deleted');
           closeAllPopovers();
