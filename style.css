@@ -3834,7 +3834,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .book__page:not(.book__page--cover) .book__details-page .event-spread__desc,
   .book__page:not(.book__page--cover) .book__details-page .event-spread__extra {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     line-height: 1.4;
   }
 
@@ -3845,7 +3845,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__page:not(.book__page--cover) .event-spread__includes {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
   }
 
   .book__page:not(.book__page--cover) .event-spread__includes li {
@@ -3856,8 +3856,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .book__page:not(.book__page--cover) .cover-polaroid {
     margin-top: -5px;
     margin-bottom: 10px;
-    width: 68%;
-    max-width: 220px;
+    width: 82%;
+    max-width: 270px;
   }
 
   .book__cover-front .event-spread__desc {
@@ -3871,7 +3871,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__cover-front .event-spread__header h3 {
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     margin-bottom: 8px;
     text-align: center;
   }
@@ -3936,12 +3936,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     margin-top: -18px;
   }
 
-  /* Book cover: tighten header-to-image gap, shrink image, reduce bottom margin */
+  /* Book cover: tighten header-to-image gap, reduce bottom margin */
   .book__page--cover .cover-polaroid {
     margin-top: 5px;
     margin-bottom: 10px;
-    width: 68%;
-    max-width: 220px;
+    width: 82%;
+    max-width: 270px;
   }
 }
 
