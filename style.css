@@ -1229,10 +1229,6 @@ a {
   transform: rotate(0deg) scale(1.04);
 }
 
-.about-polaroid:has(.polaroid-caption) .polaroid-frame {
-  padding-bottom: 40px;
-}
-
 .about-polaroid .polaroid-frame {
   background: var(--polaroid-bg);
   padding: 12px;
@@ -3409,10 +3405,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   z-index: 1;
 }
 
-.cover-polaroid:has(.polaroid-caption) .polaroid-frame {
-  padding-bottom: 36px;
-}
-
 .cover-polaroid .polaroid-frame {
   background: var(--polaroid-bg, #faf7f2);
   padding: 6px 6px 20px;
@@ -3828,7 +3820,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .event-spread__header h3 {
-    font-size: 1rem;
+    font-size: 0.6rem;
   }
 
   .event-spread__desc {
@@ -3853,7 +3845,9 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__cover-front .event-spread__header h3 {
-    margin-bottom: 25px;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    text-align: center;
   }
 
   .book__cover-front .event-spread__includes {
@@ -3884,6 +3878,15 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .book__cover-front .book__hint {
     bottom: 20px;
+  }
+
+  .cover-cta,
+  .inner-cta {
+    font-size: 0.6rem;
+  }
+
+  .book__hint {
+    font-size: 0.6rem;
   }
 
   .book__page:not(.book__page--cover) .book__page-cta {
@@ -4331,7 +4334,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__cover-front {
-    padding-left: 16px;
+    padding-left: 0;
+    align-items: center;
   }
 
   .event-spread__header {
