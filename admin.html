@@ -1047,24 +1047,17 @@
           if (nameEl) nameEl.textContent = s.about_name;
         }
         if (s.about_bio) {
-          const bioContainer = document.querySelector('.about-text');
-          if (bioContainer) {
+          const bioWrap = document.getElementById('aboutBioWrap');
+          if (bioWrap) {
             const paras = s.about_bio.split(/\n\s*\n/);
-            const existing = bioContainer.querySelectorAll('.about-bio');
-            existing.forEach(el => el.remove());
-            const nameEl = bioContainer.querySelector('.about-name');
-            let insertAfter = nameEl;
+            bioWrap.querySelectorAll('.about-bio').forEach(el => el.remove());
+            const pencil = bioWrap.querySelector('.edit-pencil');
             paras.forEach(p => {
               if (!p.trim()) return;
               const el = document.createElement('p');
               el.className = 'about-bio';
               el.textContent = p.trim();
-              if (insertAfter && insertAfter.nextSibling) {
-                insertAfter.parentNode.insertBefore(el, insertAfter.nextSibling);
-              } else if (insertAfter) {
-                insertAfter.parentNode.appendChild(el);
-              }
-              insertAfter = el;
+              pencil ? bioWrap.insertBefore(el, pencil) : bioWrap.appendChild(el);
             });
           }
         }
