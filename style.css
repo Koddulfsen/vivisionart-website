@@ -1250,6 +1250,8 @@ a {
   border-radius: 1px;
 }
 
+.about-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 40px; }
+
 .about-photo-placeholder {
   width: 100%;
   aspect-ratio: 3/4;
@@ -3419,6 +3421,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   display: block;
   border-radius: 1px;
 }
+
+.cover-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 36px; }
 
 .book__cover-front .event-spread__includes {
   line-height: 28px;
