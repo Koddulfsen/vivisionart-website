@@ -2163,7 +2163,7 @@
           await fetch('/api/artworks/' + id, {
             method: 'PUT',
             headers: authHeaders(),
-            body: JSON.stringify({ image_url: imgUrl, title, status })
+            body: JSON.stringify({ id, image_url: imgUrl, title, status })
           });
           showToast('Artwork updated');
           closeAllPopovers();
@@ -2177,7 +2177,8 @@
         try {
           await fetch('/api/artworks/' + id, {
             method: 'DELETE',
-            headers: authHeaders()
+            headers: authHeaders(),
+            body: JSON.stringify({ id })
           });
           showToast('Artwork deleted');
           closeAllPopovers();
@@ -2216,7 +2217,7 @@
           await fetch('/api/events/' + id, {
             method: 'PUT',
             headers: authHeaders(),
-            body: JSON.stringify({ date, title, location })
+            body: JSON.stringify({ id, date, title, location })
           });
           showToast('Event updated');
           closeAllPopovers();
@@ -2230,7 +2231,8 @@
         try {
           await fetch('/api/events/' + id, {
             method: 'DELETE',
-            headers: authHeaders()
+            headers: authHeaders(),
+            body: JSON.stringify({ id })
           });
           showToast('Event deleted');
           closeAllPopovers();
