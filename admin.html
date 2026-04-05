@@ -264,132 +264,61 @@
       opacity: 0.85;
     }
 
-    /* ---- Floating Style Drawer ---- */
-    .admin-drawer-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 48px;
-      height: 48px;
-      background: var(--accent, #80b8a0);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 22px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      z-index: 9000;
+    /* ---- Quick Colors Bar ---- */
+    .admin-colors-bar {
       display: none;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s;
-    }
-    .admin-active .admin-drawer-toggle {
-      display: flex;
-    }
-    .admin-drawer-toggle:hover {
-      transform: scale(1.1);
-    }
-
-    .admin-drawer {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      top: 16px;
+      right: 16px;
+      z-index: 9000;
       background: white;
-      border-radius: 16px 16px 0 0;
-      box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
-      z-index: 8999;
-      max-height: 70vh;
-      overflow-y: auto;
-      transform: translateY(100%);
-      transition: transform 0.35s ease;
-      padding: 24px 24px 32px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      align-items: center;
+      gap: 14px;
     }
-    .admin-drawer.is-open {
-      transform: translateY(0);
-    }
-
-    .drawer-section-label {
-      font-family: 'Patrick Hand', cursive;
-      font-size: 1rem;
+    .admin-active .admin-colors-bar { display: flex; }
+    .admin-colors-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
       color: #7a7068;
-      margin: 16px 0 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
-    .drawer-section-label:first-child { margin-top: 0; }
-
-    .drawer-pills {
+    .admin-color-item {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .drawer-pill {
-      padding: 6px 14px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      background: #faf8f5;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.15s;
-    }
-    .drawer-pill:hover { border-color: var(--accent, #80b8a0); }
-    .drawer-pill.active {
-      background: var(--accent, #80b8a0);
-      color: white;
-      border-color: var(--accent, #80b8a0);
-    }
-
-    .drawer-color-row {
-      display: flex;
-      gap: 12px;
       align-items: center;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+      gap: 5px;
     }
-    .drawer-color-row label {
+    .admin-color-item label {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       color: #7a7068;
-      min-width: 100px;
     }
-    .drawer-color-row input[type="color"] {
-      width: 36px;
-      height: 36px;
-      border: 2px solid #ddd;
+    .admin-color-item input[type="color"] {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #e0d8d0;
       border-radius: 6px;
       cursor: pointer;
       padding: 2px;
       background: white;
     }
-    .drawer-color-row .hex-input {
-      width: 72px;
-      padding: 4px 6px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 12px;
-      font-family: monospace;
-      color: #2c2420;
-      margin-left: 4px;
-    }
-
-    .drawer-save-btn {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
+    .admin-colors-save {
+      padding: 6px 12px;
       background: var(--accent, #80b8a0);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-family: 'Patrick Hand', cursive;
-      font-size: 1.1rem;
       cursor: pointer;
       transition: opacity 0.2s;
     }
-    .drawer-save-btn:hover { opacity: 0.85; }
+    .admin-colors-save:hover { opacity: 0.85; }
+    .admin-colors-save:disabled { opacity: 0.55; cursor: not-allowed; }
 
     /* ---- Popover backdrop for mobile ---- */
     .popover-backdrop {
@@ -409,9 +338,6 @@
         width: 90vw;
         max-height: 80vh;
         overflow-y: auto;
-      }
-      .admin-drawer {
-        max-height: 85vh;
       }
     }
 
@@ -992,10 +918,6 @@
     </div>
   </section>
 
-  <!-- ============ BOOK PICKER (hidden in admin, replaced by drawer) ============ -->
-  <div class="book-picker" id="bookPicker" style="display:none;">
-  </div>
-
   <!-- ============ OFFENE TERMINE ============ -->
   <section class="dates-section" id="dates">
     <h2 class="section-heading fade-in">
@@ -1016,94 +938,18 @@
     <button class="edit-pencil" data-edit="footer" title="Edit footer text">&#9998;</button>
   </footer>
 
-  <!-- ============ ADMIN STYLE DRAWER ============ -->
-  <button class="admin-drawer-toggle" id="drawerToggle" title="Style settings">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </button>
-
-  <div class="admin-drawer" id="adminDrawer">
-    <div class="drawer-section-label">Heading Font</div>
-    <div class="drawer-pills" id="drawerHeadingFonts">
-      <button class="drawer-pill" data-heading-font="marker" style="font-family:'Permanent Marker'">Permanent Marker</button>
-      <button class="drawer-pill" data-heading-font="shadows" style="font-family:'Shadows Into Light'">Shadows Into Light</button>
-      <button class="drawer-pill" data-heading-font="indie" style="font-family:'Indie Flower'">Indie Flower</button>
-      <button class="drawer-pill" data-heading-font="playfair" style="font-family:'Playfair Display'">Playfair Display</button>
-      <button class="drawer-pill" data-heading-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
-      <button class="drawer-pill" data-heading-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
-      <button class="drawer-pill" data-heading-font="special" style="font-family:'Special Elite'">Special Elite</button>
-      <button class="drawer-pill" data-heading-font="caveat" style="font-family:'Caveat'">Caveat</button>
-    </div>
-
-    <div class="drawer-section-label">Body Font</div>
-    <div class="drawer-pills" id="drawerBodyFonts">
-      <button class="drawer-pill" data-body-font="caveat" style="font-family:'Caveat'">Caveat</button>
-      <button class="drawer-pill" data-body-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
-      <button class="drawer-pill" data-body-font="coming" style="font-family:'Coming Soon'">Coming Soon</button>
-      <button class="drawer-pill" data-body-font="nunito" style="font-family:'Nunito'">Nunito</button>
-      <button class="drawer-pill" data-body-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
-      <button class="drawer-pill" data-body-font="dm" style="font-family:'DM Sans'">DM Sans</button>
-      <button class="drawer-pill" data-body-font="special" style="font-family:'Special Elite'">Special Elite</button>
-      <button class="drawer-pill" data-body-font="courier" style="font-family:'Courier Prime'">Courier Prime</button>
-    </div>
-
-    <div class="drawer-section-label">Colors</div>
-    <div class="drawer-color-row">
-      <label>BG Primary</label>
+  <!-- ============ ADMIN COLORS BAR ============ -->
+  <div class="admin-colors-bar" id="adminColorsBar">
+    <span class="admin-colors-title">Colors</span>
+    <div class="admin-color-item">
+      <label>Background</label>
       <input type="color" id="colorBgPrimary" value="#f0ebe0">
-      <input type="text" class="hex-input" data-sync="colorBgPrimary" value="#f0ebe0" placeholder="#hex">
     </div>
-    <div class="drawer-color-row">
+    <div class="admin-color-item">
       <label>Accent</label>
       <input type="color" id="colorAccent" value="#80b8a0">
-      <input type="text" class="hex-input" data-sync="colorAccent" value="#80b8a0" placeholder="#hex">
     </div>
-
-    <div class="drawer-section-label">Cover Colors</div>
-    <div class="drawer-color-row">
-      <label>Birthday</label>
-      <input type="color" id="coverColorBirthday" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorBirthday" value="#9a806a" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Bachelorette</label>
-      <input type="color" id="coverColorBachelorette" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorBachelorette" value="#9a806a" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Workshop</label>
-      <input type="color" id="coverColorWorkshop" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorWorkshop" value="#9a806a" placeholder="#hex">
-    </div>
-
-    <div class="drawer-section-label">Page Elements</div>
-    <div class="drawer-color-row">
-      <label>CTA Card</label>
-      <input type="color" id="colorTornPage" value="#e8dcc8">
-      <input type="text" class="hex-input" data-sync="colorTornPage" value="#e8dcc8" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Contact Form</label>
-      <input type="color" id="colorPostcard" value="#f8f4f0">
-      <input type="text" class="hex-input" data-sync="colorPostcard" value="#f8f4f0" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Calendar Cards</label>
-      <input type="color" id="colorDateCards" value="#f8f4f0">
-      <input type="text" class="hex-input" data-sync="colorDateCards" value="#f8f4f0" placeholder="#hex">
-    </div>
-
-    <div class="drawer-section-label">Cover Texture</div>
-    <div class="drawer-pills" id="drawerTextures">
-      <button class="drawer-pill" data-cover-tex="smooth">Smooth</button>
-      <button class="drawer-pill" data-cover-tex="grain">Grain</button>
-      <button class="drawer-pill" data-cover-tex="leather">Leather</button>
-      <button class="drawer-pill" data-cover-tex="linen">Linen</button>
-      <button class="drawer-pill" data-cover-tex="canvas">Canvas</button>
-      <button class="drawer-pill" data-cover-tex="suede">Suede</button>
-    </div>
-
-    <button class="drawer-save-btn" id="drawerSaveBtn">Save Style</button>
-
+    <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
   </div>
 
   <script>
@@ -1838,7 +1684,7 @@
     function activateAdmin() {
       ADMIN.active = true;
       document.body.classList.add('admin-active');
-      initDrawer();
+      initColorPickers();
       initPencilHandlers();
       initAddButtons();
     }
@@ -2317,71 +2163,18 @@
       });
     }
 
-    /* ---- Style Drawer ---- */
-    function initDrawer() {
-      const drawer = document.getElementById('adminDrawer');
-      const toggle = document.getElementById('drawerToggle');
+    /* ---- Color Pickers ---- */
+    function initColorPickers() {
       const html = document.documentElement;
-
-      toggle.addEventListener('click', () => {
-        drawer.classList.toggle('is-open');
-      });
-
-      // Close drawer when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('#adminDrawer') && !e.target.closest('#drawerToggle')) {
-          drawer.classList.remove('is-open');
-        }
-      });
-
-      /* Heading font pills */
-      const curHeading = html.getAttribute('data-heading-font') || 'marker';
-      document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(btn => {
-        if (btn.dataset.headingFont === curHeading) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const font = btn.dataset.headingFont;
-          html.setAttribute('data-heading-font', font);
-          document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Body font pills */
-      const curBody = html.getAttribute('data-body-font') || 'caveat';
-      document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(btn => {
-        if (btn.dataset.bodyFont === curBody) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const font = btn.dataset.bodyFont;
-          html.setAttribute('data-body-font', font);
-          document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Texture pills */
-      const curTex = html.getAttribute('data-cover-tex') || 'leather';
-      document.querySelectorAll('#drawerTextures .drawer-pill').forEach(btn => {
-        if (btn.dataset.coverTex === curTex) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const tex = btn.dataset.coverTex;
-          html.setAttribute('data-cover-tex', tex);
-          document.querySelectorAll('#drawerTextures .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Color inputs — live preview */
       const bgPrimary = document.getElementById('colorBgPrimary');
       const accentColor = document.getElementById('colorAccent');
-      const coverBirthday = document.getElementById('coverColorBirthday');
-      const coverBachelorette = document.getElementById('coverColorBachelorette');
-      const coverWorkshop = document.getElementById('coverColorWorkshop');
 
-      // Load current computed values into color inputs
+      // Load current computed values
       const cs = getComputedStyle(html);
       bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
       accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
 
+      // Live preview
       bgPrimary.addEventListener('input', () => {
         html.style.setProperty('--bg-primary', bgPrimary.value);
       });
@@ -2393,105 +2186,26 @@
         html.style.setProperty('--heading-bg', accentColor.value);
       });
 
-      // Cover colors: live preview
-      function applyCoverColor(bookName, color) {
-        const book = document.querySelector('[data-book="' + bookName + '"]');
-        if (book) {
-          const cover = book.querySelector('.book__page--cover .book__page-front');
-          if (cover) cover.style.background = color;
-          book.style.setProperty('--cover-bg', color);
-        }
-      }
-
-      coverBirthday.addEventListener('input', () => applyCoverColor('birthday', coverBirthday.value));
-      coverBachelorette.addEventListener('input', () => applyCoverColor('bachelorette', coverBachelorette.value));
-      coverWorkshop.addEventListener('input', () => applyCoverColor('workshop', coverWorkshop.value));
-
-      // Page element colors — live preview
-      const colorTornPage = document.getElementById('colorTornPage');
-      const colorPostcard = document.getElementById('colorPostcard');
-      const colorDateCards = document.getElementById('colorDateCards');
-
-      colorTornPage.addEventListener('input', () => {
-        const el = document.getElementById('tornPage');
-        if (el) el.style.background = colorTornPage.value;
-      });
-      colorPostcard.addEventListener('input', () => {
-        const el = document.getElementById('postcardEl');
-        if (el) el.style.background = colorPostcard.value;
-      });
-      colorDateCards.addEventListener('input', () => {
-        document.querySelectorAll('.date-card').forEach(c => c.style.background = colorDateCards.value);
-      });
-
-      // Load saved cover colors into pickers
+      // Load saved values into pickers
       if (window._siteSettings) {
         const s = window._siteSettings;
         if (s.bg_primary) bgPrimary.value = s.bg_primary;
         if (s.accent_primary) accentColor.value = s.accent_primary;
-        if (s.cover_color_birthday) coverBirthday.value = s.cover_color_birthday;
-        if (s.cover_color_bachelorette) coverBachelorette.value = s.cover_color_bachelorette;
-        if (s.cover_color_workshop) coverWorkshop.value = s.cover_color_workshop;
-        if (s.torn_page_color) colorTornPage.value = s.torn_page_color;
-        if (s.postcard_color) colorPostcard.value = s.postcard_color;
-        if (s.date_card_color) colorDateCards.value = s.date_card_color;
       }
 
-      // Sync hex text inputs with color pickers
-      document.querySelectorAll('.hex-input').forEach(hexInput => {
-        const colorId = hexInput.dataset.sync;
-        const colorInput = document.getElementById(colorId);
-        if (!colorInput) return;
-
-        // Sync initial value
-        hexInput.value = colorInput.value;
-
-        // Color picker → text
-        colorInput.addEventListener('input', () => {
-          hexInput.value = colorInput.value;
-        });
-
-        // Text → color picker
-        hexInput.addEventListener('input', () => {
-          if (/^#[0-9a-fA-F]{6}$/.test(hexInput.value)) {
-            colorInput.value = hexInput.value;
-            colorInput.dispatchEvent(new Event('input'));
-          }
-        });
-      });
-
-      /* Save Style button */
-      document.getElementById('drawerSaveBtn').addEventListener('click', async () => {
-        const activeHeading = document.querySelector('#drawerHeadingFonts .drawer-pill.active');
-        const activeBody = document.querySelector('#drawerBodyFonts .drawer-pill.active');
-        const activeTex = document.querySelector('#drawerTextures .drawer-pill.active');
-
-        const settings = [
-          { key: 'heading_font', value: activeHeading ? activeHeading.dataset.headingFont : 'marker' },
-          { key: 'body_font', value: activeBody ? activeBody.dataset.bodyFont : 'caveat' },
-          { key: 'bg_primary', value: bgPrimary.value },
-          { key: 'accent_primary', value: accentColor.value },
-          { key: 'cover_color_birthday', value: coverBirthday.value },
-          { key: 'cover_color_bachelorette', value: coverBachelorette.value },
-          { key: 'cover_color_workshop', value: coverWorkshop.value },
-          { key: 'cover_texture', value: activeTex ? activeTex.dataset.coverTex : 'leather' },
-          { key: 'torn_page_color', value: colorTornPage.value },
-          { key: 'postcard_color', value: colorPostcard.value },
-          { key: 'date_card_color', value: colorDateCards.value },
-        ];
-
+      // Save button
+      const saveBtn = document.getElementById('colorsSaveBtn');
+      saveBtn.addEventListener('click', async () => {
+        const done = setSaving(saveBtn, 'Saving...');
         try {
-          for (const s of settings) {
-            await fetch('/api/settings', {
-              method: 'POST',
-              headers: authHeaders(),
-              body: JSON.stringify(s)
-            });
-          }
-          showToast('Style saved to DB');
-          drawer.classList.remove('is-open');
+          await Promise.all([
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'bg_primary', value: bgPrimary.value }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'accent_primary', value: accentColor.value }) }),
+          ]);
+          showToast('Colors saved');
+          done();
         } catch (err) {
-          showToast('Error saving style');
+          done('Error saving colors');
         }
       });
     }
