@@ -90,12 +90,10 @@
     /* ---- Edit Pencils ---- */
     .edit-pencil {
       position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 28px;
-      height: 28px;
-      min-width: 44px;
-      min-height: 44px;
+      top: 6px;
+      right: 6px;
+      width: 30px;
+      height: 30px;
       background: var(--accent, #80b8a0);
       color: white;
       border: none;
@@ -110,6 +108,10 @@
       transition: transform 0.2s;
       padding: 0;
       line-height: 1;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .edit-pencil { width: 26px; height: 26px; font-size: 12px; top: 4px; right: 4px; }
     }
     .admin-active .edit-pencil {
       display: flex;
@@ -475,7 +477,7 @@
 
         <div class="about-text">
           <h3 class="about-name" id="aboutName">Hi, ich bin Vivi.</h3>
-          <button class="edit-pencil" data-edit="about-name" title="Edit name" style="top: -8px; right: -40px;">&#9998;</button>
+          <button class="edit-pencil" data-edit="about-name" title="Edit name">&#9998;</button>
 
           <div class="about-bio-wrap" id="aboutBioWrap">
             <p class="about-bio">K&uuml;nstlerin und Gastgeberin kreativer Erlebnisse.</p>
@@ -557,7 +559,7 @@
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
-            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
@@ -657,7 +659,7 @@
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
-            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
@@ -756,7 +758,7 @@
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
-            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
         </div>
