@@ -3854,8 +3854,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__page:not(.book__page--cover) .cover-polaroid {
-    margin-top: 0px;
-    margin-bottom: 15px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    width: 68%;
+    max-width: 220px;
   }
 
   .book__cover-front .event-spread__desc {
@@ -3932,6 +3934,14 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .scrapbook__polaroid .polaroid-caption {
     font-size: 0.75rem;
     margin-top: -18px;
+  }
+
+  /* Book cover: tighten header-to-image gap, shrink image, reduce bottom margin */
+  .book__page--cover .cover-polaroid {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 68%;
+    max-width: 220px;
   }
 }
 
