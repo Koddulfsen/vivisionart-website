@@ -10,6 +10,16 @@ const db = createClient({
   authToken: process.env.TURSO_TOKEN,
 });
 
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    return `${d}. ${months[m - 1]} ${y}`;
+  }
+  return dateStr;
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -38,7 +48,7 @@ async function build() {
   const [settingsRes, artworksRes, eventsRes] = await Promise.all([
     db.execute('SELECT key, value FROM settings'),
     db.execute('SELECT id, title, image_url, status FROM artworks ORDER BY sort_order ASC, id ASC'),
-    db.execute('SELECT id, title, date, location FROM events ORDER BY id DESC'),
+    db.execute('SELECT id, title, date, location FROM events ORDER BY date ASC'),
   ]);
 
   const s = {};
@@ -159,7 +169,7 @@ async function build() {
     const eventsHtml = events.length === 0
       ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
       : '\n      ' + events.map((e, i) => `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
-        <span class="date-card__date">${escapeHtml(e.date)}</span>
+        <span class="date-card__date">${escapeHtml(formatDate(e.date))}</span>
         <span class="date-card__what">${escapeHtml(e.title)}</span>
         <span class="date-card__where">${escapeHtml(e.location || '')}</span>
       </div>`).join('\n      ') + '\n      ';

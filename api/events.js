@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   // GET — public, no auth needed
   if (req.method === 'GET') {
     try {
-      const result = await db.execute('SELECT * FROM events ORDER BY id DESC');
+      const result = await db.execute('SELECT * FROM events ORDER BY date ASC');
       return res.status(200).json(result.rows);
     } catch (err) {
       return res.status(500).json({ error: err.message });

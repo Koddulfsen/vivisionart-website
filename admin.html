@@ -1258,7 +1258,7 @@
         } else {
           list.innerHTML = events.map((e, i) => `
             <div class="date-card fade-in" style="--rot: ${rotations[i % rotations.length]};" data-event-id="${e.id}" data-event-idx="${i}">
-              <span class="date-card__date">${e.date}</span>
+              <span class="date-card__date">${formatDate(e.date)}</span>
               <span class="date-card__what">${e.title}</span>
               <span class="date-card__where">${e.location || ''}</span>
               <button class="edit-pencil" data-edit="event" data-event-id="${e.id}" title="Edit event">&#9998;</button>
@@ -2195,7 +2195,7 @@
       const card = pencil.closest('.date-card');
       const pop = createPopover(card, `
         <label>Date</label>
-        <input type="text" id="editEvDate" value="${escHtml(event.date || '')}">
+        <input type="date" id="editEvDate" value="${/^\d{4}-\d{2}-\d{2}$/.test(event.date) ? event.date : ''}">
         <label>Title</label>
         <input type="text" id="editEvTitle" value="${escHtml(event.title || '')}">
         <label>Location</label>
@@ -2292,7 +2292,7 @@
         const btn = document.getElementById('addEventBtn');
         const pop = createPopover(btn, `
           <label>Date</label>
-          <input type="text" id="newEvDate" placeholder="e.g. 15. Mai 2026">
+          <input type="date" id="newEvDate">
           <label>Title</label>
           <input type="text" id="newEvTitle" placeholder="Event title">
           <label>Location</label>
@@ -2367,6 +2367,17 @@
           done('Error saving colors');
         }
       });
+    }
+
+    /* ---- Utility: format ISO date (YYYY-MM-DD) → "15. April 2026" ---- */
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+        const [y, m, d] = dateStr.split('-').map(Number);
+        const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+        return `${d}. ${months[m - 1]} ${y}`;
+      }
+      return dateStr; // legacy free-text fallback
     }
 
     /* ---- Utility: escape HTML ---- */
