@@ -3828,10 +3828,30 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     line-height: var(--event-desc-lh, 1.6);
   }
 
+  .book__page:not(.book__page--cover) .book__details-page .event-spread__desc,
+  .book__page:not(.book__page--cover) .book__details-page .event-spread__extra {
+    font-size: 0.62rem;
+    line-height: 1.4;
+  }
+
   .event-spread__includes {
     font-size: var(--event-includes-size, 0.65rem);
     margin-bottom: 4px;
     text-align: left;
+  }
+
+  .book__page:not(.book__page--cover) .event-spread__includes {
+    font-size: 0.62rem;
+  }
+
+  .book__page:not(.book__page--cover) .event-spread__includes li {
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .book__page:not(.book__page--cover) .cover-polaroid {
+    margin-top: 0px;
+    margin-bottom: 15px;
   }
 
   .book__cover-front .event-spread__desc {
@@ -3898,7 +3918,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 44%;
+    width: 52%;
   }
 
   .scrapbook__polaroid .polaroid-frame {
@@ -3943,7 +3963,15 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 46%;
+    width: 54%;
+  }
+
+  .scrapbook__photo-cluster {
+    inset: 60px 24px 9px 24px;
+  }
+
+  .scrapbook__photo-cluster .scrapbook__polaroid:first-child {
+    left: calc(var(--x, 8%) - 15px);
   }
 }
 
