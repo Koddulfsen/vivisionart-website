@@ -1871,11 +1871,19 @@
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
         const done = setSaving(pop.querySelector('#savePhotoBtn'));
         try {
-          await Promise.all([
+          const [r1, r2] = await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo', value: val }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) })
           ]);
-          setImgSrcSafe(img, val, photoUpload.getLocalUrl());
+          if (!r1.ok || !r2.ok) throw new Error('Save failed');
+          const localUrl = photoUpload.getLocalUrl();
+          img.src = localUrl || val;
+          if (localUrl && val !== current) {
+            const preloader = new Image();
+            preloader.onload = () => { img.src = val; };
+            preloader.src = val;
+          }
+          if (window._siteSettings) window._siteSettings['about_photo'] = val;
           if (polaroid) {
             let captionEl = polaroid.querySelector('.polaroid-caption');
             if (captionText) {
