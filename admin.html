@@ -128,6 +128,7 @@
     .admin-active .date-card { position: relative; }
     .admin-active .polaroid { position: relative; }
     .admin-active .cover-polaroid { position: relative; }
+    .admin-active .book__details-page { position: relative; }
 
     /* ---- Inline Color Pickers ---- */
     .inline-color-pick {
@@ -518,7 +519,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -526,12 +527,6 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r bis zu 10 Kinder</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 2deg;">
                 <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_cover_img"></div>
                 <!-- INJECT:book_birthday_cover_caption --><!-- /INJECT:book_birthday_cover_caption -->
@@ -546,18 +541,38 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_birthday_checks -->
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r bis zu 10 Kinder</li>
+            <!-- /INJECT:book_birthday_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1.5deg;">
               <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_details_img"></div>
               <!-- INJECT:book_birthday_details_caption --><!-- /INJECT:book_birthday_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_birthday_desc --><p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p><!-- /INJECT:book_birthday_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_birthday_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.<!-- /INJECT:book_birthday_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -565,7 +580,7 @@
 
         </div>
       </div>
-      <!-- Page 2: Photos -->
+      <!-- Page 3: Photos -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
           <div class="scrapbook__photo-cluster">
@@ -603,7 +618,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -611,13 +626,6 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r Gruppen bis zu 10 Personen</li>
-                <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: -2deg;">
                 <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy" data-img-key="book_bachelorette_cover_img"></div>
                 <!-- INJECT:book_bachelorette_cover_caption --><!-- /INJECT:book_bachelorette_cover_caption -->
@@ -632,18 +640,39 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_bachelorette_checks -->
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r Gruppen bis zu 10 Personen</li>
+              <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
+            <!-- /INJECT:book_bachelorette_checks --></ul>
             <div class="cover-polaroid" style="--rot: 2deg;">
               <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy" data-img-key="book_bachelorette_details_img"></div>
               <!-- INJECT:book_bachelorette_details_caption --><!-- /INJECT:book_bachelorette_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_bachelorette_desc --><p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p><!-- /INJECT:book_bachelorette_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_bachelorette_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.<!-- /INJECT:book_bachelorette_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -651,7 +680,7 @@
 
         </div>
       </div>
-      <!-- Page 2: Gemeinsam kreativ -->
+      <!-- Page 3: Gemeinsam kreativ -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
@@ -689,7 +718,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -697,12 +726,6 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
-                <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
-                <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
-                <li>Gruppen bis 30 Personen m&ouml;glich</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 1.5deg;">
                 <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_cover_img"></div>
                 <!-- INJECT:book_workshop_cover_caption --><!-- /INJECT:book_workshop_cover_caption -->
@@ -717,19 +740,39 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
-            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_workshop_checks -->
+              <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
+              <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
+              <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
+              <li>Gruppen bis 30 Personen m&ouml;glich</li>
+            <!-- /INJECT:book_workshop_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1deg;">
               <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_details_img"></div>
               <!-- INJECT:book_workshop_details_caption --><!-- /INJECT:book_workshop_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_workshop_desc --><p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
+            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p><!-- /INJECT:book_workshop_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_workshop_extra -->Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).<!-- /INJECT:book_workshop_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -737,7 +780,7 @@
 
         </div>
       </div>
-      <!-- Page 2: Teamwork -->
+      <!-- Page 3: Teamwork -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
@@ -1053,11 +1096,24 @@
           // Description
           const descKey = 'book_' + name + '_desc';
           if (s[descKey]) {
-            const descEls = book.querySelectorAll('.event-spread__desc');
             const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
-            descEls.forEach((el, i) => {
-              if (paras[i]) el.textContent = paras[i].trim();
-            });
+            // Find the page that currently contains desc elements
+            const descPage = book.querySelector('.event-spread__desc')
+              ? book.querySelector('.event-spread__desc').closest('.book__details-page')
+              : null;
+            if (descPage) {
+              const extraEl = descPage.querySelector('.event-spread__extra');
+              const ctaEl = descPage.querySelector('.inner-cta-wrap');
+              descPage.querySelectorAll('.event-spread__desc').forEach(el => el.remove());
+              const insertBefore = extraEl || ctaEl;
+              paras.forEach(p => {
+                const el = document.createElement('p');
+                el.className = 'event-spread__desc';
+                el.textContent = p.trim();
+                if (insertBefore) descPage.insertBefore(el, insertBefore);
+                else descPage.appendChild(el);
+              });
+            }
           }
 
           // Extra text
@@ -1707,6 +1763,7 @@
           case 'artwork': editArtwork(pencil); break;
           case 'event': editEvent(pencil); break;
           case 'book-image': editBookImage(pencil); break;
+          case 'book-text': editBookText(pencil); break;
         }
       });
     }
@@ -1954,6 +2011,87 @@
             captionEl.remove();
           }
           showToast('Image updated');
+          closeAllPopovers();
+        } catch (err) { done('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Book Text (checks list, description, extra) ---- */
+    function editBookText(pencil) {
+      const settingKey = pencil.dataset.settingKey;
+      const label = pencil.dataset.label || 'Text';
+      const format = pencil.dataset.format || 'text';
+
+      // Read current value from cached settings or DOM
+      let currentVal = '';
+      if (window._siteSettings && settingKey in window._siteSettings) {
+        currentVal = window._siteSettings[settingKey];
+      } else {
+        const page = pencil.closest('.book__details-page');
+        if (page) {
+          if (format === 'list') {
+            const ul = page.querySelector('.event-spread__includes');
+            if (ul) currentVal = Array.from(ul.querySelectorAll('li')).map(li => li.textContent.trim()).join('\n');
+          } else if (format === 'paragraphs') {
+            const descs = page.querySelectorAll('.event-spread__desc');
+            currentVal = Array.from(descs).map(p => p.textContent.trim()).join('\n\n');
+          } else {
+            const extra = page.querySelector('.event-spread__extra');
+            if (extra) currentVal = extra.textContent.trim();
+          }
+        }
+      }
+
+      const hint = format === 'list' ? ' (one item per line)' : format === 'paragraphs' ? ' (blank line = new paragraph)' : '';
+      const pop = createPopover(pencil, `
+        <label>${escHtml(label)}${hint}</label>
+        <textarea id="editBookTextInput" rows="8">${escHtml(currentVal)}</textarea>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveBookTextBtn">Save</button>
+        </div>
+      `);
+
+      pop.querySelector('#saveBookTextBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editBookTextInput').value.trim();
+        const done = setSaving(pop.querySelector('#saveBookTextBtn'));
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: settingKey, value: val })
+          });
+
+          // Update DOM
+          const page = pencil.closest('.book__details-page');
+          if (page) {
+            if (format === 'list') {
+              const ul = page.querySelector('.event-spread__includes');
+              if (ul) {
+                ul.innerHTML = val.split('\n').filter(l => l.trim())
+                  .map(l => '<li>' + escHtml(l.trim()) + '</li>').join('');
+              }
+            } else if (format === 'paragraphs') {
+              const existingDescs = page.querySelectorAll('.event-spread__desc');
+              const extraEl = page.querySelector('.event-spread__extra');
+              const ctaEl = page.querySelector('.inner-cta-wrap');
+              existingDescs.forEach(el => el.remove());
+              const insertBefore = extraEl || ctaEl;
+              val.split(/\n\s*\n/).filter(p => p.trim()).forEach(p => {
+                const el = document.createElement('p');
+                el.className = 'event-spread__desc';
+                el.textContent = p.trim();
+                if (insertBefore) page.insertBefore(el, insertBefore);
+                else page.appendChild(el);
+              });
+            } else {
+              const extra = page.querySelector('.event-spread__extra');
+              if (extra) extra.textContent = val;
+            }
+          }
+
+          if (window._siteSettings) window._siteSettings[settingKey] = val;
+          showToast('Text updated');
           closeAllPopovers();
         } catch (err) { done('Error saving'); }
       });
