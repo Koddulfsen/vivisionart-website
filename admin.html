@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-palette="splatter3" data-heading-font="marker" data-body-font="caveat" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="mint">
+<html lang="en" data-palette="splatter3" data-heading-font="special" data-body-font="quicksand" data-texture="artpaper" data-book-page="sand" data-book-texture="paper" data-site-bg="cream" data-accent="ice" data-cover-tex="leather">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -128,7 +128,7 @@
     .admin-active .date-card { position: relative; }
     .admin-active .polaroid { position: relative; }
     .admin-active .cover-polaroid { position: relative; }
-    .admin-active .scrapbook__polaroid { position: relative; }
+    .admin-active .book__details-page { position: relative; }
 
     /* ---- Inline Color Pickers ---- */
     .inline-color-pick {
@@ -241,6 +241,8 @@
     .edit-popover .btn-save:hover { opacity: 0.85; }
     .edit-popover .btn-cancel:hover { background: #ddd4c8; }
     .edit-popover .btn-delete:hover { background: #b33; }
+    .edit-popover .btn-save:disabled,
+    .edit-popover .btn-delete:disabled { opacity: 0.55; cursor: not-allowed; }
 
     /* ---- Add Buttons ---- */
     .admin-add-btn {
@@ -263,132 +265,61 @@
       opacity: 0.85;
     }
 
-    /* ---- Floating Style Drawer ---- */
-    .admin-drawer-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 48px;
-      height: 48px;
-      background: var(--accent, #80b8a0);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 22px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      z-index: 9000;
+    /* ---- Quick Colors Bar ---- */
+    .admin-colors-bar {
       display: none;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s;
-    }
-    .admin-active .admin-drawer-toggle {
-      display: flex;
-    }
-    .admin-drawer-toggle:hover {
-      transform: scale(1.1);
-    }
-
-    .admin-drawer {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      top: 16px;
+      right: 16px;
+      z-index: 9000;
       background: white;
-      border-radius: 16px 16px 0 0;
-      box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
-      z-index: 8999;
-      max-height: 70vh;
-      overflow-y: auto;
-      transform: translateY(100%);
-      transition: transform 0.35s ease;
-      padding: 24px 24px 32px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      align-items: center;
+      gap: 14px;
     }
-    .admin-drawer.is-open {
-      transform: translateY(0);
-    }
-
-    .drawer-section-label {
-      font-family: 'Patrick Hand', cursive;
-      font-size: 1rem;
+    .admin-active .admin-colors-bar { display: flex; }
+    .admin-colors-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
       color: #7a7068;
-      margin: 16px 0 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
-    .drawer-section-label:first-child { margin-top: 0; }
-
-    .drawer-pills {
+    .admin-color-item {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .drawer-pill {
-      padding: 6px 14px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      background: #faf8f5;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.15s;
-    }
-    .drawer-pill:hover { border-color: var(--accent, #80b8a0); }
-    .drawer-pill.active {
-      background: var(--accent, #80b8a0);
-      color: white;
-      border-color: var(--accent, #80b8a0);
-    }
-
-    .drawer-color-row {
-      display: flex;
-      gap: 12px;
       align-items: center;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+      gap: 5px;
     }
-    .drawer-color-row label {
+    .admin-color-item label {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       color: #7a7068;
-      min-width: 100px;
     }
-    .drawer-color-row input[type="color"] {
-      width: 36px;
-      height: 36px;
-      border: 2px solid #ddd;
+    .admin-color-item input[type="color"] {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #e0d8d0;
       border-radius: 6px;
       cursor: pointer;
       padding: 2px;
       background: white;
     }
-    .drawer-color-row .hex-input {
-      width: 72px;
-      padding: 4px 6px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 12px;
-      font-family: monospace;
-      color: #2c2420;
-      margin-left: 4px;
-    }
-
-    .drawer-save-btn {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
+    .admin-colors-save {
+      padding: 6px 12px;
       background: var(--accent, #80b8a0);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-family: 'Patrick Hand', cursive;
-      font-size: 1.1rem;
       cursor: pointer;
       transition: opacity 0.2s;
     }
-    .drawer-save-btn:hover { opacity: 0.85; }
+    .admin-colors-save:hover { opacity: 0.85; }
+    .admin-colors-save:disabled { opacity: 0.55; cursor: not-allowed; }
 
     /* ---- Popover backdrop for mobile ---- */
     .popover-backdrop {
@@ -409,9 +340,6 @@
         max-height: 80vh;
         overflow-y: auto;
       }
-      .admin-drawer {
-        max-height: 85vh;
-      }
     }
 
     /* ---- Upload field ---- */
@@ -429,7 +357,7 @@
       display: inline-block;
       padding: 8px 16px;
       background: #8a7058;
-      color: white;
+      color: #fff !important;
       border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
@@ -469,7 +397,7 @@
       bottom: 24px;
       right: 80px;
       z-index: 11000;
-      background: var(--accent, #a0c4d4);
+      background: var(--accent, #80b8a0);
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -483,10 +411,13 @@
     .admin-active .publish-btn { display: block; }
     .publish-btn:hover { filter: brightness(0.9); transform: translateY(-1px); }
     .publish-btn:disabled { background: #888; cursor: default; transform: none; }
-    .publish-btn.needs-setup { background: var(--accent, #a0c4d4); }
+    .publish-btn.needs-setup { background: var(--accent, #80b8a0); opacity: 0.7; }
   </style>
 </head>
 <body>
+
+  <!-- Fixed watermark -->
+  <img src="images/favicon-easel.png" class="bg-watermark" aria-hidden="true">
 
   <!-- ============ ADMIN LOGIN OVERLAY ============ -->
   <div class="admin-login-overlay" id="adminLoginOverlay">
@@ -538,6 +469,7 @@
           <div class="polaroid-frame">
             <img src="images/vivi-beach-art.png" alt="Vivi" id="aboutPhoto">
           </div>
+          <!-- INJECT:about_photo_caption --><!-- /INJECT:about_photo_caption -->
           <button class="edit-pencil" data-edit="about-photo" title="Edit photo">&#9998;</button>
         </div>
 
@@ -587,7 +519,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -595,14 +527,9 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r bis zu 10 Kinder</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 2deg;">
                 <div class="polaroid-frame"><img src="images/rainbow.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_cover_img"></div>
+                <!-- INJECT:book_birthday_cover_caption --><!-- /INJECT:book_birthday_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
@@ -614,17 +541,38 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_birthday_checks -->
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r bis zu 10 Kinder</li>
+            <!-- /INJECT:book_birthday_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1.5deg;">
               <div class="polaroid-frame"><img src="images/palettes.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_details_img"></div>
+              <!-- INJECT:book_birthday_details_caption --><!-- /INJECT:book_birthday_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_birthday_desc --><p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p><!-- /INJECT:book_birthday_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_birthday_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.<!-- /INJECT:book_birthday_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -632,26 +580,26 @@
 
         </div>
       </div>
-      <!-- Page 2: Photos -->
+      <!-- Page 3: Photos -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
           <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 8%; --y: 8%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/art.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo1_img"></div>
-              <p class="polaroid-caption">Kleine K&uuml;nstler</p>
+              <!-- INJECT:book_birthday_photo1_caption --><p class="polaroid-caption">Kleine K&uuml;nstler</p><!-- /INJECT:book_birthday_photo1_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 52%; --y: 12%;">
               <div class="polaroid-pin"></div>
               <div class="polaroid-frame"><img src="images/butterflies.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo2_img"></div>
-              <p class="polaroid-caption">Farbenfroh</p>
+              <!-- INJECT:book_birthday_photo2_caption --><p class="polaroid-caption">Farbenfroh</p><!-- /INJECT:book_birthday_photo2_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 28%; --y: 42%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/splash.png" alt="Kindergeburtstag" loading="lazy" data-img-key="book_birthday_photo3_img"></div>
-              <p class="polaroid-caption">Dschungel-Welt</p>
+              <!-- INJECT:book_birthday_photo3_caption --><p class="polaroid-caption">Dschungel-Welt</p><!-- /INJECT:book_birthday_photo3_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
@@ -670,7 +618,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -678,15 +626,9 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Alle Materialien inklusive</li>
-                <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
-                <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
-                <li>F&uuml;r Gruppen bis zu 10 Personen</li>
-                <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: -2deg;">
                 <div class="polaroid-frame"><img src="images/group-showcase.png" alt="Junggesellinnenabschied" loading="lazy" data-img-key="book_bachelorette_cover_img"></div>
+                <!-- INJECT:book_bachelorette_cover_caption --><!-- /INJECT:book_bachelorette_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
@@ -698,17 +640,39 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_bachelorette_checks -->
+              <li>Alle Materialien inklusive</li>
+              <li>Ca. 2 Stunden kreativer Spa&szlig;</li>
+              <li>Bei euch vor Ort &ndash; ich komme direkt zu euch</li>
+              <li>F&uuml;r Gruppen bis zu 10 Personen</li>
+              <li>Oder eine gro&szlig;e gemeinsame Leinwand</li>
+            <!-- /INJECT:book_bachelorette_checks --></ul>
             <div class="cover-polaroid" style="--rot: 2deg;">
               <div class="polaroid-frame"><img src="images/flower.png" alt="Drink &amp; Paint" loading="lazy" data-img-key="book_bachelorette_details_img"></div>
+              <!-- INJECT:book_bachelorette_details_caption --><!-- /INJECT:book_bachelorette_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_bachelorette_desc --><p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p><!-- /INJECT:book_bachelorette_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_bachelorette_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.<!-- /INJECT:book_bachelorette_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -716,26 +680,26 @@
 
         </div>
       </div>
-      <!-- Page 2: Gemeinsam kreativ -->
+      <!-- Page 3: Gemeinsam kreativ -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -3deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/nude.png" alt="Aktmalerei" loading="lazy" data-img-key="book_bachelorette_photo1_img"></div>
-              <p class="polaroid-caption">Cheers!</p>
+              <!-- INJECT:book_bachelorette_photo1_caption --><p class="polaroid-caption">Cheers!</p><!-- /INJECT:book_bachelorette_photo1_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 4deg; --x: 50%; --y: 12%;">
               <div class="polaroid-pin"></div>
               <div class="polaroid-frame"><img src="images/heaven.png" alt="Drink & Paint" loading="lazy" data-img-key="book_bachelorette_photo2_img"></div>
-              <p class="polaroid-caption">Gemeinsam</p>
+              <!-- INJECT:book_bachelorette_photo2_caption --><p class="polaroid-caption">Gemeinsam</p><!-- /INJECT:book_bachelorette_photo2_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy" data-img-key="book_bachelorette_photo3_img"></div>
-              <p class="polaroid-caption">Unvergesslich</p>
+              <!-- INJECT:book_bachelorette_photo3_caption --><p class="polaroid-caption">Unvergesslich</p><!-- /INJECT:book_bachelorette_photo3_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
@@ -754,7 +718,7 @@
       <div class="book__rings"></div>
 
       <!-- Page 0: Cover -->
-      <div class="book__page book__page--cover" style="z-index: 3;">
+      <div class="book__page book__page--cover" style="z-index: 4;">
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
@@ -762,14 +726,9 @@
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
-              <ul class="event-spread__includes">
-                <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
-                <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
-                <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
-                <li>Gruppen bis 30 Personen m&ouml;glich</li>
-              </ul>
               <div class="cover-polaroid" style="--rot: 1.5deg;">
                 <div class="polaroid-frame"><img src="images/decked-table.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_cover_img"></div>
+                <!-- INJECT:book_workshop_cover_caption --><!-- /INJECT:book_workshop_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_cover_img" title="Edit image">&#9998;</button>
               </div>
               <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
@@ -781,18 +740,39 @@
 
         </div>
       </div>
-      <!-- Page 1: Details -->
-      <div class="book__page" style="z-index: 2;">
+      <!-- Page 1: Includes -->
+      <div class="book__page" style="z-index: 3;">
         <div class="book__page-front book__cover-front">
           <div class="book__details-page">
-            <p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
-            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p>
-            <p class="event-spread__extra">Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).</p>
+            <ul class="event-spread__includes"><!-- INJECT:book_workshop_checks -->
+              <li>Exklusive 2-st&uuml;ndige kreative Auszeit</li>
+              <li>Alle Materialien inklusive &ndash; alles ist vorbereitet</li>
+              <li>Bei Ihnen vor Ort oder in inspirierenden R&auml;umen</li>
+              <li>Gruppen bis 30 Personen m&ouml;glich</li>
+            <!-- /INJECT:book_workshop_checks --></ul>
             <div class="cover-polaroid" style="--rot: -1deg;">
               <div class="polaroid-frame"><img src="images/beautiful-sun.png" alt="Workshop" loading="lazy" data-img-key="book_workshop_details_img"></div>
+              <!-- INJECT:book_workshop_details_caption --><!-- /INJECT:book_workshop_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_details_img" title="Edit image">&#9998;</button>
             </div>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 4px; top: auto; right: -8px;">&#9998;</button>
+          </div>
+          <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
+        </div>
+        <div class="book__page-back">
+
+        </div>
+      </div>
+      <!-- Page 2: Description -->
+      <div class="book__page" style="z-index: 2;">
+        <div class="book__page-front book__cover-front">
+          <div class="book__details-page">
+            <!-- INJECT:book_workshop_desc --><p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
+            <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p><!-- /INJECT:book_workshop_desc -->
+            <p class="event-spread__extra"><!-- INJECT:book_workshop_extra -->Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).<!-- /INJECT:book_workshop_extra --></p>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
         </div>
@@ -800,26 +780,26 @@
 
         </div>
       </div>
-      <!-- Page 2: Teamwork -->
+      <!-- Page 3: Teamwork -->
       <div class="book__page" style="z-index: 1;">
         <div class="book__page-front book__cover-front">
                     <div class="scrapbook__photo-cluster">
             <div class="scrapbook__polaroid" style="--rot: -2deg; --x: 6%; --y: 8%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/group-photo.png" alt="Workshop Gruppe" loading="lazy" data-img-key="book_workshop_photo1_img"></div>
-              <p class="polaroid-caption">Gemeinsam</p>
+              <!-- INJECT:book_workshop_photo1_caption --><p class="polaroid-caption">Gemeinsam</p><!-- /INJECT:book_workshop_photo1_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo1_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: 3deg; --x: 52%; --y: 10%;">
               <div class="polaroid-pin"></div>
               <div class="polaroid-frame"><img src="images/results.png" alt="Workshop Ergebnisse" loading="lazy" data-img-key="book_workshop_photo2_img"></div>
-              <p class="polaroid-caption">Kreativ-Power</p>
+              <!-- INJECT:book_workshop_photo2_caption --><p class="polaroid-caption">Kreativ-Power</p><!-- /INJECT:book_workshop_photo2_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo2_img" title="Edit image">&#9998;</button>
             </div>
             <div class="scrapbook__polaroid" style="--rot: -4deg; --x: 26%; --y: 41%;">
               <div class="polaroid-pin"></div>
               <div class="polaroid-frame"><img src="images/creative-expression.png" alt="Kreativ" loading="lazy" data-img-key="book_workshop_photo3_img"></div>
-              <p class="polaroid-caption">Inspiration</p>
+              <!-- INJECT:book_workshop_photo3_caption --><p class="polaroid-caption">Inspiration</p><!-- /INJECT:book_workshop_photo3_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
@@ -981,10 +961,6 @@
     </div>
   </section>
 
-  <!-- ============ BOOK PICKER (hidden in admin, replaced by drawer) ============ -->
-  <div class="book-picker" id="bookPicker" style="display:none;">
-  </div>
-
   <!-- ============ OFFENE TERMINE ============ -->
   <section class="dates-section" id="dates">
     <h2 class="section-heading fade-in">
@@ -1005,94 +981,18 @@
     <button class="edit-pencil" data-edit="footer" title="Edit footer text">&#9998;</button>
   </footer>
 
-  <!-- ============ ADMIN STYLE DRAWER ============ -->
-  <button class="admin-drawer-toggle" id="drawerToggle" title="Style settings">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </button>
-
-  <div class="admin-drawer" id="adminDrawer">
-    <div class="drawer-section-label">Heading Font</div>
-    <div class="drawer-pills" id="drawerHeadingFonts">
-      <button class="drawer-pill" data-heading-font="marker" style="font-family:'Permanent Marker'">Permanent Marker</button>
-      <button class="drawer-pill" data-heading-font="shadows" style="font-family:'Shadows Into Light'">Shadows Into Light</button>
-      <button class="drawer-pill" data-heading-font="indie" style="font-family:'Indie Flower'">Indie Flower</button>
-      <button class="drawer-pill" data-heading-font="playfair" style="font-family:'Playfair Display'">Playfair Display</button>
-      <button class="drawer-pill" data-heading-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
-      <button class="drawer-pill" data-heading-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
-      <button class="drawer-pill" data-heading-font="special" style="font-family:'Special Elite'">Special Elite</button>
-      <button class="drawer-pill" data-heading-font="caveat" style="font-family:'Caveat'">Caveat</button>
-    </div>
-
-    <div class="drawer-section-label">Body Font</div>
-    <div class="drawer-pills" id="drawerBodyFonts">
-      <button class="drawer-pill" data-body-font="caveat" style="font-family:'Caveat'">Caveat</button>
-      <button class="drawer-pill" data-body-font="patrick" style="font-family:'Patrick Hand'">Patrick Hand</button>
-      <button class="drawer-pill" data-body-font="coming" style="font-family:'Coming Soon'">Coming Soon</button>
-      <button class="drawer-pill" data-body-font="nunito" style="font-family:'Nunito'">Nunito</button>
-      <button class="drawer-pill" data-body-font="quicksand" style="font-family:'Quicksand'">Quicksand</button>
-      <button class="drawer-pill" data-body-font="dm" style="font-family:'DM Sans'">DM Sans</button>
-      <button class="drawer-pill" data-body-font="special" style="font-family:'Special Elite'">Special Elite</button>
-      <button class="drawer-pill" data-body-font="courier" style="font-family:'Courier Prime'">Courier Prime</button>
-    </div>
-
-    <div class="drawer-section-label">Colors</div>
-    <div class="drawer-color-row">
-      <label>BG Primary</label>
+  <!-- ============ ADMIN COLORS BAR ============ -->
+  <div class="admin-colors-bar" id="adminColorsBar">
+    <span class="admin-colors-title">Colors</span>
+    <div class="admin-color-item">
+      <label>Background</label>
       <input type="color" id="colorBgPrimary" value="#f0ebe0">
-      <input type="text" class="hex-input" data-sync="colorBgPrimary" value="#f0ebe0" placeholder="#hex">
     </div>
-    <div class="drawer-color-row">
+    <div class="admin-color-item">
       <label>Accent</label>
       <input type="color" id="colorAccent" value="#80b8a0">
-      <input type="text" class="hex-input" data-sync="colorAccent" value="#80b8a0" placeholder="#hex">
     </div>
-
-    <div class="drawer-section-label">Cover Colors</div>
-    <div class="drawer-color-row">
-      <label>Birthday</label>
-      <input type="color" id="coverColorBirthday" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorBirthday" value="#9a806a" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Bachelorette</label>
-      <input type="color" id="coverColorBachelorette" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorBachelorette" value="#9a806a" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Workshop</label>
-      <input type="color" id="coverColorWorkshop" value="#9a806a">
-      <input type="text" class="hex-input" data-sync="coverColorWorkshop" value="#9a806a" placeholder="#hex">
-    </div>
-
-    <div class="drawer-section-label">Page Elements</div>
-    <div class="drawer-color-row">
-      <label>CTA Card</label>
-      <input type="color" id="colorTornPage" value="#e8dcc8">
-      <input type="text" class="hex-input" data-sync="colorTornPage" value="#e8dcc8" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Contact Form</label>
-      <input type="color" id="colorPostcard" value="#f8f4f0">
-      <input type="text" class="hex-input" data-sync="colorPostcard" value="#f8f4f0" placeholder="#hex">
-    </div>
-    <div class="drawer-color-row">
-      <label>Calendar Cards</label>
-      <input type="color" id="colorDateCards" value="#f8f4f0">
-      <input type="text" class="hex-input" data-sync="colorDateCards" value="#f8f4f0" placeholder="#hex">
-    </div>
-
-    <div class="drawer-section-label">Cover Texture</div>
-    <div class="drawer-pills" id="drawerTextures">
-      <button class="drawer-pill" data-cover-tex="smooth">Smooth</button>
-      <button class="drawer-pill" data-cover-tex="grain">Grain</button>
-      <button class="drawer-pill" data-cover-tex="leather">Leather</button>
-      <button class="drawer-pill" data-cover-tex="linen">Linen</button>
-      <button class="drawer-pill" data-cover-tex="canvas">Canvas</button>
-      <button class="drawer-pill" data-cover-tex="suede">Suede</button>
-    </div>
-
-    <button class="drawer-save-btn" id="drawerSaveBtn">Save Style</button>
-
+    <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
   </div>
 
   <script>
@@ -1196,11 +1096,24 @@
           // Description
           const descKey = 'book_' + name + '_desc';
           if (s[descKey]) {
-            const descEls = book.querySelectorAll('.event-spread__desc');
             const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
-            descEls.forEach((el, i) => {
-              if (paras[i]) el.textContent = paras[i].trim();
-            });
+            // Find the page that currently contains desc elements
+            const descPage = book.querySelector('.event-spread__desc')
+              ? book.querySelector('.event-spread__desc').closest('.book__details-page')
+              : null;
+            if (descPage) {
+              const extraEl = descPage.querySelector('.event-spread__extra');
+              const ctaEl = descPage.querySelector('.inner-cta-wrap');
+              descPage.querySelectorAll('.event-spread__desc').forEach(el => el.remove());
+              const insertBefore = extraEl || ctaEl;
+              paras.forEach(p => {
+                const el = document.createElement('p');
+                el.className = 'event-spread__desc';
+                el.textContent = p.trim();
+                if (insertBefore) descPage.insertBefore(el, insertBefore);
+                else descPage.appendChild(el);
+              });
+            }
           }
 
           // Extra text
@@ -1230,7 +1143,7 @@
                     }
                     captionEl.textContent = s[captionKey];
                   } else if (captionEl) {
-                    captionEl.textContent = '';
+                    captionEl.remove();
                   }
                 }
               }
@@ -1251,7 +1164,7 @@
               }
               captionEl.textContent = s.about_photo_caption;
             } else if (captionEl) {
-              captionEl.textContent = '';
+              captionEl.remove();
             }
           }
         }
@@ -1602,6 +1515,19 @@
       setTimeout(() => t.classList.remove('show'), 2500);
     }
 
+    /* ---- Save button loading state ---- */
+    /* Usage: const done = setSaving(btn); ...await fetch...; done() or done('Error') */
+    function setSaving(btn, label) {
+      const orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = label || 'Saving...';
+      return function restore(errMsg) {
+        btn.disabled = false;
+        btn.textContent = orig;
+        if (errMsg) showToast(errMsg);
+      };
+    }
+
     /* ---- Auth helper ---- */
     function authHeaders() {
       return { 'Authorization': 'Bearer ' + ADMIN.token, 'Content-Type': 'application/json' };
@@ -1614,8 +1540,12 @@
 
       return new Promise((resolve, reject) => {
         img.onload = () => {
-          let w = img.width;
-          let h = img.height;
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if (!w || !h) {
+            reject(new Error('Could not read image — try a JPEG or PNG file'));
+            return;
+          }
           if (w > 1200) {
             h = Math.round(h * 1200 / w);
             w = 1200;
@@ -1626,17 +1556,21 @@
           ctx.drawImage(img, 0, 0, w, h);
 
           canvas.toBlob(async (blob) => {
+            if (!blob || blob.size === 0) {
+              reject(new Error('Could not process image — try a JPEG or PNG file'));
+              return;
+            }
             try {
               const res = await fetch('/api/upload', {
                 method: 'POST',
                 headers: {
                   'Authorization': 'Bearer ' + ADMIN.token,
-                  'X-Filename': file.name || 'image.jpg',
+                  'X-Filename': file.name.replace(/\.heic$/i, '.jpg') || 'image.jpg',
                 },
                 body: blob,
               });
               const data = await res.json();
-              if (res.ok) {
+              if (res.ok && data.url) {
                 resolve(data.url);
               } else {
                 reject(new Error(data.error || 'Upload failed'));
@@ -1646,7 +1580,7 @@
             }
           }, 'image/jpeg', 0.85);
         };
-        img.onerror = () => reject(new Error('Could not read image'));
+        img.onerror = () => reject(new Error('Could not read image — try a JPEG or PNG file'));
         img.src = URL.createObjectURL(file);
       });
     }
@@ -1656,7 +1590,7 @@
       return `
         <div class="upload-field">
           <img class="upload-preview" src="${escHtml(currentSrc || '')}" alt="Preview"${currentSrc ? '' : ' style="display:none"'}>
-          <label class="upload-btn">
+          <label class="upload-btn" style="color:#fff">
             Choose Photo
             <input type="file" accept="image/*" style="display:none" data-upload-for="${hiddenId}">
           </label>
@@ -1667,19 +1601,22 @@
     }
 
     /* ---- Helper: wire up file input change handler ---- */
+    /* Returns an object with getLocalUrl() for use in save handlers */
     function wireUploadField(popover, hiddenId) {
       const fileInput = popover.querySelector('input[data-upload-for="' + hiddenId + '"]');
       const preview = fileInput.closest('.upload-field').querySelector('.upload-preview');
       const status = popover.querySelector('span[data-status-for="' + hiddenId + '"]');
       const hidden = popover.querySelector('#' + hiddenId);
+      let currentLocalUrl = null;
 
       fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
         // Show local preview immediately — don't wait for CDN
-        const localUrl = URL.createObjectURL(file);
-        preview.src = localUrl;
+        if (currentLocalUrl) URL.revokeObjectURL(currentLocalUrl);
+        currentLocalUrl = URL.createObjectURL(file);
+        preview.src = currentLocalUrl;
         preview.style.display = 'block';
 
         status.textContent = 'Uploading...';
@@ -1694,11 +1631,23 @@
           // Revert preview on failure
           preview.style.display = 'none';
           preview.src = '';
-          URL.revokeObjectURL(localUrl);
+          URL.revokeObjectURL(currentLocalUrl);
+          currentLocalUrl = null;
           status.textContent = 'Error: ' + (err.message || 'upload failed');
           status.className = 'upload-status error';
         }
       });
+
+      return { getLocalUrl: () => currentLocalUrl };
+    }
+
+    /* ---- Helper: set img src with CDN-safe preload ---- */
+    /* Uses localUrl for instant display, swaps to cdnUrl once it loads */
+    function setImgSrcSafe(imgEl, cdnUrl, localUrl) {
+      if (localUrl) imgEl.src = localUrl;
+      const preloader = new Image();
+      preloader.onload = () => { imgEl.src = cdnUrl; };
+      preloader.src = cdnUrl;
     }
 
     /* ---- Close any open popover ---- */
@@ -1791,7 +1740,7 @@
     function activateAdmin() {
       ADMIN.active = true;
       document.body.classList.add('admin-active');
-      initDrawer();
+      initColorPickers();
       initPencilHandlers();
       initAddButtons();
     }
@@ -1814,6 +1763,7 @@
           case 'artwork': editArtwork(pencil); break;
           case 'event': editEvent(pencil); break;
           case 'book-image': editBookImage(pencil); break;
+          case 'book-text': editBookText(pencil); break;
         }
       });
     }
@@ -1833,6 +1783,7 @@
       pop.querySelector('#saveNameBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editNameInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveNameBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1842,7 +1793,7 @@
           el.textContent = val;
           showToast('Name updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1861,6 +1812,7 @@
       `);
       pop.querySelector('#saveBioBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editBioInput').value.trim();
+        const done = setSaving(pop.querySelector('#saveBioBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1869,9 +1821,7 @@
           });
           // Update DOM
           bios.forEach(p => p.remove());
-          const nameEl = bioWrap.querySelector('.about-name') || document.getElementById('aboutName');
           const paras = val.split(/\n\s*\n/);
-          let insertRef = bioWrap.firstChild;
           paras.forEach(p => {
             if (!p.trim()) return;
             const el = document.createElement('p');
@@ -1881,7 +1831,7 @@
           });
           showToast('Bio updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1910,7 +1860,7 @@
           <button class="btn-save" id="savePhotoBtn">Save</button>
         </div>
       `);
-      wireUploadField(pop, 'editPhotoUrl');
+      const photoUpload = wireUploadField(pop, 'editPhotoUrl');
       pop.querySelector('#editPhotoHasCaption').addEventListener('change', function() {
         pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
@@ -1919,12 +1869,13 @@
         if (!val) return;
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
+        const done = setSaving(pop.querySelector('#savePhotoBtn'));
         try {
           await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo', value: val }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) })
           ]);
-          img.src = val;
+          setImgSrcSafe(img, val, photoUpload.getLocalUrl());
           if (polaroid) {
             let captionEl = polaroid.querySelector('.polaroid-caption');
             if (captionText) {
@@ -1935,12 +1886,12 @@
               }
               captionEl.textContent = captionText;
             } else if (captionEl) {
-              captionEl.textContent = '';
+              captionEl.remove();
             }
           }
           showToast('Photo updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1959,6 +1910,7 @@
       pop.querySelector('#saveIgBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editIgInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveIgBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1968,7 +1920,7 @@
           link.href = val;
           showToast('Instagram updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -1988,6 +1940,7 @@
       pop.querySelector('#saveFooterBtn').addEventListener('click', async () => {
         const val = pop.querySelector('#editFooterInput').value.trim();
         if (!val) return;
+        const done = setSaving(pop.querySelector('#saveFooterBtn'));
         try {
           await fetch('/api/settings', {
             method: 'POST',
@@ -1997,7 +1950,7 @@
           el.innerHTML = '&copy; ' + escHtml(val);
           showToast('Footer updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -2029,7 +1982,7 @@
           <button class="btn-save" id="saveBookImgBtn">Save</button>
         </div>
       `);
-      wireUploadField(pop, 'editBookImg');
+      const bookImgUpload = wireUploadField(pop, 'editBookImg');
       pop.querySelector('#editBookImgHasCaption').addEventListener('change', function() {
         pop.querySelector('#editBookImgCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
@@ -2038,12 +1991,13 @@
         if (!val) return;
         const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
+        const done = setSaving(pop.querySelector('#saveBookImgBtn'));
         try {
           await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, value: val }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: captionKey, value: captionText }) })
           ]);
-          img.src = val;
+          setImgSrcSafe(img, val, bookImgUpload.getLocalUrl());
           let captionEl = container.querySelector('.polaroid-caption');
           if (captionText) {
             if (!captionEl) {
@@ -2054,11 +2008,92 @@
             }
             captionEl.textContent = captionText;
           } else if (captionEl) {
-            captionEl.textContent = '';
+            captionEl.remove();
           }
           showToast('Image updated');
           closeAllPopovers();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Book Text (checks list, description, extra) ---- */
+    function editBookText(pencil) {
+      const settingKey = pencil.dataset.settingKey;
+      const label = pencil.dataset.label || 'Text';
+      const format = pencil.dataset.format || 'text';
+
+      // Read current value from cached settings or DOM
+      let currentVal = '';
+      if (window._siteSettings && settingKey in window._siteSettings) {
+        currentVal = window._siteSettings[settingKey];
+      } else {
+        const page = pencil.closest('.book__details-page');
+        if (page) {
+          if (format === 'list') {
+            const ul = page.querySelector('.event-spread__includes');
+            if (ul) currentVal = Array.from(ul.querySelectorAll('li')).map(li => li.textContent.trim()).join('\n');
+          } else if (format === 'paragraphs') {
+            const descs = page.querySelectorAll('.event-spread__desc');
+            currentVal = Array.from(descs).map(p => p.textContent.trim()).join('\n\n');
+          } else {
+            const extra = page.querySelector('.event-spread__extra');
+            if (extra) currentVal = extra.textContent.trim();
+          }
+        }
+      }
+
+      const hint = format === 'list' ? ' (one item per line)' : format === 'paragraphs' ? ' (blank line = new paragraph)' : '';
+      const pop = createPopover(pencil, `
+        <label>${escHtml(label)}${hint}</label>
+        <textarea id="editBookTextInput" rows="8">${escHtml(currentVal)}</textarea>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveBookTextBtn">Save</button>
+        </div>
+      `);
+
+      pop.querySelector('#saveBookTextBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editBookTextInput').value.trim();
+        const done = setSaving(pop.querySelector('#saveBookTextBtn'));
+        try {
+          await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key: settingKey, value: val })
+          });
+
+          // Update DOM
+          const page = pencil.closest('.book__details-page');
+          if (page) {
+            if (format === 'list') {
+              const ul = page.querySelector('.event-spread__includes');
+              if (ul) {
+                ul.innerHTML = val.split('\n').filter(l => l.trim())
+                  .map(l => '<li>' + escHtml(l.trim()) + '</li>').join('');
+              }
+            } else if (format === 'paragraphs') {
+              const existingDescs = page.querySelectorAll('.event-spread__desc');
+              const extraEl = page.querySelector('.event-spread__extra');
+              const ctaEl = page.querySelector('.inner-cta-wrap');
+              existingDescs.forEach(el => el.remove());
+              const insertBefore = extraEl || ctaEl;
+              val.split(/\n\s*\n/).filter(p => p.trim()).forEach(p => {
+                const el = document.createElement('p');
+                el.className = 'event-spread__desc';
+                el.textContent = p.trim();
+                if (insertBefore) page.insertBefore(el, insertBefore);
+                else page.appendChild(el);
+              });
+            } else {
+              const extra = page.querySelector('.event-spread__extra');
+              if (extra) extra.textContent = val;
+            }
+          }
+
+          if (window._siteSettings) window._siteSettings[settingKey] = val;
+          showToast('Text updated');
+          closeAllPopovers();
+        } catch (err) { done('Error saving'); }
       });
     }
 
@@ -2102,6 +2137,7 @@
         const hasTitle = pop.querySelector('#editArtHasTitle').checked;
         const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
         const status = pop.querySelector('#editArtStatus').value;
+        const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
           await fetch('/api/artworks/' + id, {
             method: 'PUT',
@@ -2111,11 +2147,12 @@
           showToast('Artwork updated');
           closeAllPopovers();
           location.reload();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
 
       pop.querySelector('#deleteArtBtn').addEventListener('click', async () => {
         if (!confirm('Delete this artwork?')) return;
+        const done = setSaving(pop.querySelector('#deleteArtBtn'), 'Deleting...');
         try {
           await fetch('/api/artworks/' + id, {
             method: 'DELETE',
@@ -2124,7 +2161,7 @@
           showToast('Artwork deleted');
           closeAllPopovers();
           location.reload();
-        } catch (err) { showToast('Error deleting'); }
+        } catch (err) { done('Error deleting'); }
       });
     }
 
@@ -2153,6 +2190,7 @@
         const date = pop.querySelector('#editEvDate').value.trim();
         const title = pop.querySelector('#editEvTitle').value.trim();
         const location = pop.querySelector('#editEvLocation').value.trim();
+        const done = setSaving(pop.querySelector('#saveEvBtn'));
         try {
           await fetch('/api/events/' + id, {
             method: 'PUT',
@@ -2162,11 +2200,12 @@
           showToast('Event updated');
           closeAllPopovers();
           window.location.reload();
-        } catch (err) { showToast('Error saving'); }
+        } catch (err) { done('Error saving'); }
       });
 
       pop.querySelector('#deleteEvBtn').addEventListener('click', async () => {
         if (!confirm('Delete this event?')) return;
+        const done = setSaving(pop.querySelector('#deleteEvBtn'), 'Deleting...');
         try {
           await fetch('/api/events/' + id, {
             method: 'DELETE',
@@ -2175,7 +2214,7 @@
           showToast('Event deleted');
           closeAllPopovers();
           window.location.reload();
-        } catch (err) { showToast('Error deleting'); }
+        } catch (err) { done('Error deleting'); }
       });
     }
 
@@ -2214,6 +2253,7 @@
           const title = hasTitle ? pop.querySelector('#newArtTitle').value.trim() : '';
           const status = pop.querySelector('#newArtStatus').value;
           if (!imgUrl) { showToast('Please upload an image first'); return; }
+          const done = setSaving(pop.querySelector('#createArtBtn'), 'Adding...');
           try {
             await fetch('/api/artworks', {
               method: 'POST',
@@ -2223,7 +2263,7 @@
             showToast('Artwork added');
             closeAllPopovers();
             location.reload();
-          } catch (err) { showToast('Error adding artwork'); }
+          } catch (err) { done('Error adding artwork'); }
         });
       });
 
@@ -2246,6 +2286,7 @@
           const title = pop.querySelector('#newEvTitle').value.trim();
           const loc = pop.querySelector('#newEvLocation').value.trim();
           if (!date || !title) { showToast('Date and title required'); return; }
+          const done = setSaving(pop.querySelector('#createEvBtn'), 'Adding...');
           try {
             await fetch('/api/events', {
               method: 'POST',
@@ -2255,76 +2296,23 @@
             showToast('Event added');
             closeAllPopovers();
             window.location.reload();
-          } catch (err) { showToast('Error adding event'); }
+          } catch (err) { done('Error adding event'); }
         });
       });
     }
 
-    /* ---- Style Drawer ---- */
-    function initDrawer() {
-      const drawer = document.getElementById('adminDrawer');
-      const toggle = document.getElementById('drawerToggle');
+    /* ---- Color Pickers ---- */
+    function initColorPickers() {
       const html = document.documentElement;
-
-      toggle.addEventListener('click', () => {
-        drawer.classList.toggle('is-open');
-      });
-
-      // Close drawer when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('#adminDrawer') && !e.target.closest('#drawerToggle')) {
-          drawer.classList.remove('is-open');
-        }
-      });
-
-      /* Heading font pills */
-      const curHeading = html.getAttribute('data-heading-font') || 'marker';
-      document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(btn => {
-        if (btn.dataset.headingFont === curHeading) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const font = btn.dataset.headingFont;
-          html.setAttribute('data-heading-font', font);
-          document.querySelectorAll('#drawerHeadingFonts .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Body font pills */
-      const curBody = html.getAttribute('data-body-font') || 'caveat';
-      document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(btn => {
-        if (btn.dataset.bodyFont === curBody) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const font = btn.dataset.bodyFont;
-          html.setAttribute('data-body-font', font);
-          document.querySelectorAll('#drawerBodyFonts .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Texture pills */
-      const curTex = html.getAttribute('data-cover-tex') || 'leather';
-      document.querySelectorAll('#drawerTextures .drawer-pill').forEach(btn => {
-        if (btn.dataset.coverTex === curTex) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-          const tex = btn.dataset.coverTex;
-          html.setAttribute('data-cover-tex', tex);
-          document.querySelectorAll('#drawerTextures .drawer-pill').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      /* Color inputs — live preview */
       const bgPrimary = document.getElementById('colorBgPrimary');
       const accentColor = document.getElementById('colorAccent');
-      const coverBirthday = document.getElementById('coverColorBirthday');
-      const coverBachelorette = document.getElementById('coverColorBachelorette');
-      const coverWorkshop = document.getElementById('coverColorWorkshop');
 
-      // Load current computed values into color inputs
+      // Load current computed values
       const cs = getComputedStyle(html);
       bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
       accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
 
+      // Live preview
       bgPrimary.addEventListener('input', () => {
         html.style.setProperty('--bg-primary', bgPrimary.value);
       });
@@ -2336,105 +2324,26 @@
         html.style.setProperty('--heading-bg', accentColor.value);
       });
 
-      // Cover colors: live preview
-      function applyCoverColor(bookName, color) {
-        const book = document.querySelector('[data-book="' + bookName + '"]');
-        if (book) {
-          const cover = book.querySelector('.book__page--cover .book__page-front');
-          if (cover) cover.style.background = color;
-          book.style.setProperty('--cover-bg', color);
-        }
-      }
-
-      coverBirthday.addEventListener('input', () => applyCoverColor('birthday', coverBirthday.value));
-      coverBachelorette.addEventListener('input', () => applyCoverColor('bachelorette', coverBachelorette.value));
-      coverWorkshop.addEventListener('input', () => applyCoverColor('workshop', coverWorkshop.value));
-
-      // Page element colors — live preview
-      const colorTornPage = document.getElementById('colorTornPage');
-      const colorPostcard = document.getElementById('colorPostcard');
-      const colorDateCards = document.getElementById('colorDateCards');
-
-      colorTornPage.addEventListener('input', () => {
-        const el = document.getElementById('tornPage');
-        if (el) el.style.background = colorTornPage.value;
-      });
-      colorPostcard.addEventListener('input', () => {
-        const el = document.getElementById('postcardEl');
-        if (el) el.style.background = colorPostcard.value;
-      });
-      colorDateCards.addEventListener('input', () => {
-        document.querySelectorAll('.date-card').forEach(c => c.style.background = colorDateCards.value);
-      });
-
-      // Load saved cover colors into pickers
+      // Load saved values into pickers
       if (window._siteSettings) {
         const s = window._siteSettings;
         if (s.bg_primary) bgPrimary.value = s.bg_primary;
         if (s.accent_primary) accentColor.value = s.accent_primary;
-        if (s.cover_color_birthday) coverBirthday.value = s.cover_color_birthday;
-        if (s.cover_color_bachelorette) coverBachelorette.value = s.cover_color_bachelorette;
-        if (s.cover_color_workshop) coverWorkshop.value = s.cover_color_workshop;
-        if (s.torn_page_color) colorTornPage.value = s.torn_page_color;
-        if (s.postcard_color) colorPostcard.value = s.postcard_color;
-        if (s.date_card_color) colorDateCards.value = s.date_card_color;
       }
 
-      // Sync hex text inputs with color pickers
-      document.querySelectorAll('.hex-input').forEach(hexInput => {
-        const colorId = hexInput.dataset.sync;
-        const colorInput = document.getElementById(colorId);
-        if (!colorInput) return;
-
-        // Sync initial value
-        hexInput.value = colorInput.value;
-
-        // Color picker → text
-        colorInput.addEventListener('input', () => {
-          hexInput.value = colorInput.value;
-        });
-
-        // Text → color picker
-        hexInput.addEventListener('input', () => {
-          if (/^#[0-9a-fA-F]{6}$/.test(hexInput.value)) {
-            colorInput.value = hexInput.value;
-            colorInput.dispatchEvent(new Event('input'));
-          }
-        });
-      });
-
-      /* Save Style button */
-      document.getElementById('drawerSaveBtn').addEventListener('click', async () => {
-        const activeHeading = document.querySelector('#drawerHeadingFonts .drawer-pill.active');
-        const activeBody = document.querySelector('#drawerBodyFonts .drawer-pill.active');
-        const activeTex = document.querySelector('#drawerTextures .drawer-pill.active');
-
-        const settings = [
-          { key: 'heading_font', value: activeHeading ? activeHeading.dataset.headingFont : 'marker' },
-          { key: 'body_font', value: activeBody ? activeBody.dataset.bodyFont : 'caveat' },
-          { key: 'bg_primary', value: bgPrimary.value },
-          { key: 'accent_primary', value: accentColor.value },
-          { key: 'cover_color_birthday', value: coverBirthday.value },
-          { key: 'cover_color_bachelorette', value: coverBachelorette.value },
-          { key: 'cover_color_workshop', value: coverWorkshop.value },
-          { key: 'cover_texture', value: activeTex ? activeTex.dataset.coverTex : 'leather' },
-          { key: 'torn_page_color', value: colorTornPage.value },
-          { key: 'postcard_color', value: colorPostcard.value },
-          { key: 'date_card_color', value: colorDateCards.value },
-        ];
-
+      // Save button
+      const saveBtn = document.getElementById('colorsSaveBtn');
+      saveBtn.addEventListener('click', async () => {
+        const done = setSaving(saveBtn, 'Saving...');
         try {
-          for (const s of settings) {
-            await fetch('/api/settings', {
-              method: 'POST',
-              headers: authHeaders(),
-              body: JSON.stringify(s)
-            });
-          }
-          showToast('Style saved to DB');
-          drawer.classList.remove('is-open');
+          await Promise.all([
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'bg_primary', value: bgPrimary.value }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'accent_primary', value: accentColor.value }) }),
+          ]);
+          showToast('Colors saved');
+          done();
         } catch (err) {
-          showToast('Error saving style');
+          done('Error saving colors');
         }
       });
     }
