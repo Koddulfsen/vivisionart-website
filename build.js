@@ -87,6 +87,20 @@ async function build() {
       html = inject(html, 'footer_text', `&copy; ${escapeHtml(s.footer_text)}`);
     }
 
+    // Simple text fields
+    const textFields = [
+      'nav_about', 'nav_whatido', 'nav_gallery', 'nav_contact',
+      'heading_about', 'heading_whatido', 'heading_gallery', 'heading_dates',
+      'whatido_subtitle', 'gallery_note', 'instagram_text',
+      'book_birthday_title', 'book_bachelorette_title', 'book_workshop_title',
+      'torn_title', 'torn_desc',
+      'cta_book',
+      'booking_heading', 'booking_greeting', 'booking_intro',
+    ];
+    textFields.forEach(key => {
+      if (s[key]) html = inject(html, key, escapeHtml(s[key]));
+    });
+
     // About photo
     if (s.about_photo) {
       html = html.replace(

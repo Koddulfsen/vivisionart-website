@@ -441,17 +441,21 @@
   <!-- ============ NOTEBOOK TAB NAV ============ -->
   <nav class="tab-nav" aria-label="Main navigation">
     <div class="tab-strip">
-      <a href="#about" class="tab active" data-tab="about">
-        <span class="tab-label">&Uuml;ber&nbsp;mich</span>
+      <a href="#about" class="tab active" data-tab="about" style="position: relative;">
+        <span class="tab-label" id="navAbout">&Uuml;ber&nbsp;mich</span>
+        <button class="edit-pencil" data-edit="text" data-key="nav_about" data-target="navAbout" data-label="Nav: Über mich" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
-      <a href="#events" class="tab" data-tab="events">
-        <span class="tab-label">What&nbsp;I&nbsp;Do</span>
+      <a href="#events" class="tab" data-tab="events" style="position: relative;">
+        <span class="tab-label" id="navWhatido">What&nbsp;I&nbsp;Do</span>
+        <button class="edit-pencil" data-edit="text" data-key="nav_whatido" data-target="navWhatido" data-label="Nav: What I Do" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
-      <a href="#gallery" class="tab" data-tab="gallery">
-        <span class="tab-label">Meine&nbsp;Werke</span>
+      <a href="#gallery" class="tab" data-tab="gallery" style="position: relative;">
+        <span class="tab-label" id="navGallery">Meine&nbsp;Werke</span>
+        <button class="edit-pencil" data-edit="text" data-key="nav_gallery" data-target="navGallery" data-label="Nav: Meine Werke" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
-      <a href="#booking" class="tab" data-tab="booking">
-        <span class="tab-label">Kontakt</span>
+      <a href="#booking" class="tab" data-tab="booking" style="position: relative;">
+        <span class="tab-label" id="navContact">Kontakt</span>
+        <button class="edit-pencil" data-edit="text" data-key="nav_contact" data-target="navContact" data-label="Nav: Kontakt" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
     </div>
   </nav>
@@ -459,9 +463,10 @@
   <!-- ============ ABOUT + WHAT I DO — merged scrapbook section ============ -->
   <section class="about-section" id="about">
 
-    <h2 class="section-heading fade-in">
+    <h2 class="section-heading fade-in" id="headingAbout" style="position: relative;">
       <span class="heading-tape"></span>
-      &Uuml;ber mich
+      <!-- INJECT:heading_about -->&Uuml;ber mich<!-- /INJECT:heading_about -->
+      <button class="edit-pencil" data-edit="text" data-key="heading_about" data-target="headingAbout" data-label="Section Heading: Über mich" title="Edit" style="top: 6px; right: 6px;">&#9998;</button>
     </h2>
 
     <!-- About me -->
@@ -494,9 +499,10 @@
             <div class="about-instagram__line"></div>
             <a href="https://www.instagram.com/vi.visionart" target="_blank" rel="noopener" class="about-instagram__link" id="instagramLink">
               <svg class="about-instagram__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-              <span>Schau auf meinem Instagram vorbei</span>
+              <span id="instagramText"><!-- INJECT:instagram_text -->Schau auf meinem Instagram vorbei<!-- /INJECT:instagram_text --></span>
             </a>
             <button class="edit-pencil" data-edit="instagram" title="Edit Instagram link">&#9998;</button>
+            <button class="edit-pencil" data-edit="text" data-key="instagram_text" data-target="instagramText" data-label="Instagram link text" title="Edit Instagram text">&#9998;</button>
           </div>
         </div>
       </div>
@@ -507,12 +513,13 @@
   <!-- ============ WHAT I DO ============ -->
   <section class="about-section" id="events">
 
-    <h2 class="section-heading section-heading--whatido fade-in">
+    <h2 class="section-heading section-heading--whatido fade-in" id="headingWhatido" style="position: relative;">
       <span class="heading-tape"></span>
-      What I Do
+      <!-- INJECT:heading_whatido -->What I Do<!-- /INJECT:heading_whatido -->
+      <button class="edit-pencil" data-edit="text" data-key="heading_whatido" data-target="headingWhatido" data-label="Section Heading: What I Do" title="Edit" style="top: 6px; right: 6px;">&#9998;</button>
     </h2>
 
-    <p class="events-sub fade-in">Bl&auml;ttere durch die Seiten f&uuml;r mehr Infos und Bilder</p>
+    <p class="events-sub fade-in" id="whatidoSubtitle" style="position: relative;"><!-- INJECT:whatido_subtitle -->Bl&auml;ttere durch die Seiten f&uuml;r mehr Infos und Bilder<!-- /INJECT:whatido_subtitle --><button class="edit-pencil" data-edit="text" data-key="whatido_subtitle" data-target="whatidoSubtitle" data-label="Events subtitle" title="Edit">&#9998;</button></p>
 
     <div class="event-grid">
 
@@ -525,7 +532,7 @@
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
-            <h3>Kreative Kindergeburtstage</h3>
+            <h3 id="bookBirthdayTitle" style="position: relative;"><!-- INJECT:book_birthday_title -->Kreative Kindergeburtstage<!-- /INJECT:book_birthday_title --><button class="edit-pencil" data-edit="text" data-key="book_birthday_title" data-target="bookBirthdayTitle" data-label="Book Title: Kindergeburtstage" title="Edit" style="top: 4px; right: 4px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></h3>
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
@@ -534,7 +541,7 @@
                 <!-- INJECT:book_birthday_cover_caption --><!-- /INJECT:book_birthday_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
+              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -558,7 +565,7 @@
               <!-- INJECT:book_birthday_details_caption --><!-- /INJECT:book_birthday_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_details_img" title="Edit image">&#9998;</button>
             </div>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -573,7 +580,7 @@
           <div class="book__details-page">
             <!-- INJECT:book_birthday_desc --><p class="event-spread__desc">Ein Geburtstag voller Farbe, Fantasie und strahlender Kinderaugen! Bei Vi.Vision Art erleben Kinder die Welt der abstrakten Malerei auf spielerische Weise &ndash; mit verschiedenen Techniken, Medien und spannenden Effekten wie Strukturpaste, Tape oder Abpausen.</p><!-- /INJECT:book_birthday_desc -->
             <p class="event-spread__extra"><!-- INJECT:book_birthday_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.<!-- /INJECT:book_birthday_extra --></p>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -605,7 +612,7 @@
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
-          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
           <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
@@ -624,7 +631,7 @@
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
-            <h3>Kreative Junggesellinnenabschiede</h3>
+            <h3 id="bookBacheloretteTitle" style="position: relative;"><!-- INJECT:book_bachelorette_title -->Kreative Junggesellinnenabschiede<!-- /INJECT:book_bachelorette_title --><button class="edit-pencil" data-edit="text" data-key="book_bachelorette_title" data-target="bookBacheloretteTitle" data-label="Book Title: Junggesellinnenabschiede" title="Edit" style="top: 4px; right: 4px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></h3>
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
@@ -633,7 +640,7 @@
                 <!-- INJECT:book_bachelorette_cover_caption --><!-- /INJECT:book_bachelorette_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
+              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -658,7 +665,7 @@
               <!-- INJECT:book_bachelorette_details_caption --><!-- /INJECT:book_bachelorette_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_details_img" title="Edit image">&#9998;</button>
             </div>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -673,7 +680,7 @@
           <div class="book__details-page">
             <!-- INJECT:book_bachelorette_desc --><p class="event-spread__desc">Schnappt euch den Sekt und gestaltet ein unvergessliches Erlebnis f&uuml;r die Braut! Bei Vi.Vision Art taucht ihr gemeinsam in die Welt der abstrakten Malerei ein. Mit spannenden Techniken die ich euch zeige entstehen individuelle Kunstwerke &ndash; jede Teilnehmerin kreiert etwas Einzigartiges oder wir kreieren etwas Gro&szlig;es gemeinsam.</p><!-- /INJECT:book_bachelorette_desc -->
             <p class="event-spread__extra"><!-- INJECT:book_bachelorette_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.<!-- /INJECT:book_bachelorette_extra --></p>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -698,14 +705,14 @@
               <!-- INJECT:book_bachelorette_photo2_caption --><p class="polaroid-caption">Gemeinsam</p><!-- /INJECT:book_bachelorette_photo2_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo2_img" title="Edit image">&#9998;</button>
             </div>
-            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 55%;">
+            <div class="scrapbook__polaroid" style="--rot: -1deg; --x: 26%; --y: 42%;">
               <div class="scrapbook__tape"></div>
               <div class="polaroid-frame"><img src="images/scorpion.png" alt="Kunstwerk" loading="lazy" data-img-key="book_bachelorette_photo3_img"></div>
               <!-- INJECT:book_bachelorette_photo3_caption --><p class="polaroid-caption">Unvergesslich</p><!-- /INJECT:book_bachelorette_photo3_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
-          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
           <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
@@ -724,7 +731,7 @@
         <div class="book__page-front book__cover-front">
           <div class="event-spread__header">
             <div class="event-spread__sticker"></div>
-            <h3>Kreativ-Workshops f&uuml;r Erwachsene &amp; Firmen</h3>
+            <h3 id="bookWorkshopTitle" style="position: relative;"><!-- INJECT:book_workshop_title -->Kreativ-Workshops f&uuml;r Erwachsene &amp; Firmen<!-- /INJECT:book_workshop_title --><button class="edit-pencil" data-edit="text" data-key="book_workshop_title" data-target="bookWorkshopTitle" data-label="Book Title: Kreativ-Workshops" title="Edit" style="top: 4px; right: 4px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></h3>
           </div>
           <div class="event-spread__body">
             <div class="event-spread__details">
@@ -733,7 +740,7 @@
                 <!-- INJECT:book_workshop_cover_caption --><!-- /INJECT:book_workshop_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta">Buche jetzt dein Event</a>
+              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -757,7 +764,7 @@
               <!-- INJECT:book_workshop_details_caption --><!-- /INJECT:book_workshop_details_caption -->
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_details_img" title="Edit image">&#9998;</button>
             </div>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_checks" data-label="Checkmarks" data-format="list" title="Edit checklist" style="bottom: 6px; top: auto; right: 6px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -773,7 +780,7 @@
             <!-- INJECT:book_workshop_desc --><p class="event-spread__desc">Tauchen Sie ein in die Welt der abstrakten Malerei &ndash; und erleben Sie, wie Kreativit&auml;t Menschen verbindet. In meinen Workshops geht es nicht nur ums Malen: Es geht darum, gemeinsam zu gestalten, Perspektiven zu wechseln und Ideen sichtbar werden zu lassen.</p>
             <p class="event-spread__desc">Mit spannenden Techniken wie Mixed Media, Tape, Strukturpaste u.v.m. entstehen individuelle Kunstwerke, die Pers&ouml;nlichkeit und Teamgeist sichtbar machen.</p><!-- /INJECT:book_workshop_desc -->
             <p class="event-spread__extra"><!-- INJECT:book_workshop_extra -->Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).<!-- /INJECT:book_workshop_extra --></p>
-            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+            <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Bilder ansehen</span>
@@ -805,7 +812,7 @@
               <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_photo3_img" title="Edit image">&#9998;</button>
             </div>
           </div>
-          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta">Buche jetzt dein Event</a></div>
+          <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
           <span class="book__hint book__hint--left">&larr;</span>
         </div>
         <div class="book__page-back">
@@ -819,9 +826,10 @@
     <div class="torn-page fade-in" id="tornPage">
       <div class="torn-page__inner">
         <div class="event-spread__sticker"></div>
-        <h3 class="torn-page__title">Etwas anderes im Sinn?</h3>
-        <p class="torn-page__desc">Ich bin offen f&uuml;r Ideen.</p>
-        <a href="#booking" class="event-spread__cta-btn">Buche jetzt dein Event &rarr;</a>
+        <h3 class="torn-page__title" id="tornTitle" style="position: relative;"><!-- INJECT:torn_title -->Etwas anderes im Sinn?<!-- /INJECT:torn_title --><button class="edit-pencil" data-edit="text" data-key="torn_title" data-target="tornTitle" data-label="Torn page title" title="Edit" style="top: 4px; right: 4px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></h3>
+        <p class="torn-page__desc" id="tornDesc" style="position: relative;"><!-- INJECT:torn_desc -->Ich bin offen f&uuml;r Ideen.<!-- /INJECT:torn_desc --><button class="edit-pencil" data-edit="text" data-key="torn_desc" data-target="tornDesc" data-label="Torn page description" title="Edit" style="top: 4px; right: 4px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></p>
+        <a href="#booking" class="event-spread__cta-btn" id="tornCtaBtn"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --> &rarr;</a>
+        <button class="edit-pencil" data-edit="text" data-key="cta_book" data-target="tornCtaBtn" data-label="CTA button text" data-default="Buche jetzt dein Event" title="Edit CTA text" style="position: relative; top: 0; right: 0; display: inline-flex; vertical-align: middle; width: 22px; height: 22px; font-size: 11px;">&#9998;</button>
       </div>
 
     </div>
@@ -831,12 +839,13 @@
 
   <!-- ============ GALLERY — CORKBOARD / SCRAPBOOK ============ -->
   <section class="corkboard" id="gallery">
-    <h2 class="section-heading fade-in">
+    <h2 class="section-heading fade-in" id="headingGallery" style="position: relative;">
       <span class="heading-tape"></span>
-      Meine Werke
+      <!-- INJECT:heading_gallery -->Meine Werke<!-- /INJECT:heading_gallery -->
+      <button class="edit-pencil" data-edit="text" data-key="heading_gallery" data-target="headingGallery" data-label="Section Heading: Meine Werke" title="Edit" style="top: 6px; right: 6px;">&#9998;</button>
     </h2>
 
-    <p class="gallery-note fade-in">Alle Werke sind Originale &mdash; wenn dir etwas gef&auml;llt, schreib mir einfach</p>
+    <p class="gallery-note fade-in" id="galleryNote" style="position: relative;"><!-- INJECT:gallery_note -->Alle Werke sind Originale &mdash; wenn dir etwas gef&auml;llt, schreib mir einfach<!-- /INJECT:gallery_note --><button class="edit-pencil" data-edit="text" data-key="gallery_note" data-target="galleryNote" data-label="Gallery note" title="Edit">&#9998;</button></p>
 
     <div class="board" id="galleryBoard">
       <!-- Artworks loaded dynamically from /api/artworks -->
@@ -859,20 +868,21 @@
 
   <!-- ============ KONTAKTFORMULAR ============ -->
   <section class="postcard-section" id="booking">
-    <h2 class="section-heading fade-in">
+    <h2 class="section-heading fade-in" id="bookingHeading" style="position: relative;">
       <span class="heading-tape"></span>
-      Kontaktformular &ndash; plane dein kreatives Event
+      <!-- INJECT:booking_heading -->Kontaktformular &ndash; plane dein kreatives Event<!-- /INJECT:booking_heading -->
+      <button class="edit-pencil" data-edit="text" data-key="booking_heading" data-target="bookingHeading" data-label="Booking section heading" title="Edit" style="top: 6px; right: 6px;">&#9998;</button>
     </h2>
 
     <div class="postcard fade-in" id="postcardEl">
       <div class="letter-header">
-        <p class="letter-greeting">Ich freue mich auf deine Anfrage!</p>
+        <p class="letter-greeting" id="bookingGreeting" style="position: relative;"><!-- INJECT:booking_greeting -->Ich freue mich auf deine Anfrage!<!-- /INJECT:booking_greeting --><button class="edit-pencil" data-edit="text" data-key="booking_greeting" data-target="bookingGreeting" data-label="Booking greeting" title="Edit" style="top: 2px; right: 2px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></p>
         <div class="postcard-stamp">
           <img src="images/logo-bw.jpeg" alt="Vi.Vision ART" class="stamp-logo">
         </div>
       </div>
 
-      <p class="letter-intro">Damit ich dein Event perfekt planen kann, f&uuml;lle bitte die wichtigsten Infos aus.</p>
+      <p class="letter-intro" id="bookingIntro" style="position: relative;"><!-- INJECT:booking_intro -->Damit ich dein Event perfekt planen kann, f&uuml;lle bitte die wichtigsten Infos aus.<!-- /INJECT:booking_intro --><button class="edit-pencil" data-edit="text" data-key="booking_intro" data-target="bookingIntro" data-label="Booking intro text" title="Edit" style="top: 2px; right: 2px; width: 22px; height: 22px; font-size: 11px;">&#9998;</button></p>
 
       <form class="letter-form" action="https://formsubmit.co/vivisionart@web.de" method="POST">
         <input type="hidden" name="_subject" value="Neue Event-Anfrage von Vi.Vision ART">
@@ -965,9 +975,10 @@
 
   <!-- ============ OFFENE TERMINE ============ -->
   <section class="dates-section" id="dates">
-    <h2 class="section-heading fade-in">
+    <h2 class="section-heading fade-in" id="headingDates" style="position: relative;">
       <span class="heading-tape"></span>
-      Komm vorbei
+      <!-- INJECT:heading_dates -->Komm vorbei<!-- /INJECT:heading_dates -->
+      <button class="edit-pencil" data-edit="text" data-key="heading_dates" data-target="headingDates" data-label="Section Heading: Komm vorbei" title="Edit" style="top: 6px; right: 6px;">&#9998;</button>
     </h2>
 
     <div class="dates-list" id="datesList">
@@ -1060,6 +1071,46 @@
               pencil ? bioWrap.insertBefore(el, pencil) : bioWrap.appendChild(el);
             });
           }
+        }
+
+        // Simple text fields
+        const simpleFields = [
+          ['nav_about', 'navAbout'],
+          ['nav_whatido', 'navWhatido'],
+          ['nav_gallery', 'navGallery'],
+          ['nav_contact', 'navContact'],
+          ['heading_about', 'headingAbout'],
+          ['heading_whatido', 'headingWhatido'],
+          ['heading_gallery', 'headingGallery'],
+          ['heading_dates', 'headingDates'],
+          ['whatido_subtitle', 'whatidoSubtitle'],
+          ['gallery_note', 'galleryNote'],
+          ['instagram_text', 'instagramText'],
+          ['book_birthday_title', 'bookBirthdayTitle'],
+          ['book_bachelorette_title', 'bookBacheloretteTitle'],
+          ['book_workshop_title', 'bookWorkshopTitle'],
+          ['torn_title', 'tornTitle'],
+          ['torn_desc', 'tornDesc'],
+          ['booking_heading', 'bookingHeading'],
+          ['booking_greeting', 'bookingGreeting'],
+          ['booking_intro', 'bookingIntro'],
+        ];
+        simpleFields.forEach(([key, id]) => {
+          if (!s[key]) return;
+          const el = document.getElementById(id);
+          if (!el) return;
+          const pencil = el.querySelector('.edit-pencil');
+          if (pencil) {
+            Array.from(el.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); });
+            el.insertBefore(document.createTextNode(s[key]), pencil);
+          } else {
+            el.textContent = s[key];
+          }
+        });
+        if (s.cta_book) {
+          document.querySelectorAll('.cover-cta, .inner-cta').forEach(btn => btn.textContent = s.cta_book);
+          const tornCta = document.getElementById('tornCtaBtn');
+          if (tornCta) tornCta.innerHTML = s.cta_book + ' &rarr;';
         }
 
         // Instagram
@@ -1759,6 +1810,7 @@
           case 'event': editEvent(pencil); break;
           case 'book-image': editBookImage(pencil); break;
           case 'book-text': editBookText(pencil); break;
+          case 'text': editSimpleText(pencil); break;
         }
       });
     }
@@ -1952,6 +2004,73 @@
           });
           el.innerHTML = '&copy; ' + escHtml(val);
           showToast('Footer updated');
+          closeAllPopovers();
+        } catch (err) { done('Error saving'); }
+      });
+    }
+
+    /* ---- Edit: Generic Simple Text ---- */
+    function editSimpleText(pencil) {
+      const key = pencil.dataset.key;
+      const targetId = pencil.dataset.target;
+      const label = pencil.dataset.label || 'Text';
+      const multiline = pencil.dataset.multiline === 'true';
+      const el = targetId ? document.getElementById(targetId) : null;
+      // Read current text — prefer settings cache, then data-default, then DOM text nodes
+      let current = (window._siteSettings && window._siteSettings[key]) || '';
+      if (!current) current = pencil.dataset.default || '';
+      if (!current && el) {
+        const pencilBtn = el.querySelector('.edit-pencil');
+        if (pencilBtn) {
+          // Get text nodes only (skip child elements like heading-tape spans)
+          current = Array.from(el.childNodes)
+            .filter(n => n.nodeType === 3)
+            .map(n => n.textContent)
+            .join('').trim();
+        } else {
+          current = el.textContent.trim();
+        }
+      }
+      const inputHtml = multiline
+        ? `<textarea id="editSimpleInput" rows="3">${escHtml(current)}</textarea>`
+        : `<input type="text" id="editSimpleInput" value="${escHtml(current)}">`;
+      const pop = createPopover(pencil, `
+        <label>${escHtml(label)}</label>
+        ${inputHtml}
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+          <button class="btn-save" id="saveSimpleBtn">Save</button>
+        </div>
+      `);
+      pop.querySelector('#saveSimpleBtn').addEventListener('click', async () => {
+        const val = pop.querySelector('#editSimpleInput').value.trim();
+        if (!val) return;
+        const done = setSaving(pop.querySelector('#saveSimpleBtn'));
+        try {
+          const r = await fetch('/api/settings', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ key, value: val })
+          });
+          if (!r.ok) throw new Error('Save failed');
+          if (el) {
+            // Update text nodes only, preserve child elements (pencil buttons, heading-tape spans)
+            const pencilBtn = el.querySelector('.edit-pencil');
+            if (pencilBtn) {
+              Array.from(el.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); });
+              el.insertBefore(document.createTextNode(val), pencilBtn);
+            } else {
+              el.textContent = val;
+            }
+          }
+          if (window._siteSettings) window._siteSettings[key] = val;
+          // Special case: CTA buttons all share cta_book key
+          if (key === 'cta_book') {
+            document.querySelectorAll('.cover-cta, .inner-cta').forEach(btn => btn.textContent = val);
+            const tornCta = document.getElementById('tornCtaBtn');
+            if (tornCta) tornCta.innerHTML = val + ' &rarr;';
+          }
+          showToast(label + ' updated');
           closeAllPopovers();
         } catch (err) { done('Error saving'); }
       });
