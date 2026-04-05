@@ -3882,11 +3882,11 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .cover-cta,
   .inner-cta {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
   }
 
   .book__hint {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
   }
 
   .book__page:not(.book__page--cover) .book__page-cta {
