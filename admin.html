@@ -274,14 +274,50 @@
       top: 16px;
       right: 16px;
       z-index: 9000;
-      background: white;
-      border-radius: 10px;
-      padding: 10px 14px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
       align-items: center;
-      gap: 14px;
+      gap: 8px;
+      flex-direction: row-reverse;
     }
     .admin-active .admin-colors-bar { display: flex; }
+    .admin-palette-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.18s, box-shadow 0.18s;
+      color: #7a7068;
+    }
+    .admin-palette-toggle:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(0,0,0,0.22); }
+    .admin-palette-toggle.active { color: var(--accent, #80b8a0); }
+    .admin-colors-panel {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border-radius: 10px;
+      padding: 8px 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      overflow: hidden;
+      max-width: 0;
+      opacity: 0;
+      padding-left: 0;
+      padding-right: 0;
+      pointer-events: none;
+      transition: max-width 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+    }
+    .admin-colors-bar.open .admin-colors-panel {
+      max-width: 400px;
+      opacity: 1;
+      padding: 8px 14px;
+      pointer-events: auto;
+    }
     .admin-colors-title {
       font-family: 'DM Sans', sans-serif;
       font-size: 0.7rem;
@@ -289,6 +325,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-weight: 600;
+      white-space: nowrap;
     }
     .admin-color-item {
       display: flex;
@@ -299,6 +336,7 @@
       font-family: 'DM Sans', sans-serif;
       font-size: 0.72rem;
       color: #7a7068;
+      white-space: nowrap;
     }
     .admin-color-item input[type="color"] {
       width: 28px;
@@ -319,6 +357,7 @@
       font-family: 'Patrick Hand', cursive;
       cursor: pointer;
       transition: opacity 0.2s;
+      white-space: nowrap;
     }
     .admin-colors-save:hover { opacity: 0.85; }
     .admin-colors-save:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -996,16 +1035,27 @@
 
   <!-- ============ ADMIN COLORS BAR ============ -->
   <div class="admin-colors-bar" id="adminColorsBar">
-    <span class="admin-colors-title">Colors</span>
-    <div class="admin-color-item">
-      <label>Background</label>
-      <input type="color" id="colorBgPrimary" value="#f0ebe0">
+    <button class="admin-palette-toggle" id="adminPaletteToggle" title="Colors">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>
+        <circle cx="6.5" cy="11.5" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="9.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="14.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="17.5" cy="11.5" r="1.5" fill="currentColor" stroke="none"/>
+      </svg>
+    </button>
+    <div class="admin-colors-panel" id="adminColorsPanel">
+      <span class="admin-colors-title">Colors</span>
+      <div class="admin-color-item">
+        <label>Background</label>
+        <input type="color" id="colorBgPrimary" value="#f0ebe0">
+      </div>
+      <div class="admin-color-item">
+        <label>Accent</label>
+        <input type="color" id="colorAccent" value="#80b8a0">
+      </div>
+      <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
     </div>
-    <div class="admin-color-item">
-      <label>Accent</label>
-      <input type="color" id="colorAccent" value="#80b8a0">
-    </div>
-    <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
   </div>
 
   <script>
@@ -2480,6 +2530,14 @@
         } catch (err) {
           done('Error saving colors');
         }
+      });
+
+      // Palette toggle
+      const paletteToggle = document.getElementById('adminPaletteToggle');
+      const colorsBar = document.getElementById('adminColorsBar');
+      paletteToggle.addEventListener('click', () => {
+        colorsBar.classList.toggle('open');
+        paletteToggle.classList.toggle('active');
       });
     }
 
