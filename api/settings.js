@@ -5,7 +5,7 @@ const db = createClient({
   authToken: process.env.TURSO_TOKEN,
 });
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '***REMOVED***';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 export default async function handler(req, res) {
   // CORS

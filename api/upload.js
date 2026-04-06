@@ -1,6 +1,6 @@
 import { put } from '@vercel/blob';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '***REMOVED***';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 export const config = {
   api: {
