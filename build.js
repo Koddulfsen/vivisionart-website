@@ -202,7 +202,7 @@ async function build() {
         if (a.crop) {
           try {
             const c = JSON.parse(a.crop);
-            cropStyle = `object-position: ${c.x || 50}% ${c.y || 50}%; transform: scale(${c.scale || 1});`;
+            cropStyle = `object-position: ${c.x || 50}% ${c.y || 50}%; transform-origin: ${c.x || 50}% ${c.y || 50}%; transform: scale(${c.scale || 1});`;
           } catch(e) {}
         }
         return `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
