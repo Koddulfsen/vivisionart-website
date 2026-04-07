@@ -209,7 +209,7 @@ async function build() {
         <div class="${attachments[i % attachments.length]}"></div>
         <span class="art-sticker">${a.status === 'sold' ? 'verkauft' : 'zu verkaufen'}</span>
         <div class="polaroid-frame">
-          <img src="${a.image_url}" alt="${escapeHtml(a.title || '')}" loading="lazy"${cropStyle ? ` style="${cropStyle}"` : ''}>
+          <div class="polaroid-img-wrap"><img src="${a.image_url}" alt="${escapeHtml(a.title || '')}" loading="lazy"${cropStyle ? ` style="${cropStyle}"` : ''}></div>
         </div>
         <p class="polaroid-caption">${escapeHtml(a.title || '')}</p>
       </article>`;

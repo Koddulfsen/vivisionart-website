@@ -7,6 +7,13 @@ const db = createClient({
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+let ensuredCropCol = false;
+async function ensureCropColumn() {
+  if (ensuredCropCol) return;
+  try { await db.execute('ALTER TABLE artworks ADD COLUMN crop TEXT DEFAULT ""'); } catch(e) {}
+  ensuredCropCol = true;
+}
+
 export default async function handler(req, res) {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,6 +27,7 @@ export default async function handler(req, res) {
   // GET — public, returns all artworks ordered by sort_order
   if (req.method === 'GET') {
     try {
+      await ensureCropColumn();
       const result = await db.execute('SELECT * FROM artworks ORDER BY sort_order ASC, id ASC');
       return res.status(200).json(result.rows);
     } catch (err) {

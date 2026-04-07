@@ -1282,7 +1282,7 @@
               <div class="${attach}"></div>
               <span class="art-sticker">${statusLabel}</span>
               <div class="polaroid-frame">
-                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy"${cropStyle ? ' style="' + cropStyle + '"' : ''}>
+                <div class="polaroid-img-wrap"><img src="${a.image_url}" alt="${a.title || ''}" loading="lazy"${cropStyle ? ' style="' + cropStyle + '"' : ''}></div>
               </div>
               <p class="polaroid-caption">${a.title || ''}</p>
               <button class="edit-pencil" data-edit="artwork" data-artwork-id="${a.id}" title="Edit artwork">&#9998;</button>
