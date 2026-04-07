@@ -3767,6 +3767,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 .scrapbook__polaroid {
   position: relative;
   width: 42%;
+  max-width: 260px;
   transform: rotate(var(--rot, 0deg));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 1;
