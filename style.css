@@ -3444,8 +3444,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 /* Cover polaroid preview */
 .cover-polaroid {
   margin: 15px auto 30px;
-  width: clamp(55%, 40% + 15vw, 75%);
-  max-width: 250px;
+  width: clamp(45%, 20% + 20vw, 75%);
   transform: rotate(var(--rot, 0deg));
   position: relative;
   z-index: 1;
@@ -3983,8 +3982,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .book__page--cover .cover-polaroid {
     margin-top: 5px;
     margin-bottom: 10px;
-    width: 82%;
-    max-width: 270px;
   }
 }
 
