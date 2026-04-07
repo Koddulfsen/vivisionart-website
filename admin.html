@@ -452,7 +452,6 @@
     .admin-active .publish-btn { display: block; }
     .publish-btn:hover { filter: brightness(0.9); transform: translateY(-1px); }
     .publish-btn:disabled { background: #888; cursor: default; transform: none; }
-    .publish-btn.needs-setup { background: var(--accent, #80b8a0); opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -2655,40 +2654,27 @@
     /* ---- Publish to Live ---- */
     (function() {
       const btn = document.getElementById('publishBtn');
-      const HOOK_KEY = 'vv_deploy_hook';
-
-      function getHook() { return localStorage.getItem(HOOK_KEY); }
-
-      function updateBtn() {
-        btn.textContent = 'Publish';
-        btn.classList.toggle('needs-setup', !getHook());
-      }
-      updateBtn();
+      btn.textContent = 'Publish';
 
       btn.addEventListener('click', async () => {
-        let hook = getHook();
-
-        if (!hook) {
-          hook = prompt('Paste your Vercel Deploy Hook URL:\n(Vercel Dashboard → Project → Settings → Git → Deploy Hooks)');
-          if (!hook || !hook.startsWith('https://')) { showToast('Invalid URL — not saved'); return; }
-          localStorage.setItem(HOOK_KEY, hook);
-          updateBtn();
-        }
-
         btn.disabled = true;
         btn.textContent = 'Publishing...';
         try {
-          const res = await fetch(hook, { method: 'POST' });
+          const res = await fetch('/api/deploy', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + ADMIN.token }
+          });
+          const data = await res.json();
           if (res.ok) {
             showToast('Deploy triggered — live in ~1 min');
           } else {
-            showToast('Deploy failed (' + res.status + ')');
+            showToast('Deploy failed: ' + (data.error || res.status));
           }
         } catch (err) {
           showToast('Error: ' + err.message);
         } finally {
           btn.disabled = false;
-          updateBtn();
+          btn.textContent = 'Publish';
         }
       });
     })();
