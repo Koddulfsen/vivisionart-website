@@ -562,6 +562,17 @@
     const tabs = document.querySelectorAll('.tab');
 
     const tabStrip = document.querySelector('.tab-strip');
+    const tabArr = Array.from(tabs);
+    function updateTabMask(activeTab) {
+      if (!tabStrip) return;
+      var idx = tabArr.indexOf(activeTab);
+      var isFirst = idx === 0;
+      var isLast = idx === tabArr.length - 1;
+      var left = isFirst ? 'black' : 'transparent, black 12%';
+      var right = isLast ? 'black' : 'black 88%, transparent';
+      var mask = 'linear-gradient(to right, ' + left + ', ' + right + ')';
+      tabStrip.style.setProperty('--tab-mask', mask);
+    }
     const tabObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -574,6 +585,7 @@
               var tabWidth = t.offsetWidth;
               var stripWidth = tabStrip.offsetWidth;
               tabStrip.scrollTo({ left: tabLeft - (stripWidth / 2) + (tabWidth / 2), behavior: 'smooth' });
+              updateTabMask(t);
             }
           });
         }
