@@ -1275,12 +1275,14 @@
           const y = yPositions[i % yPositions.length];
           const attach = attachments[i % attachments.length];
           const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
+          let cropStyle = '';
+          if (a.crop) { try { const c = JSON.parse(a.crop); cropStyle = 'object-position:' + (c.x||50) + '% ' + (c.y||50) + '%;transform:scale(' + (c.scale||1) + ');'; } catch(e) {} }
           return `
             <article class="polaroid p${i + 1} fade-in visible" style="--rot: ${rot}; --x: ${x}; --y: ${y};" data-artwork-id="${a.id}" data-artwork-idx="${i}">
               <div class="${attach}"></div>
               <span class="art-sticker">${statusLabel}</span>
               <div class="polaroid-frame">
-                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy">
+                <img src="${a.image_url}" alt="${a.title || ''}" loading="lazy"${cropStyle ? ' style="' + cropStyle + '"' : ''}>
               </div>
               <p class="polaroid-caption">${a.title || ''}</p>
               <button class="edit-pencil" data-edit="artwork" data-artwork-id="${a.id}" title="Edit artwork">&#9998;</button>
@@ -2565,9 +2567,18 @@
 
       const article = pencil.closest('.polaroid');
       const currentTitle = artwork.title || '';
+      let crop = { x: 50, y: 50, scale: 1 };
+      if (artwork.crop) { try { crop = JSON.parse(artwork.crop); } catch(e) {} }
+
       const pop = createPopover(article, `
         <label>Image</label>
         ${makeUploadFieldHtml(artwork.image_url || '', 'editArtImg')}
+        <label>Crop &amp; Zoom</label>
+        <div id="cropContainer" style="position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#222;border-radius:4px;margin-bottom:10px;cursor:crosshair;">
+          <img id="cropImg" src="${artwork.image_url || ''}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;pointer-events:none;">
+          <div id="cropBox" style="position:absolute;border:2px solid rgba(255,255,255,0.9);box-shadow:0 0 0 9999px rgba(0,0,0,0.45);pointer-events:none;"></div>
+          <div id="cropResize" style="position:absolute;width:16px;height:16px;background:white;border:2px solid #333;border-radius:2px;cursor:nw-resize;z-index:5;"></div>
+        </div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <input type="checkbox" id="editArtHasTitle" ${currentTitle ? 'checked' : ''} style="width:auto;margin:0;">
           <label for="editArtHasTitle" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
@@ -2587,7 +2598,125 @@
           <button class="btn-save" id="saveArtBtn">Save</button>
         </div>
       `);
+
+      // --- Crop tool logic ---
+      const cropContainer = pop.querySelector('#cropContainer');
+      const cropImg = pop.querySelector('#cropImg');
+      const cropBox = pop.querySelector('#cropBox');
+      const cropResize = pop.querySelector('#cropResize');
+      const ASPECT = 4 / 3;
+
+      // Crop box state as fractions of container (0-1)
+      let boxW = 1 / (crop.scale || 1);
+      let boxH = boxW / ASPECT;
+      // Convert object-position % to box center
+      let boxCX = (crop.x || 50) / 100;
+      let boxCY = (crop.y || 50) / 100;
+
+      function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
+      function updateCropBox() {
+        // Constrain size
+        if (boxW > 1) boxW = 1;
+        if (boxH > 1) { boxH = 1; boxW = boxH * ASPECT; }
+        if (boxW < 0.15) { boxW = 0.15; boxH = boxW / ASPECT; }
+
+        // Constrain position
+        let bx = clamp01(boxCX - boxW / 2);
+        let by = clamp01(boxCY - boxH / 2);
+        if (bx + boxW > 1) bx = 1 - boxW;
+        if (by + boxH > 1) by = 1 - boxH;
+        boxCX = bx + boxW / 2;
+        boxCY = by + boxH / 2;
+
+        const cw = cropContainer.offsetWidth;
+        const ch = cropContainer.offsetHeight;
+        cropBox.style.left = (bx * cw) + 'px';
+        cropBox.style.top = (by * ch) + 'px';
+        cropBox.style.width = (boxW * cw) + 'px';
+        cropBox.style.height = (boxH * ch) + 'px';
+
+        // Resize handle at top-left of box
+        cropResize.style.left = (bx * cw - 8) + 'px';
+        cropResize.style.top = (by * ch - 8) + 'px';
+      }
+
+      function getCropData() {
+        return {
+          x: Math.round(boxCX * 100),
+          y: Math.round(boxCY * 100),
+          scale: Math.round((1 / boxW) * 100) / 100
+        };
+      }
+
+      // Wait for image to load to set initial size
+      cropImg.onload = function() { updateCropBox(); };
+      if (cropImg.complete) updateCropBox();
+
+      // Drag crop box
+      let dragging = false, dragStartX, dragStartY, dragBoxCX, dragBoxCY;
+      cropContainer.addEventListener('mousedown', (e) => {
+        if (e.target === cropResize) return;
+        dragging = true;
+        dragStartX = e.clientX; dragStartY = e.clientY;
+        dragBoxCX = boxCX; dragBoxCY = boxCY;
+        e.preventDefault();
+      });
+      cropContainer.addEventListener('touchstart', (e) => {
+        if (e.target === cropResize) return;
+        dragging = true;
+        dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+        dragBoxCX = boxCX; dragBoxCY = boxCY;
+      }, { passive: true });
+
+      function onDragMove(cx, cy) {
+        if (!dragging) return;
+        const cw = cropContainer.offsetWidth;
+        const ch = cropContainer.offsetHeight;
+        boxCX = dragBoxCX + (cx - dragStartX) / cw;
+        boxCY = dragBoxCY + (cy - dragStartY) / ch;
+        updateCropBox();
+      }
+      document.addEventListener('mousemove', (e) => onDragMove(e.clientX, e.clientY));
+      document.addEventListener('touchmove', (e) => { if (dragging) onDragMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      document.addEventListener('mouseup', () => { dragging = false; });
+      document.addEventListener('touchend', () => { dragging = false; });
+
+      // Resize handle
+      let resizing = false, resizeStartX, resizeStartY, resizeStartW;
+      cropResize.addEventListener('mousedown', (e) => {
+        resizing = true;
+        resizeStartX = e.clientX; resizeStartY = e.clientY;
+        resizeStartW = boxW;
+        e.preventDefault(); e.stopPropagation();
+      });
+      cropResize.addEventListener('touchstart', (e) => {
+        resizing = true;
+        resizeStartX = e.touches[0].clientX; resizeStartY = e.touches[0].clientY;
+        resizeStartW = boxW;
+        e.stopPropagation();
+      }, { passive: true });
+
+      function onResizeMove(cx, cy) {
+        if (!resizing) return;
+        const cw = cropContainer.offsetWidth;
+        const delta = (resizeStartX - cx) / cw;
+        boxW = Math.max(0.15, Math.min(1, resizeStartW + delta));
+        boxH = boxW / ASPECT;
+        updateCropBox();
+      }
+      document.addEventListener('mousemove', (e) => onResizeMove(e.clientX, e.clientY));
+      document.addEventListener('touchmove', (e) => { if (resizing) onResizeMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      document.addEventListener('mouseup', () => { resizing = false; });
+      document.addEventListener('touchend', () => { resizing = false; });
+
+      // Update crop preview when image changes
       const editArtUpload = wireUploadField(pop, 'editArtImg');
+      pop.querySelector('#editArtImg').addEventListener('change', function() {
+        const url = this.value;
+        if (url) cropImg.src = url;
+      });
+
       pop.querySelector('#editArtHasTitle').addEventListener('change', function() {
         pop.querySelector('#editArtTitleWrap').style.display = this.checked ? 'block' : 'none';
       });
@@ -2598,22 +2727,29 @@
         const hasTitle = pop.querySelector('#editArtHasTitle').checked;
         const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
         const status = pop.querySelector('#editArtStatus').value;
+        const cropData = JSON.stringify(getCropData());
         const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
           await fetch('/api/artworks/' + id, {
             method: 'PUT',
             headers: authHeaders(),
-            body: JSON.stringify({ id, image_url: imgUrl, title, status })
+            body: JSON.stringify({ id, image_url: imgUrl, title, status, crop: cropData })
           });
 
           // Update artworksData in-place
           artwork.title = title;
           artwork.image_url = imgUrl;
           artwork.status = status;
+          artwork.crop = cropData;
 
           // Update DOM
           const img = article.querySelector('.polaroid-frame img');
-          if (img) { img.src = imgUrl; img.alt = title; }
+          if (img) {
+            img.src = imgUrl; img.alt = title;
+            const c = getCropData();
+            img.style.objectPosition = c.x + '% ' + c.y + '%';
+            img.style.transform = 'scale(' + c.scale + ')';
+          }
           const caption = article.querySelector('.polaroid-caption');
           if (caption) caption.textContent = title;
           const sticker = article.querySelector('.art-sticker');

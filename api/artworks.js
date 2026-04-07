@@ -66,6 +66,7 @@ export default async function handler(req, res) {
       if (image_url !== undefined) { fields.push('image_url = ?'); args.push(image_url); }
       if (status !== undefined) { fields.push('status = ?'); args.push(status); }
       if (sort_order !== undefined) { fields.push('sort_order = ?'); args.push(sort_order); }
+      if (req.body.crop !== undefined) { fields.push('crop = ?'); args.push(req.body.crop); }
       if (fields.length === 0) {
         return res.status(400).json({ error: 'No fields to update' });
       }

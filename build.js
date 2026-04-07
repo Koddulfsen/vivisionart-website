@@ -45,9 +45,12 @@ function injectImgSrc(html, key, url) {
 async function build() {
   console.log('Fetching data from DB...');
 
+  // Ensure crop column exists
+  try { await db.execute('ALTER TABLE artworks ADD COLUMN crop TEXT DEFAULT ""'); } catch(e) {}
+
   const [settingsRes, artworksRes, eventsRes] = await Promise.all([
     db.execute('SELECT key, value FROM settings'),
-    db.execute('SELECT id, title, image_url, status FROM artworks ORDER BY sort_order ASC, id ASC'),
+    db.execute('SELECT id, title, image_url, status, crop FROM artworks ORDER BY sort_order ASC, id ASC'),
     db.execute('SELECT id, title, date, location FROM events ORDER BY date ASC'),
   ]);
 
@@ -194,14 +197,23 @@ async function build() {
 
     const artworksHtml = artworks.length === 0
       ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>\n      '
-      : '\n      ' + artworks.map((a, i) => `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
+      : '\n      ' + artworks.map((a, i) => {
+        let cropStyle = '';
+        if (a.crop) {
+          try {
+            const c = JSON.parse(a.crop);
+            cropStyle = `object-position: ${c.x || 50}% ${c.y || 50}%; transform: scale(${c.scale || 1});`;
+          } catch(e) {}
+        }
+        return `<article class="polaroid p${i + 1} fade-in" style="--rot: ${rotations[i % rotations.length]}; --x: ${xPos[i % xPos.length]}; --y: ${yPos[i % yPos.length]};">
         <div class="${attachments[i % attachments.length]}"></div>
         <span class="art-sticker">${a.status === 'sold' ? 'verkauft' : 'zu verkaufen'}</span>
         <div class="polaroid-frame">
-          <img src="${a.image_url}" alt="${escapeHtml(a.title || '')}" loading="lazy">
+          <img src="${a.image_url}" alt="${escapeHtml(a.title || '')}" loading="lazy"${cropStyle ? ` style="${cropStyle}"` : ''}>
         </div>
         <p class="polaroid-caption">${escapeHtml(a.title || '')}</p>
-      </article>`).join('\n      ') + '\n      ';
+      </article>`;
+      }).join('\n      ') + '\n      ';
 
     html = inject(html, 'artworks', artworksHtml);
 
