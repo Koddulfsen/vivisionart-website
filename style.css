@@ -3465,6 +3465,11 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   z-index: 5;
 }
 
+.book__page-front:has(.scrapbook__photo-cluster) {
+  justify-content: center;
+  align-items: center;
+}
+
 .scrapbook__photo-cluster + .inner-cta-wrap {
   position: relative;
   bottom: auto;
