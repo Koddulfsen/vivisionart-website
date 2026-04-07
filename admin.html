@@ -2697,12 +2697,14 @@
         const cropData = JSON.stringify(getCropData());
         const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
-          await fetch('/api/artworks/' + id, {
+          const res = await fetch('/api/artworks/' + id, {
             method: 'PUT',
             headers: authHeaders(),
             body: JSON.stringify({ id, image_url: imgUrl, title, status, crop: cropData })
           });
+          if (!res.ok) { const e = await res.text(); throw new Error(e); }
 
+          // Only update in-memory after confirmed save
           artwork.title = title;
           artwork.image_url = imgUrl;
           artwork.status = status;
@@ -2723,7 +2725,7 @@
 
           showToast('Artwork updated');
           closeAllPopovers();
-        } catch (err) { done('Error saving'); }
+        } catch (err) { done('Error saving: ' + err.message); }
       });
 
       pop.querySelector('#deleteArtBtn').addEventListener('click', async () => {

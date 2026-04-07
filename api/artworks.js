@@ -24,10 +24,12 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Ensure crop column exists for all requests
+  await ensureCropColumn();
+
   // GET — public, returns all artworks ordered by sort_order
   if (req.method === 'GET') {
     try {
-      await ensureCropColumn();
       const result = await db.execute('SELECT * FROM artworks ORDER BY sort_order ASC, id ASC');
       return res.status(200).json(result.rows);
     } catch (err) {
