@@ -3468,7 +3468,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 .scrapbook__photo-cluster + .inner-cta-wrap {
   position: relative;
   bottom: auto;
-  margin-top: -30px;
+  margin-top: 12px;
 }
 
 /* Cover CTA button */
@@ -3767,7 +3767,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   padding: 8px;
   margin-top: -50px;
   margin-bottom: -25px;
-  height: 100%;
   z-index: 1;
 }
 
