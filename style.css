@@ -4090,7 +4090,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 @media (max-width: 369px) {
   .book__cover-front .event-spread__header h3 {
-    font-size: clamp(0.75rem, 0.1rem + 2.5vw, 1.1rem);
+    font-size: clamp(0.75rem, -0.385rem + 6.44vw, 1.1rem);
   }
 }
 
