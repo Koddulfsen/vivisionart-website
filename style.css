@@ -3498,6 +3498,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 /* Inner pages: checkmarks use accent color, not white */
 .book__page:not(.book__page--cover) .event-spread__includes {
   color: var(--text);
+  font-size: clamp(0.7rem, 0.3rem + 1.8vw, 1rem) !important;
 }
 
 .book__page:not(.book__page--cover) .event-spread__includes li::before {
@@ -3898,7 +3899,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__page:not(.book__page--cover) .event-spread__includes {
-    font-size: 0.75rem;
   }
 
   .book__page:not(.book__page--cover) .event-spread__includes li {
@@ -3909,8 +3909,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .book__page:not(.book__page--cover) .cover-polaroid {
     margin-top: -5px;
     margin-bottom: 10px;
-    width: 82%;
-    max-width: 270px;
+    width: clamp(55%, 30% + 20vw, 82%);
   }
 
   .book__cover-front .event-spread__desc {
