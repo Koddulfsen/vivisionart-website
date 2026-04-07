@@ -570,7 +570,10 @@
             const isActive = t.dataset.tab === id;
             t.classList.toggle('active', isActive);
             if (isActive && tabStrip) {
-              t.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+              var tabLeft = t.offsetLeft;
+              var tabWidth = t.offsetWidth;
+              var stripWidth = tabStrip.offsetWidth;
+              tabStrip.scrollTo({ left: tabLeft - (stripWidth / 2) + (tabWidth / 2), behavior: 'smooth' });
             }
           });
         }
