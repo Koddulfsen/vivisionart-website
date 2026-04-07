@@ -1704,6 +1704,7 @@
       const status = popover.querySelector('span[data-status-for="' + hiddenId + '"]');
       const hidden = popover.querySelector('#' + hiddenId);
       let currentLocalUrl = null;
+      let uploading = false;
 
       fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
@@ -1717,6 +1718,7 @@
 
         status.textContent = 'Uploading...';
         status.className = 'upload-status';
+        uploading = true;
 
         try {
           const url = await uploadImage(file);
@@ -1731,10 +1733,12 @@
           currentLocalUrl = null;
           status.textContent = 'Error: ' + (err.message || 'upload failed');
           status.className = 'upload-status error';
+        } finally {
+          uploading = false;
         }
       });
 
-      return { getLocalUrl: () => currentLocalUrl };
+      return { getLocalUrl: () => currentLocalUrl, isUploading: () => uploading };
     }
 
     /* ---- Helper: set img src with CDN-safe preload ---- */
@@ -1962,6 +1966,7 @@
         pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
       pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
+        if (photoUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
         const val = pop.querySelector('#editPhotoUrl').value.trim();
         if (!val) return;
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
@@ -2159,6 +2164,7 @@
         pop.querySelector('#editBookImgCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
       pop.querySelector('#saveBookImgBtn').addEventListener('click', async () => {
+        if (bookImgUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
         const val = pop.querySelector('#editBookImg').value.trim();
         const localUrl = bookImgUpload.getLocalUrl();
         console.log('[admin] book-image save', { key, val, localUrl, imgSrc: img && img.src });
@@ -2312,12 +2318,13 @@
           <button class="btn-save" id="saveArtBtn">Save</button>
         </div>
       `);
-      wireUploadField(pop, 'editArtImg');
+      const editArtUpload = wireUploadField(pop, 'editArtImg');
       pop.querySelector('#editArtHasTitle').addEventListener('change', function() {
         pop.querySelector('#editArtTitleWrap').style.display = this.checked ? 'block' : 'none';
       });
 
       pop.querySelector('#saveArtBtn').addEventListener('click', async () => {
+        if (editArtUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
         const imgUrl = pop.querySelector('#editArtImg').value.trim();
         const hasTitle = pop.querySelector('#editArtHasTitle').checked;
         const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
@@ -2428,11 +2435,12 @@
             <button class="btn-save" id="createArtBtn">Add</button>
           </div>
         `);
-        wireUploadField(pop, 'newArtImg');
+        const newArtUpload = wireUploadField(pop, 'newArtImg');
         pop.querySelector('#newArtHasTitle').addEventListener('change', function() {
           pop.querySelector('#newArtTitleWrap').style.display = this.checked ? 'block' : 'none';
         });
         pop.querySelector('#createArtBtn').addEventListener('click', async () => {
+          if (newArtUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
           const imgUrl = pop.querySelector('#newArtImg').value.trim();
           const hasTitle = pop.querySelector('#newArtHasTitle').checked;
           const title = hasTitle ? pop.querySelector('#newArtTitle').value.trim() : '';
