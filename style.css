@@ -4246,18 +4246,19 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .board {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 16px;
-    max-width: 500px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 20px;
+    max-width: 360px;
     margin: 0 auto;
   }
 
   .board .polaroid {
     grid-column: span 1 !important;
+    transform: rotate(var(--rot, 0deg));
   }
 
-  .polaroid:hover {
+  .board .polaroid:hover {
     transform: rotate(var(--rot, 0deg)) scale(1.02);
   }
 
@@ -4527,10 +4528,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .board {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 12px;
-    max-width: 400px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px;
+    max-width: 320px;
     margin: 0 auto;
   }
 
