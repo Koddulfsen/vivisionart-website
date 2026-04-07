@@ -3972,7 +3972,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 52%;
+    width: 42%;
   }
 
   .scrapbook__polaroid .polaroid-frame {
@@ -4025,7 +4025,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 54%;
+    width: 42%;
   }
 
   .scrapbook__photo-cluster {
