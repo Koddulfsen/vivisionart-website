@@ -1354,6 +1354,7 @@
           list.innerHTML = events.map((e, i) => `
             <div class="date-card fade-in" style="--rot: ${rotations[i % rotations.length]};" data-event-id="${e.id}" data-event-idx="${i}">
               <span class="date-card__date">${formatDate(e.date)}</span>
+              ${e.time_start ? '<span class="date-card__time">' + escHtml(e.time_start) + (e.time_end ? ' – ' + escHtml(e.time_end) : '') + '</span>' : ''}
               <span class="date-card__what">${e.title}</span>
               <span class="date-card__where">${e.location || ''}</span>
               <button class="edit-pencil" data-edit="event" data-event-id="${e.id}" title="Edit event">&#9998;</button>
@@ -1949,8 +1950,9 @@
         try { crop = JSON.parse(window._siteSettings['about_photo_crop']); } catch(e) {}
       }
       const pop = createPopover(pencil, `
-        <label>Photo</label>
-        ${makeUploadFieldHtml(current, 'editPhotoUrl')}
+        <label>Photo <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload new)</span></label>
+        <input type="file" id="editPhotoFile" accept="image/*" style="margin-bottom:8px;">
+        <input type="hidden" id="editPhotoUrl" value="${escHtml(current)}">
         <label>Crop &amp; Zoom</label>
         <div id="cropWrap" style="margin-bottom:10px;"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -1967,14 +1969,27 @@
         </div>
       `);
       const cropTool = buildCropTool(pop.querySelector('#cropWrap'), current, crop, '3/4');
-      const photoUpload = wireUploadField(pop, 'editPhotoUrl');
-      pop.querySelector('#editPhotoUrl').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
+      const photoFileInput = pop.querySelector('#editPhotoFile');
+      const photoHiddenInput = pop.querySelector('#editPhotoUrl');
+      let photoUploading = false;
+      photoFileInput.addEventListener('change', async () => {
+        const file = photoFileInput.files[0];
+        if (!file) return;
+        cropTool.setImage(URL.createObjectURL(file));
+        photoUploading = true;
+        try {
+          const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
+          const data = await res.json();
+          photoHiddenInput.value = data.url;
+          photoUploading = false;
+        } catch (err) { showToast('Upload failed'); photoUploading = false; }
+      });
       pop.querySelector('#editPhotoHasCaption').addEventListener('change', function() {
         pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
       pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
-        if (photoUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
-        const val = pop.querySelector('#editPhotoUrl').value.trim();
+        if (photoUploading) { showToast('Image still uploading — please wait'); return; }
+        const val = photoHiddenInput.value.trim();
         if (!val) return;
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
@@ -2165,8 +2180,9 @@
         try { crop = JSON.parse(window._siteSettings[cropKey]); } catch(e) {}
       }
       const pop = createPopover(pencil, `
-        <label>Image</label>
-        ${makeUploadFieldHtml(current, 'editBookImg')}
+        <label>Image <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload new)</span></label>
+        <input type="file" id="editBookImgFile" accept="image/*" style="margin-bottom:8px;">
+        <input type="hidden" id="editBookImg" value="${escHtml(current)}">
         <label>Crop &amp; Zoom</label>
         <div id="cropWrap" style="margin-bottom:10px;"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -2183,17 +2199,27 @@
         </div>
       `);
       const cropTool = buildCropTool(pop.querySelector('#cropWrap'), current, crop, '4/3');
-      const bookImgUpload = wireUploadField(pop, 'editBookImg');
-      // Sync crop preview when image changes
-      var origOnChange = pop.querySelector('#editBookImg').onchange;
-      pop.querySelector('#editBookImg').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
+      const bookImgFile = pop.querySelector('#editBookImgFile');
+      const bookImgHidden = pop.querySelector('#editBookImg');
+      let bookImgUploading = false;
+      bookImgFile.addEventListener('change', async () => {
+        const file = bookImgFile.files[0];
+        if (!file) return;
+        cropTool.setImage(URL.createObjectURL(file));
+        bookImgUploading = true;
+        try {
+          const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
+          const data = await res.json();
+          bookImgHidden.value = data.url;
+          bookImgUploading = false;
+        } catch (err) { showToast('Upload failed'); bookImgUploading = false; }
+      });
       pop.querySelector('#editBookImgHasCaption').addEventListener('change', function() {
         pop.querySelector('#editBookImgCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
       pop.querySelector('#saveBookImgBtn').addEventListener('click', async () => {
-        if (bookImgUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
-        const val = pop.querySelector('#editBookImg').value.trim();
-        const localUrl = bookImgUpload.getLocalUrl();
+        if (bookImgUploading) { showToast('Image still uploading — please wait'); return; }
+        const val = bookImgHidden.value.trim();
         if (!val) return;
         const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
@@ -2206,9 +2232,7 @@
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: cropKey, value: cropData }) })
           ]);
           if (!results[0].ok || !results[2].ok) throw new Error('Save failed');
-          if (localUrl) img.src = localUrl;
-          else img.src = val;
-          // Apply crop to DOM
+          img.src = val;
           const c = cropTool.getCrop();
           img.style.objectPosition = c.x + '% ' + c.y + '%';
           img.style.transformOrigin = c.x + '% ' + c.y + '%';
@@ -2216,11 +2240,6 @@
           if (window._siteSettings) {
             window._siteSettings[key] = val;
             window._siteSettings[cropKey] = cropData;
-          }
-          if (localUrl && val !== current) {
-            const preloader = new Image();
-            preloader.onload = () => { img.src = val; };
-            preloader.src = val;
           }
           let captionEl = container.querySelector('.polaroid-caption');
           if (captionText) {
@@ -2385,8 +2404,9 @@
           if (!photo) return;
           const photoCrop = photo.crop || { x: 50, y: 50, scale: 1 };
           const pop = createPopover(pol, `
-            <label>Image</label>
-            ${makeUploadFieldHtml(photo.img, 'editBkPh')}
+            <label>Image <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload new)</span></label>
+            <input type="file" id="editBkPhFile" accept="image/*" style="margin-bottom:8px;">
+            <input type="hidden" id="editBkPh" value="${escHtml(photo.img)}">
             <label>Crop &amp; Zoom</label>
             <div id="cropWrap" style="margin-bottom:10px;"></div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -2403,14 +2423,27 @@
             </div>
           `);
           const cropTool = buildCropTool(pop.querySelector('#cropWrap'), photo.img, photoCrop, '4/3');
-          const uploader = wireUploadField(pop, 'editBkPh');
-          pop.querySelector('#editBkPh').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
+          const bkPhFile = pop.querySelector('#editBkPhFile');
+          const bkPhHidden = pop.querySelector('#editBkPh');
+          let bkPhUploading = false;
+          bkPhFile.addEventListener('change', async () => {
+            const file = bkPhFile.files[0];
+            if (!file) return;
+            cropTool.setImage(URL.createObjectURL(file));
+            bkPhUploading = true;
+            try {
+              const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
+              const data = await res.json();
+              bkPhHidden.value = data.url;
+              bkPhUploading = false;
+            } catch (err) { showToast('Upload failed'); bkPhUploading = false; }
+          });
           pop.querySelector('#editBkPhHasCap').addEventListener('change', function() {
             pop.querySelector('#editBkPhCapWrap').style.display = this.checked ? 'block' : 'none';
           });
           pop.querySelector('#editBkPhSave').addEventListener('click', async () => {
-            if (uploader.isUploading()) { showToast('Image still uploading — please wait'); return; }
-            const img = pop.querySelector('#editBkPh').value.trim();
+            if (bkPhUploading) { showToast('Image still uploading — please wait'); return; }
+            const img = bkPhHidden.value.trim();
             if (!img) return;
             const hasCap = pop.querySelector('#editBkPhHasCap').checked;
             const caption = hasCap ? pop.querySelector('#editBkPhCap').value.trim() : '';
@@ -2787,6 +2820,12 @@
       const pop = createPopover(card, `
         <label>Date</label>
         <input type="date" id="editEvDate" value="${/^\d{4}-\d{2}-\d{2}$/.test(event.date) ? event.date : ''}">
+        <label>Time</label>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <input type="time" id="editEvTimeStart" value="${escHtml(event.time_start || '')}" style="flex:1;">
+          <span>–</span>
+          <input type="time" id="editEvTimeEnd" value="${escHtml(event.time_end || '')}" style="flex:1;">
+        </div>
         <label>Title</label>
         <input type="text" id="editEvTitle" value="${escHtml(event.title || '')}">
         <label>Location</label>
@@ -2800,6 +2839,8 @@
 
       pop.querySelector('#saveEvBtn').addEventListener('click', async () => {
         const date = pop.querySelector('#editEvDate').value.trim();
+        const time_start = pop.querySelector('#editEvTimeStart').value.trim();
+        const time_end = pop.querySelector('#editEvTimeEnd').value.trim();
         const title = pop.querySelector('#editEvTitle').value.trim();
         const location = pop.querySelector('#editEvLocation').value.trim();
         const done = setSaving(pop.querySelector('#saveEvBtn'));
@@ -2807,7 +2848,7 @@
           await fetch('/api/events', {
             method: 'PUT',
             headers: authHeaders(),
-            body: JSON.stringify({ id, date, title, location })
+            body: JSON.stringify({ id, date, title, location, time_start, time_end })
           });
           showToast('Event updated');
           closeAllPopovers();
@@ -2885,6 +2926,12 @@
         const pop = createPopover(btn, `
           <label>Date</label>
           <input type="date" id="newEvDate">
+          <label>Time</label>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <input type="time" id="newEvTimeStart" style="flex:1;">
+            <span>–</span>
+            <input type="time" id="newEvTimeEnd" style="flex:1;">
+          </div>
           <label>Title</label>
           <input type="text" id="newEvTitle" placeholder="Event title">
           <label>Location</label>
@@ -2896,6 +2943,8 @@
         `);
         pop.querySelector('#createEvBtn').addEventListener('click', async () => {
           const date = pop.querySelector('#newEvDate').value.trim();
+          const time_start = pop.querySelector('#newEvTimeStart').value.trim();
+          const time_end = pop.querySelector('#newEvTimeEnd').value.trim();
           const title = pop.querySelector('#newEvTitle').value.trim();
           const loc = pop.querySelector('#newEvLocation').value.trim();
           if (!date || !title) { showToast('Date and title required'); return; }
@@ -2904,7 +2953,7 @@
             await fetch('/api/events', {
               method: 'POST',
               headers: authHeaders(),
-              body: JSON.stringify({ date, title, location: loc })
+              body: JSON.stringify({ date, title, location: loc, time_start, time_end })
             });
             showToast('Event added');
             closeAllPopovers();

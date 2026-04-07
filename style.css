@@ -1672,6 +1672,12 @@ a {
   color: var(--accent);
 }
 
+.date-card__time {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
 .date-card__what {
   font-family: var(--font-handwriting);
   font-size: 1.1rem;
@@ -3786,6 +3792,11 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   position: relative;
   width: 42%;
   max-width: 260px;
+}
+
+.scrapbook__polaroid:only-child {
+  width: 65%;
+  max-width: 320px;
   transform: rotate(var(--rot, 0deg));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 1;

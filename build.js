@@ -244,11 +244,14 @@ async function build() {
     const eventRots = ['-1.5deg', '1deg', '-0.5deg', '2deg', '-1deg', '0.5deg'];
     const eventsHtml = events.length === 0
       ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
-      : '\n      ' + events.map((e, i) => `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
-        <span class="date-card__date">${escapeHtml(formatDate(e.date))}</span>
+      : '\n      ' + events.map((e, i) => {
+        const timeStr = e.time_start ? `\n        <span class="date-card__time">${escapeHtml(e.time_start)}${e.time_end ? ' – ' + escapeHtml(e.time_end) : ''}</span>` : '';
+        return `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
+        <span class="date-card__date">${escapeHtml(formatDate(e.date))}</span>${timeStr}
         <span class="date-card__what">${escapeHtml(e.title)}</span>
         <span class="date-card__where">${escapeHtml(e.location || '')}</span>
-      </div>`).join('\n      ') + '\n      ';
+      </div>`;
+      }).join('\n      ') + '\n      ';
 
     html = inject(html, 'events', eventsHtml);
 
