@@ -3929,6 +3929,11 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .book__page:not(.book__page--cover) .event-spread__includes {
     font-size: clamp(0.75rem, 0.05rem + 1.4vw, 1rem) !important;
   }
+
+  .book__page:not(.book__page--cover) .event-spread__includes li {
+    padding: clamp(0px, -3px + 0.6vw, 3px) 0;
+    line-height: clamp(1.2, 0.8 + 0.06vw, 1.5);
+  }
 }
 
 /* --- Mid-width: shrink books that get too tall --- */
