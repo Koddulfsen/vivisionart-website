@@ -774,10 +774,6 @@
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        var btn = form.querySelector('.stamp-btn');
-        btn.disabled = true;
-        btn.querySelector('.stamp-btn-inner').textContent = 'WIRD GESENDET...';
-
         fetch(form.action, {
           method: 'POST',
           body: new FormData(form),
