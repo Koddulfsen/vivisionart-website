@@ -1248,20 +1248,35 @@
         if (!res.ok) throw new Error('Failed to load');
         const artworks = await res.json();
         artworksData = artworks;
+        renderArtworks();
+      } catch (err) {
+        // Fallback: keep loading text or show nothing
+      }
+    })();
 
-        if (!artworks.length) {
-          board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>';
-          return;
-        }
+    let artDragSrc = null;
 
-        board.innerHTML = artworks.map((a, i) => {
+    function renderArtworks() {
+      const board = document.getElementById('galleryBoard');
+      const rotations = ['-2deg', '1.5deg', '-1deg', '2.5deg', '-1.5deg', '1deg', '-0.5deg', '2deg'];
+      const xPositions = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
+      const yPositions = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
+      const attachments = ['polaroid-pin', 'tape-corner'];
+      const artworks = artworksData;
+
+      if (!artworks.length) {
+        board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Noch keine Werke</p>';
+        return;
+      }
+
+      board.innerHTML = artworks.map((a, i) => {
           const rot = rotations[i % rotations.length];
           const x = xPositions[i % xPositions.length];
           const y = yPositions[i % yPositions.length];
           const attach = attachments[i % attachments.length];
           const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
           return `
-            <article class="polaroid p${i + 1} fade-in" style="--rot: ${rot}; --x: ${x}; --y: ${y};" data-artwork-id="${a.id}" data-artwork-idx="${i}">
+            <article class="polaroid p${i + 1} fade-in visible" draggable="true" style="--rot: ${rot}; --x: ${x}; --y: ${y}; cursor: grab;" data-artwork-id="${a.id}" data-artwork-idx="${i}">
               <div class="${attach}"></div>
               <span class="art-sticker">${statusLabel}</span>
               <div class="polaroid-frame">
@@ -1273,18 +1288,81 @@
           `;
         }).join('');
 
-        // Re-init lightbox with new polaroids
-        initLightbox();
+      // Wire up drag & drop on each artwork
+      board.querySelectorAll('.polaroid[data-artwork-idx]').forEach(pol => {
+        const idx = parseInt(pol.dataset.artworkIdx);
 
-        // Observe new fade-in elements
-        board.querySelectorAll('.fade-in').forEach(el => {
-          const obs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
-            });
-          }, { threshold: 0.15 });
-          obs.observe(el);
+        pol.addEventListener('dragstart', (e) => {
+          artDragSrc = idx;
+          pol.style.opacity = '0.4';
+          e.dataTransfer.effectAllowed = 'move';
         });
+        pol.addEventListener('dragend', () => { pol.style.opacity = '1'; artDragSrc = null; });
+        pol.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          pol.style.outline = '2px solid var(--accent, #80b8a0)';
+        });
+        pol.addEventListener('dragleave', () => { pol.style.outline = ''; });
+        pol.addEventListener('drop', (e) => {
+          e.preventDefault();
+          pol.style.outline = '';
+          if (artDragSrc !== null && artDragSrc !== idx) {
+            // Swap in artworksData
+            const temp = artworksData[artDragSrc];
+            artworksData[artDragSrc] = artworksData[idx];
+            artworksData[idx] = temp;
+
+            // Save new sort_order for both
+            const a = artworksData[artDragSrc];
+            const b = artworksData[idx];
+            Promise.all([
+              fetch('/api/artworks/' + a.id, {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({ id: a.id, sort_order: artDragSrc + 1 })
+              }),
+              fetch('/api/artworks/' + b.id, {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({ id: b.id, sort_order: idx + 1 })
+              })
+            ]);
+
+            renderArtworks();
+          }
+        });
+
+        // Touch drag support
+        pol.addEventListener('touchstart', () => { artDragSrc = idx; }, { passive: true });
+        pol.addEventListener('touchend', (e) => {
+          if (artDragSrc === null) return;
+          const touch = e.changedTouches[0];
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          const targetPol = target && target.closest('.polaroid[data-artwork-idx]');
+          if (targetPol && targetPol !== pol) {
+            const targetIdx = parseInt(targetPol.dataset.artworkIdx);
+            const temp = artworksData[artDragSrc];
+            artworksData[artDragSrc] = artworksData[targetIdx];
+            artworksData[targetIdx] = temp;
+
+            Promise.all([
+              fetch('/api/artworks/' + artworksData[artDragSrc].id, {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({ id: artworksData[artDragSrc].id, sort_order: artDragSrc + 1 })
+              }),
+              fetch('/api/artworks/' + artworksData[targetIdx].id, {
+                method: 'PUT', headers: authHeaders(),
+                body: JSON.stringify({ id: artworksData[targetIdx].id, sort_order: targetIdx + 1 })
+              })
+            ]);
+
+            renderArtworks();
+          }
+          artDragSrc = null;
+        });
+      });
+
+      // Re-init lightbox with new polaroids
+      initLightbox();
 
       } catch (err) {
         board.innerHTML = '<p style="color: var(--text-light); font-family: var(--font-handwriting); text-align: center; padding: 40px;">Werke konnten nicht geladen werden</p>';
