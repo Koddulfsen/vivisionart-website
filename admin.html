@@ -2232,7 +2232,101 @@
         }
       }
 
-      const hint = format === 'list' ? ' (one item per line)' : format === 'paragraphs' ? ' (blank line = new paragraph)' : '';
+      // List format gets a special item-based editor
+      if (format === 'list') {
+        const items = currentVal.split('\n').filter(l => l.trim());
+        const pop = createPopover(pencil, `
+          <label>${escHtml(label)}</label>
+          <div id="checklistEditor" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;"></div>
+          <button id="addCheckItem" type="button" style="
+            display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;
+            background:none;border:2px dashed #ccc;border-radius:6px;cursor:pointer;
+            font-family:'Patrick Hand',cursive;font-size:0.95rem;color:#888;
+            justify-content:center;
+          ">+ Hinzuf&uuml;gen</button>
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
+            <button class="btn-save" id="saveBookTextBtn">Save</button>
+          </div>
+        `);
+
+        const editor = pop.querySelector('#checklistEditor');
+        let dragSrcRow = null;
+
+        function makeRow(text) {
+          const row = document.createElement('div');
+          row.draggable = true;
+          row.style.cssText = 'display:flex;align-items:center;gap:6px;background:#f8f5f0;border-radius:6px;padding:4px 6px;border:1px solid transparent;';
+          row.innerHTML =
+            '<span style="cursor:grab;font-size:1.1rem;color:#aaa;user-select:none;" class="drag-handle">\u2630</span>' +
+            '<span style="color:var(--accent,#80b8a0);font-weight:700;font-size:1rem;">\u2713</span>' +
+            '<input type="text" value="' + escHtml(text) + '" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:4px;font-family:\'DM Sans\',sans-serif;font-size:0.95rem;">' +
+            '<button type="button" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:#c44;padding:2px 6px;" title="Entfernen">\u00d7</button>';
+
+          // Delete
+          row.querySelector('button').addEventListener('click', () => { row.remove(); });
+
+          // Drag events
+          row.addEventListener('dragstart', (e) => {
+            dragSrcRow = row;
+            row.style.opacity = '0.4';
+            e.dataTransfer.effectAllowed = 'move';
+          });
+          row.addEventListener('dragend', () => { row.style.opacity = '1'; dragSrcRow = null; });
+          row.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            row.style.borderTop = '2px solid var(--accent, #80b8a0)';
+          });
+          row.addEventListener('dragleave', () => { row.style.borderTop = ''; row.style.border = '1px solid transparent'; });
+          row.addEventListener('drop', (e) => {
+            e.preventDefault();
+            row.style.borderTop = '';
+            row.style.border = '1px solid transparent';
+            if (dragSrcRow && dragSrcRow !== row) {
+              editor.insertBefore(dragSrcRow, row);
+            }
+          });
+
+          return row;
+        }
+
+        items.forEach(t => editor.appendChild(makeRow(t)));
+
+        pop.querySelector('#addCheckItem').addEventListener('click', () => {
+          const row = makeRow('');
+          editor.appendChild(row);
+          row.querySelector('input').focus();
+        });
+
+        pop.querySelector('#saveBookTextBtn').addEventListener('click', async () => {
+          const inputs = editor.querySelectorAll('input[type="text"]');
+          const val = Array.from(inputs).map(i => i.value.trim()).filter(Boolean).join('\n');
+          const done = setSaving(pop.querySelector('#saveBookTextBtn'));
+          try {
+            await fetch('/api/settings', {
+              method: 'POST',
+              headers: authHeaders(),
+              body: JSON.stringify({ key: settingKey, value: val })
+            });
+            const page = pencil.closest('.book__details-page');
+            if (page) {
+              const ul = page.querySelector('.event-spread__includes');
+              if (ul) {
+                ul.innerHTML = val.split('\n').filter(l => l.trim())
+                  .map(l => '<li>' + escHtml(l.trim()) + '</li>').join('');
+              }
+            }
+            if (window._siteSettings) window._siteSettings[settingKey] = val;
+            showToast('Checklist updated');
+            closeAllPopovers();
+          } catch (err) { done('Error saving'); }
+        });
+        return;
+      }
+
+      // Non-list formats: textarea editor
+      const hint = format === 'paragraphs' ? ' (blank line = new paragraph)' : '';
       const pop = createPopover(pencil, `
         <label>${escHtml(label)}${hint}</label>
         <textarea id="editBookTextInput" rows="8">${escHtml(currentVal)}</textarea>
@@ -2255,13 +2349,7 @@
           // Update DOM
           const page = pencil.closest('.book__details-page');
           if (page) {
-            if (format === 'list') {
-              const ul = page.querySelector('.event-spread__includes');
-              if (ul) {
-                ul.innerHTML = val.split('\n').filter(l => l.trim())
-                  .map(l => '<li>' + escHtml(l.trim()) + '</li>').join('');
-              }
-            } else if (format === 'paragraphs') {
+            if (format === 'paragraphs') {
               const existingDescs = page.querySelectorAll('.event-spread__desc');
               const extraEl = page.querySelector('.event-spread__extra');
               const ctaEl = page.querySelector('.inner-cta-wrap');
