@@ -106,9 +106,16 @@ async function build() {
 
     // About photo
     if (s.about_photo) {
+      let aboutCropStyle = '';
+      if (s.about_photo_crop) {
+        try {
+          const c = JSON.parse(s.about_photo_crop);
+          aboutCropStyle = ` style="object-position: ${c.x||50}% ${c.y||50}%; transform-origin: ${c.x||50}% ${c.y||50}%; transform: scale(${c.scale||1});"`;
+        } catch(e) {}
+      }
       html = html.replace(
-        /(<img(?=[^>]*id="aboutPhoto")[^>]*\bsrc=")[^"]*(")/,
-        `$1${s.about_photo}$2`
+        /(<img(?=[^>]*id="aboutPhoto")[^>]*\bsrc=")[^"]*("[^>]*)(>)/,
+        `$1${s.about_photo}$2${aboutCropStyle}$3`
       );
     }
 
@@ -149,6 +156,18 @@ async function build() {
         const imgKey = `book_${name}_${slot}_img`;
         if (s[imgKey]) {
           html = injectImgSrc(html, imgKey, s[imgKey]);
+          // Apply crop if set
+          const cropKey = `book_${name}_${slot}_crop`;
+          if (s[cropKey]) {
+            try {
+              const c = JSON.parse(s[cropKey]);
+              const cropStyle = `object-position:${c.x||50}% ${c.y||50}%;transform-origin:${c.x||50}% ${c.y||50}%;transform:scale(${c.scale||1})`;
+              html = html.replace(
+                new RegExp(`(<img(?=[^>]*data-img-key="${imgKey}")[^>]*?)>`),
+                `$1 style="${cropStyle}">`
+              );
+            } catch(e) {}
+          }
         }
         const captionKey = `book_${name}_${slot}_caption`;
         if (captionKey in s) {
@@ -179,10 +198,14 @@ async function build() {
           const rot = rotations[i % rotations.length];
           const attach = attachments[i % attachments.length];
           const captionHtml = p.caption ? `\n              <p class="polaroid-caption">${escapeHtml(p.caption)}</p>` : '';
+          let pCropStyle = '';
+          if (p.crop) {
+            pCropStyle = ` style="object-position:${p.crop.x||50}% ${p.crop.y||50}%;transform-origin:${p.crop.x||50}% ${p.crop.y||50}%;transform:scale(${p.crop.scale||1});"`;
+          }
           return `
             <div class="scrapbook__polaroid" style="--rot: ${rot};">
               <div class="${attach}"></div>
-              <div class="polaroid-frame"><img src="${p.img}" alt="" loading="lazy"></div>${captionHtml}
+              <div class="polaroid-frame"><img src="${p.img}" alt="" loading="lazy"${pCropStyle}></div>${captionHtml}
             </div>`;
         }).join('');
         html = inject(html, photosKey, photosHtml + '\n          ');

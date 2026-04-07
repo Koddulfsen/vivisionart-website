@@ -1944,9 +1944,15 @@
       const currentCaption = (window._siteSettings && 'about_photo_caption' in window._siteSettings)
         ? window._siteSettings['about_photo_caption']
         : (existingCaptionEl ? existingCaptionEl.textContent.trim() : '');
+      let crop = { x: 50, y: 50, scale: 1 };
+      if (window._siteSettings && window._siteSettings['about_photo_crop']) {
+        try { crop = JSON.parse(window._siteSettings['about_photo_crop']); } catch(e) {}
+      }
       const pop = createPopover(pencil, `
         <label>Photo</label>
         ${makeUploadFieldHtml(current, 'editPhotoUrl')}
+        <label>Crop &amp; Zoom</label>
+        <div id="cropWrap" style="margin-bottom:10px;"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <input type="checkbox" id="editPhotoHasCaption" ${currentCaption ? 'checked' : ''} style="width:auto;margin:0;">
           <label for="editPhotoHasCaption" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
@@ -1960,7 +1966,9 @@
           <button class="btn-save" id="savePhotoBtn">Save</button>
         </div>
       `);
+      const cropTool = buildCropTool(pop.querySelector('#cropWrap'), current, crop, '3/4');
       const photoUpload = wireUploadField(pop, 'editPhotoUrl');
+      pop.querySelector('#editPhotoUrl').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
       pop.querySelector('#editPhotoHasCaption').addEventListener('change', function() {
         pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
@@ -1970,21 +1978,30 @@
         if (!val) return;
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
+        const cropData = JSON.stringify(cropTool.getCrop());
         const done = setSaving(pop.querySelector('#savePhotoBtn'));
         try {
-          const [r1, r2] = await Promise.all([
+          const results = await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo', value: val }) }),
-            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) })
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_crop', value: cropData }) })
           ]);
-          if (!r1.ok || !r2.ok) throw new Error('Save failed');
+          if (!results[0].ok || !results[2].ok) throw new Error('Save failed');
           const localUrl = photoUpload.getLocalUrl();
           img.src = localUrl || val;
+          const c = cropTool.getCrop();
+          img.style.objectPosition = c.x + '% ' + c.y + '%';
+          img.style.transformOrigin = c.x + '% ' + c.y + '%';
+          img.style.transform = 'scale(' + c.scale + ')';
           if (localUrl && val !== current) {
             const preloader = new Image();
             preloader.onload = () => { img.src = val; };
             preloader.src = val;
           }
-          if (window._siteSettings) window._siteSettings['about_photo'] = val;
+          if (window._siteSettings) {
+            window._siteSettings['about_photo'] = val;
+            window._siteSettings['about_photo_crop'] = cropData;
+          }
           if (polaroid) {
             let captionEl = polaroid.querySelector('.polaroid-caption');
             if (captionText) {
@@ -2134,6 +2151,7 @@
     function editBookImage(pencil) {
       const key = pencil.dataset.imgKey;
       const captionKey = key.replace(/_img$/, '_caption');
+      const cropKey = key.replace(/_img$/, '_crop');
       const container = pencil.closest('.cover-polaroid, .scrapbook__polaroid');
       const img = container ? container.querySelector('img') : null;
       if (!img) return;
@@ -2142,9 +2160,15 @@
       const currentCaption = (window._siteSettings && captionKey in window._siteSettings)
         ? window._siteSettings[captionKey]
         : (existingCaptionEl ? existingCaptionEl.textContent.trim() : '');
+      let crop = { x: 50, y: 50, scale: 1 };
+      if (window._siteSettings && window._siteSettings[cropKey]) {
+        try { crop = JSON.parse(window._siteSettings[cropKey]); } catch(e) {}
+      }
       const pop = createPopover(pencil, `
         <label>Image</label>
         ${makeUploadFieldHtml(current, 'editBookImg')}
+        <label>Crop &amp; Zoom</label>
+        <div id="cropWrap" style="margin-bottom:10px;"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <input type="checkbox" id="editBookImgHasCaption" ${currentCaption ? 'checked' : ''} style="width:auto;margin:0;">
           <label for="editBookImgHasCaption" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
@@ -2158,7 +2182,11 @@
           <button class="btn-save" id="saveBookImgBtn">Save</button>
         </div>
       `);
+      const cropTool = buildCropTool(pop.querySelector('#cropWrap'), current, crop, '4/3');
       const bookImgUpload = wireUploadField(pop, 'editBookImg');
+      // Sync crop preview when image changes
+      var origOnChange = pop.querySelector('#editBookImg').onchange;
+      pop.querySelector('#editBookImg').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
       pop.querySelector('#editBookImgHasCaption').addEventListener('change', function() {
         pop.querySelector('#editBookImgCaptionWrap').style.display = this.checked ? 'block' : 'none';
       });
@@ -2166,23 +2194,29 @@
         if (bookImgUpload.isUploading()) { showToast('Image still uploading — please wait'); return; }
         const val = pop.querySelector('#editBookImg').value.trim();
         const localUrl = bookImgUpload.getLocalUrl();
-        console.log('[admin] book-image save', { key, val, localUrl, imgSrc: img && img.src });
-        if (!val) { console.warn('[admin] val empty, aborting'); return; }
+        if (!val) return;
         const hasCaption = pop.querySelector('#editBookImgHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editBookImgCaption').value.trim() : '';
+        const cropData = JSON.stringify(cropTool.getCrop());
         const done = setSaving(pop.querySelector('#saveBookImgBtn'));
         try {
-          const [r1, r2] = await Promise.all([
+          const results = await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, value: val }) }),
-            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: captionKey, value: captionText }) })
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: captionKey, value: captionText }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: cropKey, value: cropData }) })
           ]);
-          if (!r1.ok) { const e = await r1.text(); console.error('[admin] img key save failed', r1.status, e); throw new Error('Save failed'); }
-          if (!r2.ok) { const e = await r2.text(); console.error('[admin] caption key save failed', r2.status, e); throw new Error('Save failed'); }
-          console.log('[admin] API save OK, updating DOM', { val, localUrl });
+          if (!results[0].ok || !results[2].ok) throw new Error('Save failed');
           if (localUrl) img.src = localUrl;
           else img.src = val;
-          if (window._siteSettings) window._siteSettings[key] = val;
-          // Swap to CDN URL once loaded (only if val is a new URL, not the original)
+          // Apply crop to DOM
+          const c = cropTool.getCrop();
+          img.style.objectPosition = c.x + '% ' + c.y + '%';
+          img.style.transformOrigin = c.x + '% ' + c.y + '%';
+          img.style.transform = 'scale(' + c.scale + ')';
+          if (window._siteSettings) {
+            window._siteSettings[key] = val;
+            window._siteSettings[cropKey] = cropData;
+          }
           if (localUrl && val !== current) {
             const preloader = new Image();
             preloader.onload = () => { img.src = val; };
@@ -2349,9 +2383,12 @@
           const photos = getPhotos();
           const photo = photos[idx];
           if (!photo) return;
+          const photoCrop = photo.crop || { x: 50, y: 50, scale: 1 };
           const pop = createPopover(pol, `
             <label>Image</label>
             ${makeUploadFieldHtml(photo.img, 'editBkPh')}
+            <label>Crop &amp; Zoom</label>
+            <div id="cropWrap" style="margin-bottom:10px;"></div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
               <input type="checkbox" id="editBkPhHasCap" ${photo.caption ? 'checked' : ''} style="width:auto;margin:0;">
               <label for="editBkPhHasCap" style="margin:0;cursor:pointer;font-weight:normal;">Show caption</label>
@@ -2365,7 +2402,9 @@
               <button class="btn-save" id="editBkPhSave">Save</button>
             </div>
           `);
+          const cropTool = buildCropTool(pop.querySelector('#cropWrap'), photo.img, photoCrop, '4/3');
           const uploader = wireUploadField(pop, 'editBkPh');
+          pop.querySelector('#editBkPh').addEventListener('change', function() { if (this.value) cropTool.setImage(this.value); });
           pop.querySelector('#editBkPhHasCap').addEventListener('change', function() {
             pop.querySelector('#editBkPhCapWrap').style.display = this.checked ? 'block' : 'none';
           });
@@ -2375,7 +2414,7 @@
             if (!img) return;
             const hasCap = pop.querySelector('#editBkPhHasCap').checked;
             const caption = hasCap ? pop.querySelector('#editBkPhCap').value.trim() : '';
-            photos[idx] = { img, caption };
+            photos[idx] = { img, caption, crop: cropTool.getCrop() };
             closeAllPopovers();
             savePhotos(bookName, photos);
           });
@@ -2559,6 +2598,65 @@
       });
     }
 
+    /* ---- Reusable Crop Tool ---- */
+    function buildCropTool(container, imgSrc, cropData, aspect) {
+      var crop = cropData || { x: 50, y: 50, scale: 1 };
+      container.innerHTML =
+        '<div style="position:relative;width:100%;aspect-ratio:' + (aspect || '4/3') + ';overflow:hidden;background:#222;border-radius:4px;cursor:grab;touch-action:none;">' +
+        '<img src="' + escHtml(imgSrc) + '" style="width:100%;height:100%;object-fit:cover;' +
+        'object-position:' + crop.x + '% ' + crop.y + '%;' +
+        'transform-origin:' + crop.x + '% ' + crop.y + '%;' +
+        'transform:scale(' + crop.scale + ');pointer-events:none;">' +
+        '</div>' +
+        '<input type="range" min="100" max="300" value="' + Math.round(crop.scale * 100) + '" style="width:100%;margin:8px 0;">';
+
+      var wrap = container.querySelector('div');
+      var img = container.querySelector('img');
+      var slider = container.querySelector('input[type="range"]');
+      var focalX = crop.x, focalY = crop.y, scale = crop.scale;
+      var dragging = false, lastX, lastY;
+
+      function update() {
+        img.style.objectPosition = focalX + '% ' + focalY + '%';
+        img.style.transformOrigin = focalX + '% ' + focalY + '%';
+        img.style.transform = 'scale(' + scale + ')';
+      }
+
+      wrap.addEventListener('mousedown', function(e) {
+        dragging = true; lastX = e.clientX; lastY = e.clientY;
+        wrap.style.cursor = 'grabbing'; e.preventDefault();
+      });
+      wrap.addEventListener('touchstart', function(e) {
+        dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+        e.preventDefault();
+      }, { passive: false });
+
+      function onMove(cx, cy) {
+        if (!dragging) return;
+        var rect = wrap.getBoundingClientRect();
+        var dx = (cx - lastX) / rect.width * 100;
+        var dy = (cy - lastY) / rect.height * 100;
+        var sens = 1 / scale;
+        focalX = Math.max(0, Math.min(100, focalX - dx * sens));
+        focalY = Math.max(0, Math.min(100, focalY - dy * sens));
+        lastX = cx; lastY = cy;
+        update();
+      }
+      document.addEventListener('mousemove', function(e) { if (dragging) onMove(e.clientX, e.clientY); });
+      document.addEventListener('touchmove', function(e) { if (dragging) { onMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); } }, { passive: false });
+      document.addEventListener('mouseup', function() { dragging = false; wrap.style.cursor = 'grab'; });
+      document.addEventListener('touchend', function() { dragging = false; });
+
+      slider.addEventListener('input', function() {
+        scale = parseInt(slider.value) / 100; update();
+      });
+
+      return {
+        getCrop: function() { return { x: Math.round(focalX), y: Math.round(focalY), scale: Math.round(scale * 100) / 100 }; },
+        setImage: function(src) { img.src = src; }
+      };
+    }
+
     /* ---- Edit: Artwork ---- */
     function editArtwork(pencil) {
       const id = pencil.dataset.artworkId;
@@ -2574,11 +2672,8 @@
         <label>Image <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload new)</span></label>
         <input type="file" id="editArtFile" accept="image/*" style="margin-bottom:8px;">
         <input type="hidden" id="editArtImg" value="${escHtml(artwork.image_url || '')}">
-        <div id="cropContainer" style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#222;border-radius:4px;margin-bottom:10px;cursor:grab;touch-action:none;">
-          <img id="cropImg" src="${artwork.image_url || ''}" style="width:100%;height:100%;object-fit:cover;object-position:${crop.x}% ${crop.y}%;transform-origin:${crop.x}% ${crop.y}%;transform:scale(${crop.scale});pointer-events:none;">
-        </div>
-        <label>Zoom</label>
-        <input type="range" id="cropZoom" min="100" max="300" value="${Math.round((crop.scale || 1) * 100)}" style="width:100%;margin-bottom:10px;">
+        <label>Crop &amp; Zoom</label>
+        <div id="cropWrap" style="margin-bottom:10px;"></div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
           <input type="checkbox" id="editArtHasTitle" ${currentTitle ? 'checked' : ''} style="width:auto;margin:0;">
           <label for="editArtHasTitle" style="margin:0;cursor:pointer;font-weight:normal;">Show title below image</label>
@@ -2599,63 +2694,7 @@
         </div>
       `);
 
-      // --- Crop tool: drag to pan, slider to zoom ---
-      const cropContainer = pop.querySelector('#cropContainer');
-      const cropImgEl = pop.querySelector('#cropImg');
-      const zoomSlider = pop.querySelector('#cropZoom');
-      let focalX = crop.x || 50;
-      let focalY = crop.y || 50;
-      let scale = crop.scale || 1;
-
-      function updatePreview() {
-        cropImgEl.style.objectPosition = focalX + '% ' + focalY + '%';
-        cropImgEl.style.transformOrigin = focalX + '% ' + focalY + '%';
-        cropImgEl.style.transform = 'scale(' + scale + ')';
-      }
-
-      // Drag to pan image (delta-based, natural direction)
-      let dragging = false, lastX, lastY;
-      cropContainer.addEventListener('mousedown', (e) => {
-        dragging = true;
-        lastX = e.clientX; lastY = e.clientY;
-        cropContainer.style.cursor = 'grabbing';
-        e.preventDefault();
-      });
-      cropContainer.addEventListener('touchstart', (e) => {
-        dragging = true;
-        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-        e.preventDefault();
-      }, { passive: false });
-
-      function onPanMove(cx, cy) {
-        if (!dragging) return;
-        const rect = cropContainer.getBoundingClientRect();
-        const dx = (cx - lastX) / rect.width * 100;
-        const dy = (cy - lastY) / rect.height * 100;
-        // Sensitivity scales with zoom — more zoomed in = finer control
-        const sensitivity = 1 / scale;
-        focalX = Math.max(0, Math.min(100, focalX - dx * sensitivity));
-        focalY = Math.max(0, Math.min(100, focalY - dy * sensitivity));
-        lastX = cx; lastY = cy;
-        updatePreview();
-      }
-
-      document.addEventListener('mousemove', (e) => { if (dragging) onPanMove(e.clientX, e.clientY); });
-      document.addEventListener('touchmove', (e) => {
-        if (dragging) { onPanMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
-      }, { passive: false });
-      document.addEventListener('mouseup', () => { dragging = false; cropContainer.style.cursor = 'grab'; });
-      document.addEventListener('touchend', () => { dragging = false; });
-
-      // Zoom slider
-      zoomSlider.addEventListener('input', () => {
-        scale = parseInt(zoomSlider.value) / 100;
-        updatePreview();
-      });
-
-      function getCropData() {
-        return { x: Math.round(focalX), y: Math.round(focalY), scale: Math.round(scale * 100) / 100 };
-      }
+      const cropTool = buildCropTool(pop.querySelector('#cropWrap'), artwork.image_url || '', crop, '4/3');
 
       // File upload
       const fileInput = pop.querySelector('#editArtFile');
@@ -2664,10 +2703,8 @@
       fileInput.addEventListener('change', async () => {
         const file = fileInput.files[0];
         if (!file) return;
-        // Show local preview immediately
         const localUrl = URL.createObjectURL(file);
-        cropImgEl.src = localUrl;
-        // Upload
+        cropTool.setImage(localUrl);
         uploading = true;
         try {
           const res = await fetch('/api/upload', {
@@ -2678,10 +2715,7 @@
           const data = await res.json();
           hiddenInput.value = data.url;
           uploading = false;
-        } catch (err) {
-          showToast('Upload failed');
-          uploading = false;
-        }
+        } catch (err) { showToast('Upload failed'); uploading = false; }
       });
 
       pop.querySelector('#editArtHasTitle').addEventListener('change', function() {
@@ -2694,7 +2728,7 @@
         const hasTitle = pop.querySelector('#editArtHasTitle').checked;
         const title = hasTitle ? pop.querySelector('#editArtTitle').value.trim() : '';
         const status = pop.querySelector('#editArtStatus').value;
-        const cropData = JSON.stringify(getCropData());
+        const cropData = JSON.stringify(cropTool.getCrop());
         const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
           const res = await fetch('/api/artworks', {
@@ -2713,7 +2747,7 @@
           const img = article.querySelector('.polaroid-frame img');
           if (img) {
             img.src = imgUrl; img.alt = title;
-            const c = getCropData();
+            const c = cropTool.getCrop();
             img.style.objectPosition = c.x + '% ' + c.y + '%';
             img.style.transformOrigin = c.x + '% ' + c.y + '%';
             img.style.transform = 'scale(' + c.scale + ')';
