@@ -4088,6 +4088,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 }
 
+@media (min-width: 369px) and (max-width: 549px) {
+  .book {
+    max-height: 548px;
+  }
+}
+
 @media (max-width: 369px) {
   .book__cover-front .event-spread__header h3 {
     font-size: clamp(0.75rem, -0.385rem + 6.44vw, 1.1rem);
