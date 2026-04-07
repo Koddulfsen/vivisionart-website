@@ -3935,6 +3935,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     padding: 0 0 0 20px;
     line-height: 1.4;
   }
+
+  .book__page:not(.book__page--cover) .cover-polaroid {
+    margin-bottom: 5px;
+  }
 }
 
 /* --- Mid-width: shrink books that get too tall --- */
