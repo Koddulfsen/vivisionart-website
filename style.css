@@ -4275,8 +4275,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
-    -webkit-mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
   }
 
   .tab-strip::-webkit-scrollbar {
@@ -4565,6 +4563,13 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .retro-footer {
     padding: 24px 20px 80px; /* extra bottom for palette picker */
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 554px) {
+  .tab-strip {
+    mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
+    -webkit-mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
   }
 }
 
