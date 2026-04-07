@@ -3336,7 +3336,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 }
 
 .book__cover-front .event-spread__header h3 {
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 0.6rem + 2.4vw, 1.5rem);
   line-height: 28px;
   margin: 0 0 25px 0;
   color: rgba(255, 255, 255, 0.85);
@@ -3426,7 +3426,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 .cover-cta {
   display: inline-block;
   font-family: var(--font-handwriting);
-  font-size: 1.1rem;
+  font-size: clamp(0.75rem, 0.3rem + 2.1vw, 1.1rem);
   color: #ffffff;
   text-decoration: none;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
@@ -3444,7 +3444,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 /* Cover polaroid preview */
 .cover-polaroid {
   margin: 15px auto 30px;
-  width: 75%;
+  width: clamp(55%, 40% + 15vw, 75%);
   max-width: 250px;
   transform: rotate(var(--rot, 0deg));
   position: relative;
@@ -3565,7 +3565,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   bottom: 14px;
   right: 18px;
   font-family: var(--font-handwriting);
-  font-size: var(--event-hint-size, 1.2rem);
+  font-size: clamp(0.75rem, 0.2rem + 2.6vw, var(--event-hint-size, 1.2rem));
   color: var(--accent);
   opacity: 0.7;
   z-index: 5;
@@ -3919,7 +3919,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__cover-front .event-spread__header h3 {
-    font-size: 1.1rem;
     margin-bottom: 8px;
     text-align: center;
   }
@@ -3954,12 +3953,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     bottom: 20px;
   }
 
-  .cover-cta,
   .inner-cta {
-    font-size: 0.75rem;
-  }
-
-  .book__hint {
     font-size: 0.75rem;
   }
 
