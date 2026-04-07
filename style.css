@@ -3373,7 +3373,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 .book__details-page .event-spread__desc {
   font-family: var(--font-handwriting);
-  font-size: clamp(0.75rem, 0.1rem + 3.5vw, 1.4rem) !important;
+  font-size: clamp(0.75rem, 0.3rem + 2.1vw, 1.05rem) !important;
   line-height: 1.4;
   color: var(--text);
   margin-bottom: 20px;
@@ -3381,7 +3381,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 .book__details-page .event-spread__extra {
   font-family: var(--font-handwriting);
-  font-size: clamp(0.7rem, 0.05rem + 3.2vw, 1.3rem) !important;
+  font-size: clamp(0.7rem, 0.25rem + 2vw, 0.95rem) !important;
   font-style: italic;
   line-height: 1.6;
   color: var(--text-light);
