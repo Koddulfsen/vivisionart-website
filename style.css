@@ -3759,6 +3759,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   align-content: center;
   gap: 10px;
   padding: 8px;
+  margin-top: -50px;
   height: 100%;
   z-index: 1;
 }
