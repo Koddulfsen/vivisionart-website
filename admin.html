@@ -1317,11 +1317,11 @@
             const a = artworksData[artSwapSelected];
             const b = artworksData[idx];
             Promise.all([
-              fetch('/api/artworks/' + a.id, {
+              fetch('/api/artworks', {
                 method: 'PUT', headers: authHeaders(),
                 body: JSON.stringify({ id: a.id, sort_order: artSwapSelected + 1 })
               }),
-              fetch('/api/artworks/' + b.id, {
+              fetch('/api/artworks', {
                 method: 'PUT', headers: authHeaders(),
                 body: JSON.stringify({ id: b.id, sort_order: idx + 1 })
               })
@@ -2697,7 +2697,7 @@
         const cropData = JSON.stringify(getCropData());
         const done = setSaving(pop.querySelector('#saveArtBtn'));
         try {
-          const res = await fetch('/api/artworks/' + id, {
+          const res = await fetch('/api/artworks', {
             method: 'PUT',
             headers: authHeaders(),
             body: JSON.stringify({ id, image_url: imgUrl, title, status, crop: cropData })
@@ -2770,7 +2770,7 @@
         const location = pop.querySelector('#editEvLocation').value.trim();
         const done = setSaving(pop.querySelector('#saveEvBtn'));
         try {
-          await fetch('/api/events/' + id, {
+          await fetch('/api/events', {
             method: 'PUT',
             headers: authHeaders(),
             body: JSON.stringify({ id, date, title, location })
