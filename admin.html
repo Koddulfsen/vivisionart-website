@@ -2817,14 +2817,15 @@
       if (!event) return;
 
       const card = pencil.closest('.date-card');
+      const evDate = /^\d{4}-\d{2}-\d{2}$/.test(event.date) ? event.date : '';
       const pop = createPopover(card, `
-        <label>Date</label>
-        <input type="date" id="editEvDate" value="${/^\d{4}-\d{2}-\d{2}$/.test(event.date) ? event.date : ''}">
-        <label>Time</label>
+        <label>Datum</label>
+        ${makeDatePickerHtml('editEv', evDate)}
+        <label>Uhrzeit</label>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-          <input type="time" id="editEvTimeStart" value="${escHtml(event.time_start || '')}" style="flex:1;">
+          ${makeTimePickerHtml('editEvStart', event.time_start || '')}
           <span>–</span>
-          <input type="time" id="editEvTimeEnd" value="${escHtml(event.time_end || '')}" style="flex:1;">
+          ${makeTimePickerHtml('editEvEnd', event.time_end || '')}
         </div>
         <label>Title</label>
         <input type="text" id="editEvTitle" value="${escHtml(event.title || '')}">
@@ -2838,9 +2839,9 @@
       `);
 
       pop.querySelector('#saveEvBtn').addEventListener('click', async () => {
-        const date = pop.querySelector('#editEvDate').value.trim();
-        const time_start = pop.querySelector('#editEvTimeStart').value.trim();
-        const time_end = pop.querySelector('#editEvTimeEnd').value.trim();
+        const date = getDatePickerVal(pop, 'editEv');
+        const time_start = getTimePickerVal(pop, 'editEvStart');
+        const time_end = getTimePickerVal(pop, 'editEvEnd');
         const title = pop.querySelector('#editEvTitle').value.trim();
         const location = pop.querySelector('#editEvLocation').value.trim();
         const done = setSaving(pop.querySelector('#saveEvBtn'));
@@ -2924,13 +2925,13 @@
       document.getElementById('addEventBtn').addEventListener('click', () => {
         const btn = document.getElementById('addEventBtn');
         const pop = createPopover(btn, `
-          <label>Date</label>
-          <input type="date" id="newEvDate">
-          <label>Time</label>
+          <label>Datum</label>
+          ${makeDatePickerHtml('newEv', '')}
+          <label>Uhrzeit</label>
           <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-            <input type="time" id="newEvTimeStart" style="flex:1;">
+            ${makeTimePickerHtml('newEvStart', '')}
             <span>–</span>
-            <input type="time" id="newEvTimeEnd" style="flex:1;">
+            ${makeTimePickerHtml('newEvEnd', '')}
           </div>
           <label>Title</label>
           <input type="text" id="newEvTitle" placeholder="Event title">
@@ -2942,9 +2943,9 @@
           </div>
         `);
         pop.querySelector('#createEvBtn').addEventListener('click', async () => {
-          const date = pop.querySelector('#newEvDate').value.trim();
-          const time_start = pop.querySelector('#newEvTimeStart').value.trim();
-          const time_end = pop.querySelector('#newEvTimeEnd').value.trim();
+          const date = getDatePickerVal(pop, 'newEv');
+          const time_start = getTimePickerVal(pop, 'newEvStart');
+          const time_end = getTimePickerVal(pop, 'newEvEnd');
           const title = pop.querySelector('#newEvTitle').value.trim();
           const loc = pop.querySelector('#newEvLocation').value.trim();
           if (!date || !title) { showToast('Date and title required'); return; }
@@ -3026,7 +3027,60 @@
         const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
         return `${d}. ${months[m - 1]} ${y}`;
       }
-      return dateStr; // legacy free-text fallback
+      return dateStr;
+    }
+
+    // Custom date picker (DD . Monat . YYYY) — returns YYYY-MM-DD
+    function makeDatePickerHtml(prefix, dateStr) {
+      var d = '', m = '', y = '';
+      if (dateStr && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+        var parts = dateStr.split('-');
+        y = parts[0]; m = parts[1]; d = parts[2];
+      }
+      var months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+      var dayOpts = '<option value="">Tag</option>';
+      for (var i = 1; i <= 31; i++) dayOpts += '<option value="' + String(i).padStart(2,'0') + '"' + (d === String(i).padStart(2,'0') ? ' selected' : '') + '>' + i + '</option>';
+      var monOpts = '<option value="">Monat</option>';
+      for (var i = 0; i < 12; i++) monOpts += '<option value="' + String(i+1).padStart(2,'0') + '"' + (m === String(i+1).padStart(2,'0') ? ' selected' : '') + '>' + months[i] + '</option>';
+      var yrOpts = '<option value="">Jahr</option>';
+      var curYear = new Date().getFullYear();
+      for (var i = curYear; i <= curYear + 3; i++) yrOpts += '<option value="' + i + '"' + (y === String(i) ? ' selected' : '') + '>' + i + '</option>';
+      return '<div style="display:flex;gap:6px;margin-bottom:8px;">' +
+        '<select id="' + prefix + 'Day" style="flex:1;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + dayOpts + '</select>' +
+        '<select id="' + prefix + 'Mon" style="flex:2;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + monOpts + '</select>' +
+        '<select id="' + prefix + 'Yr" style="flex:1;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + yrOpts + '</select>' +
+        '</div>';
+    }
+    function getDatePickerVal(pop, prefix) {
+      var d = pop.querySelector('#' + prefix + 'Day').value;
+      var m = pop.querySelector('#' + prefix + 'Mon').value;
+      var y = pop.querySelector('#' + prefix + 'Yr').value;
+      if (d && m && y) return y + '-' + m + '-' + d;
+      return '';
+    }
+
+    // Custom time picker (HH : MM, 24h) — returns HH:MM
+    function makeTimePickerHtml(prefix, timeStr) {
+      var h = '', min = '';
+      if (timeStr && /^\d{2}:\d{2}$/.test(timeStr)) {
+        var parts = timeStr.split(':');
+        h = parts[0]; min = parts[1];
+      }
+      var hrOpts = '<option value="">--</option>';
+      for (var i = 0; i < 24; i++) hrOpts += '<option value="' + String(i).padStart(2,'0') + '"' + (h === String(i).padStart(2,'0') ? ' selected' : '') + '>' + String(i).padStart(2,'0') + '</option>';
+      var minOpts = '<option value="">--</option>';
+      for (var i = 0; i < 60; i += 5) minOpts += '<option value="' + String(i).padStart(2,'0') + '"' + (min === String(i).padStart(2,'0') ? ' selected' : '') + '>' + String(i).padStart(2,'0') + '</option>';
+      return '<div style="display:flex;gap:4px;align-items:center;">' +
+        '<select id="' + prefix + 'Hr" style="padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + hrOpts + '</select>' +
+        '<span>:</span>' +
+        '<select id="' + prefix + 'Min" style="padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + minOpts + '</select>' +
+        '</div>';
+    }
+    function getTimePickerVal(pop, prefix) {
+      var h = pop.querySelector('#' + prefix + 'Hr').value;
+      var m = pop.querySelector('#' + prefix + 'Min').value;
+      if (h && m) return h + ':' + m;
+      return '';
     }
 
     /* ---- Utility: escape HTML ---- */
