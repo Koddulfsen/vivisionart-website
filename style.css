@@ -3896,6 +3896,21 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   z-index: 1;
 }
 
+/* --- Desktop scaling: book cover text 769–1050px --- */
+@media (min-width: 769px) and (max-width: 1050px) {
+  .book__cover-front .event-spread__header h3 {
+    font-size: clamp(1.1rem, -0.3rem + 2.4vw, 1.5rem);
+  }
+
+  .cover-cta {
+    font-size: clamp(0.8rem, -0.1rem + 1.5vw, 1.1rem);
+  }
+
+  .book__hint {
+    font-size: clamp(0.8rem, -0.1rem + 1.5vw, 1.2rem);
+  }
+}
+
 /* --- Mid-width: shrink books that get too tall --- */
 @media (min-width: 550px) and (max-width: 768px) {
   .book {
