@@ -3941,6 +3941,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     line-height: var(--event-includes-lh, 1.4);
   }
 
+  .torn-page {
+    min-height: 280px;
+  }
+
   .torn-page__title {
     font-size: 1.1rem;
   }
