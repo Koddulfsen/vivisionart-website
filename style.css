@@ -3364,7 +3364,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   padding: 30px 28px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  text-align: center;
   height: 100%;
   position: relative;
   z-index: 1;
