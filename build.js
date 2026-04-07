@@ -45,13 +45,15 @@ function injectImgSrc(html, key, url) {
 async function build() {
   console.log('Fetching data from DB...');
 
-  // Ensure crop column exists
+  // Ensure columns exist
   try { await db.execute('ALTER TABLE artworks ADD COLUMN crop TEXT DEFAULT ""'); } catch(e) {}
+  try { await db.execute('ALTER TABLE events ADD COLUMN time_start TEXT DEFAULT ""'); } catch(e) {}
+  try { await db.execute('ALTER TABLE events ADD COLUMN time_end TEXT DEFAULT ""'); } catch(e) {}
 
   const [settingsRes, artworksRes, eventsRes] = await Promise.all([
     db.execute('SELECT key, value FROM settings'),
     db.execute('SELECT id, title, image_url, status, crop FROM artworks ORDER BY sort_order ASC, id ASC'),
-    db.execute('SELECT id, title, date, location FROM events ORDER BY date ASC'),
+    db.execute('SELECT * FROM events ORDER BY date ASC'),
   ]);
 
   const s = {};
