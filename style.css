@@ -3909,6 +3909,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .book__hint {
     font-size: clamp(0.8rem, 0.15rem + 1.2vw, 1.2rem);
   }
+
+  .book__page:not(.book__page--cover) .cover-polaroid {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    width: clamp(40%, 15% + 15vw, 65%);
+  }
 }
 
 /* --- Desktop scaling: book description text 769–1050px --- */
@@ -3936,10 +3942,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     line-height: 1.4;
   }
 
-  .book__page:not(.book__page--cover) .cover-polaroid {
-    margin-top: 0px;
-    margin-bottom: 5px;
-  }
 }
 
 /* --- Mid-width: shrink books that get too tall --- */
