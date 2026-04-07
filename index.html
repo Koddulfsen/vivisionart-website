@@ -766,16 +766,33 @@
       });
     })();
 
-    /* ---- Form submitted state ---- */
-    if (new URLSearchParams(window.location.search).get('submitted')) {
-      const form = document.querySelector('.letter-form');
-      const msg = document.querySelector('.form-submitted');
-      if (form && msg) {
-        form.hidden = true;
-        document.querySelector('.letter-intro').hidden = true;
-        msg.hidden = false;
-      }
-    }
+    /* ---- Form: submit via fetch (no page reload) ---- */
+    (function() {
+      var form = document.querySelector('.letter-form');
+      var msg = document.querySelector('.form-submitted');
+      if (!form || !msg) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = form.querySelector('.stamp-btn');
+        btn.disabled = true;
+        btn.querySelector('.stamp-btn-inner').textContent = 'WIRD GESENDET...';
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function() {
+          form.hidden = true;
+          document.querySelector('.letter-intro').hidden = true;
+          msg.hidden = false;
+        }).catch(function() {
+          form.hidden = true;
+          document.querySelector('.letter-intro').hidden = true;
+          msg.hidden = false;
+        });
+      });
+    })();
   </script>
 </body>
 </html>
