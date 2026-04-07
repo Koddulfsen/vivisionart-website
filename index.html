@@ -428,7 +428,7 @@
       <form class="letter-form" action="https://formsubmit.co/jensklyvedahl@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="Neue Event-Anfrage von Vi.Vision ART">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://vivisionart.online/#booking">
+        <input type="hidden" name="_next" value="https://vivisionart.online/?submitted=true#booking">
         <input type="hidden" name="_template" value="table">
 
         <!-- 1. Anlass -->
@@ -509,8 +509,14 @@
         <button type="submit" class="stamp-btn">
           <span class="stamp-btn-inner">ANFRAGE SENDEN</span>
         </button>
-        <p class="form-success">Vielen Dank! Ich melde mich bald bei dir.</p>
       </form>
+
+      <div class="form-submitted" hidden>
+        <div class="form-submitted__stamp">&#10004;</div>
+        <p class="form-submitted__title">Deine Anfrage ist unterwegs!</p>
+        <p class="form-submitted__text">Vielen Dank &mdash; ich melde mich bald bei dir.</p>
+        <button class="form-submitted__back" onclick="window.history.replaceState({}, '', window.location.pathname + '#booking'); document.querySelector('.letter-form').removeAttribute('hidden'); document.querySelector('.form-submitted').hidden = true;">Noch eine Anfrage senden</button>
+      </div>
     </div>
   </section>
 
@@ -759,6 +765,17 @@
         book.style.setProperty('--cover-bg', mocha);
       });
     })();
+
+    /* ---- Form submitted state ---- */
+    if (new URLSearchParams(window.location.search).get('submitted')) {
+      const form = document.querySelector('.letter-form');
+      const msg = document.querySelector('.form-submitted');
+      if (form && msg) {
+        form.hidden = true;
+        document.querySelector('.letter-intro').hidden = true;
+        msg.hidden = false;
+      }
+    }
   </script>
 </body>
 </html>
