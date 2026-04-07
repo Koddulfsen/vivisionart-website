@@ -3921,6 +3921,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     font-size: clamp(0.65rem, -0.12rem + 1.55vw, 0.95rem) !important;
     line-height: 1.3;
   }
+
+  .book__page .inner-cta {
+    font-size: clamp(0.8rem, 0.1rem + 1.1vw, 1.1rem);
+  }
 }
 
 /* --- Mid-width: shrink books that get too tall --- */
