@@ -3709,16 +3709,20 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 /* --- Photo cluster (absolute positioned polaroids) --- */
 .scrapbook__photo-cluster {
-  position: absolute;
-  inset: 60px 24px 24px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: center;
+  gap: 10px;
+  padding: 8px;
+  height: 100%;
   z-index: 1;
 }
 
 /* --- Individual polaroid in scrapbook --- */
 .scrapbook__polaroid {
-  position: absolute;
-  left: var(--x, 10%);
-  top: var(--y, 10%);
+  position: relative;
   width: 42%;
   transform: rotate(var(--rot, 0deg));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -4025,11 +4029,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__photo-cluster {
-    inset: 60px 24px 9px 24px;
-  }
-
-  .scrapbook__photo-cluster .scrapbook__polaroid:first-child {
-    left: calc(var(--x, 8%) - 15px);
+    gap: 6px;
+    padding: 6px;
   }
 }
 

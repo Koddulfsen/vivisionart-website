@@ -141,14 +141,12 @@ async function build() {
         html = inject(html, extraKey, escapeHtml(s[extraKey]));
       }
 
-      // Book images (cover, details, photo1-3)
-      for (const slot of ['cover', 'details', 'photo1', 'photo2', 'photo3']) {
+      // Book images: cover + details (non-photo slots)
+      for (const slot of ['cover', 'details']) {
         const imgKey = `book_${name}_${slot}_img`;
         if (s[imgKey]) {
           html = injectImgSrc(html, imgKey, s[imgKey]);
         }
-
-        // Book captions (optional — inject full <p> or nothing)
         const captionKey = `book_${name}_${slot}_caption`;
         if (captionKey in s) {
           const captionHtml = s[captionKey]
@@ -156,6 +154,35 @@ async function build() {
             : '';
           html = inject(html, captionKey, captionHtml);
         }
+      }
+
+      // Book photos page: read JSON array or migrate from individual keys
+      const photosKey = `book_${name}_photos`;
+      let photos = [];
+      if (s[photosKey]) {
+        try { photos = JSON.parse(s[photosKey]); } catch (e) { photos = []; }
+      } else {
+        // Migrate from old individual photo keys
+        for (let i = 1; i <= 3; i++) {
+          const img = s[`book_${name}_photo${i}_img`];
+          const caption = s[`book_${name}_photo${i}_caption`] || '';
+          if (img) photos.push({ img, caption });
+        }
+      }
+      if (photos.length > 0) {
+        const rotations = ['-3deg', '4deg', '-1deg', '3deg', '-2deg', '2deg'];
+        const attachments = ['scrapbook__tape', 'polaroid-pin', 'scrapbook__tape', 'polaroid-pin'];
+        const photosHtml = photos.map((p, i) => {
+          const rot = rotations[i % rotations.length];
+          const attach = attachments[i % attachments.length];
+          const captionHtml = p.caption ? `\n              <p class="polaroid-caption">${escapeHtml(p.caption)}</p>` : '';
+          return `
+            <div class="scrapbook__polaroid" style="--rot: ${rot};">
+              <div class="${attach}"></div>
+              <div class="polaroid-frame"><img src="${p.img}" alt="" loading="lazy"></div>${captionHtml}
+            </div>`;
+        }).join('');
+        html = inject(html, photosKey, photosHtml + '\n          ');
       }
     }
 
