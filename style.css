@@ -3854,7 +3854,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 /* --- Mid-width: shrink books that get too tall --- */
 @media (min-width: 550px) and (max-width: 768px) {
   .book {
-    max-height: clamp(400px, 50vh, 550px);
+    max-height: clamp(550px, 75vh, 750px);
   }
 }
 
