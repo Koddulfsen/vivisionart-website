@@ -2429,9 +2429,22 @@
             headers: authHeaders(),
             body: JSON.stringify({ id, image_url: imgUrl, title, status })
           });
+
+          // Update artworksData in-place
+          artwork.title = title;
+          artwork.image_url = imgUrl;
+          artwork.status = status;
+
+          // Update DOM
+          const img = article.querySelector('.polaroid-frame img');
+          if (img) { img.src = imgUrl; img.alt = title; }
+          const caption = article.querySelector('.polaroid-caption');
+          if (caption) caption.textContent = title;
+          const sticker = article.querySelector('.art-sticker');
+          if (sticker) sticker.textContent = status === 'sold' ? 'verkauft' : 'zu verkaufen';
+
           showToast('Artwork updated');
           closeAllPopovers();
-          location.reload();
         } catch (err) { done('Error saving'); }
       });
 
