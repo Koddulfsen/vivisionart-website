@@ -3913,12 +3913,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 /* --- Desktop scaling: book description text 769–1050px --- */
 @media (min-width: 769px) and (max-width: 1050px) {
-  .book__details-page .event-spread__desc {
-    font-size: clamp(0.75rem, -0.15rem + 1.15vw, 1.05rem) !important;
+  .book__page .book__details-page .event-spread__desc {
+    font-size: clamp(0.75rem, -0.07rem + 1.7vw, 1.05rem) !important;
   }
 
-  .book__details-page .event-spread__extra {
-    font-size: clamp(0.65rem, -0.2rem + 1.1vw, 0.95rem) !important;
+  .book__page .book__details-page .event-spread__extra {
+    font-size: clamp(0.65rem, -0.12rem + 1.55vw, 0.95rem) !important;
   }
 }
 
