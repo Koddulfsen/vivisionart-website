@@ -1250,7 +1250,7 @@ a {
   border-radius: 1px;
 }
 
-.about-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 40px; }
+.about-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 12px; }
 
 .about-photo-placeholder {
   width: 100%;
@@ -1278,10 +1278,11 @@ a {
   font-size: 1.15rem;
   color: var(--text);
   text-align: center;
-  margin-top: -32px;
+  background: var(--polaroid-bg);
+  margin: 0;
+  padding: 6px 12px 10px;
   position: relative;
   z-index: 2;
-  padding-bottom: 8px;
 }
 
 /* Text block */
@@ -1369,7 +1370,7 @@ a {
 
 .polaroid-frame {
   background: var(--polaroid-bg);
-  padding: 12px 12px 40px;
+  padding: 12px 12px 12px;
   box-shadow: 3px 4px 12px var(--shadow);
   border-radius: 2px;
   position: relative;
@@ -1406,10 +1407,11 @@ a {
   font-size: 1.1rem;
   color: var(--text);
   text-align: center;
-  margin-top: -32px;
+  background: var(--polaroid-bg);
+  margin: 0;
+  padding: 6px 12px 10px;
   position: relative;
   z-index: 2;
-  padding-bottom: 8px;
 }
 
 /* Polaroid pin */
@@ -3078,6 +3080,23 @@ html[data-book-texture="rough"] .book__cover-front > .book-texture-overlay {
   transition: background 0.5s ease, color 0.5s ease;
 }
 
+.footer-link {
+  color: var(--footer-text);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.footer-link:hover {
+  opacity: 0.7;
+}
+
+.footer-credit {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: 8px;
+  font-family: var(--font-body);
+}
+
 
 /* ============================================================
    BOOK — Inline Flip Book (event card IS the book)
@@ -3489,7 +3508,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   border-radius: 1px;
 }
 
-.cover-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 36px; }
+.cover-polaroid:has(.polaroid-caption) .polaroid-frame { padding-bottom: 12px; }
 
 .book__cover-front .event-spread__includes {
   line-height: 28px;
@@ -3778,10 +3797,11 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   font-size: 0.85rem;
   color: var(--text, #2c2420);
   text-align: center;
-  margin-top: -22px;
+  background: var(--polaroid-bg, #faf7f2);
+  margin: 0;
+  padding: 4px 8px 6px;
   position: relative;
   z-index: 2;
-  padding-bottom: 4px;
 }
 
 /* --- Pin on scrapbook polaroid --- */
@@ -4008,7 +4028,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .scrapbook__polaroid .polaroid-caption {
     font-size: 0.75rem;
-    margin-top: -18px;
   }
 
   /* Book cover: tighten header-to-image gap, reduce bottom margin */
@@ -4307,7 +4326,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .polaroid-caption {
     font-size: 0.95rem;
-    margin-top: -26px;
   }
 
   /* ---- Events — stack, no rotation ---- */
@@ -4584,7 +4602,6 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .polaroid-caption {
     font-size: 0.9rem;
-    margin-top: -24px;
   }
 
   /* ---- Events ---- */
