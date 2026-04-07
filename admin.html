@@ -2574,9 +2574,8 @@
         <label>Image <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload new)</span></label>
         <input type="file" id="editArtFile" accept="image/*" style="margin-bottom:8px;">
         <input type="hidden" id="editArtImg" value="${escHtml(artwork.image_url || '')}">
-        <div id="cropContainer" style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#222;border-radius:4px;margin-bottom:10px;">
+        <div id="cropContainer" style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#222;border-radius:4px;margin-bottom:10px;cursor:grab;touch-action:none;">
           <img id="cropImg" src="${artwork.image_url || ''}" style="width:100%;height:100%;object-fit:cover;object-position:${crop.x}% ${crop.y}%;transform-origin:${crop.x}% ${crop.y}%;transform:scale(${crop.scale});pointer-events:none;">
-          <div id="cropCrosshair" style="position:absolute;width:20px;height:20px;border:2px solid white;border-radius:50%;box-shadow:0 0 4px rgba(0,0,0,0.5);pointer-events:none;transform:translate(-50%,-50%);left:${crop.x}%;top:${crop.y}%;z-index:5;"></div>
         </div>
         <label>Zoom</label>
         <input type="range" id="cropZoom" min="100" max="300" value="${Math.round((crop.scale || 1) * 100)}" style="width:100%;margin-bottom:10px;">
@@ -2600,10 +2599,9 @@
         </div>
       `);
 
-      // --- Crop tool: drag to set focal point, slider to zoom ---
+      // --- Crop tool: drag to pan, slider to zoom ---
       const cropContainer = pop.querySelector('#cropContainer');
       const cropImgEl = pop.querySelector('#cropImg');
-      const crosshair = pop.querySelector('#cropCrosshair');
       const zoomSlider = pop.querySelector('#cropZoom');
       let focalX = crop.x || 50;
       let focalY = crop.y || 50;
@@ -2613,32 +2611,40 @@
         cropImgEl.style.objectPosition = focalX + '% ' + focalY + '%';
         cropImgEl.style.transformOrigin = focalX + '% ' + focalY + '%';
         cropImgEl.style.transform = 'scale(' + scale + ')';
-        crosshair.style.left = focalX + '%';
-        crosshair.style.top = focalY + '%';
       }
 
-      function setFocalFromEvent(cx, cy) {
-        const rect = cropContainer.getBoundingClientRect();
-        focalX = Math.max(0, Math.min(100, ((cx - rect.left) / rect.width) * 100));
-        focalY = Math.max(0, Math.min(100, ((cy - rect.top) / rect.height) * 100));
-        updatePreview();
-      }
-
-      // Drag to set focal point
-      let dragging = false;
+      // Drag to pan image (delta-based, natural direction)
+      let dragging = false, lastX, lastY;
       cropContainer.addEventListener('mousedown', (e) => {
         dragging = true;
-        setFocalFromEvent(e.clientX, e.clientY);
+        lastX = e.clientX; lastY = e.clientY;
+        cropContainer.style.cursor = 'grabbing';
         e.preventDefault();
       });
       cropContainer.addEventListener('touchstart', (e) => {
         dragging = true;
-        setFocalFromEvent(e.touches[0].clientX, e.touches[0].clientY);
-      }, { passive: true });
+        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+        e.preventDefault();
+      }, { passive: false });
 
-      document.addEventListener('mousemove', (e) => { if (dragging) setFocalFromEvent(e.clientX, e.clientY); });
-      document.addEventListener('touchmove', (e) => { if (dragging) setFocalFromEvent(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-      document.addEventListener('mouseup', () => { dragging = false; });
+      function onPanMove(cx, cy) {
+        if (!dragging) return;
+        const rect = cropContainer.getBoundingClientRect();
+        const dx = (cx - lastX) / rect.width * 100;
+        const dy = (cy - lastY) / rect.height * 100;
+        // Sensitivity scales with zoom — more zoomed in = finer control
+        const sensitivity = 1 / scale;
+        focalX = Math.max(0, Math.min(100, focalX - dx * sensitivity));
+        focalY = Math.max(0, Math.min(100, focalY - dy * sensitivity));
+        lastX = cx; lastY = cy;
+        updatePreview();
+      }
+
+      document.addEventListener('mousemove', (e) => { if (dragging) onPanMove(e.clientX, e.clientY); });
+      document.addEventListener('touchmove', (e) => {
+        if (dragging) { onPanMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+      }, { passive: false });
+      document.addEventListener('mouseup', () => { dragging = false; cropContainer.style.cursor = 'grab'; });
       document.addEventListener('touchend', () => { dragging = false; });
 
       // Zoom slider
