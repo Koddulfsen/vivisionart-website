@@ -89,7 +89,7 @@ async function build() {
 
     // Simple text fields
     const textFields = [
-      'nav_about', 'nav_whatido', 'nav_gallery', 'nav_contact',
+      'nav_about', 'nav_whatido', 'nav_gallery', 'nav_dates', 'nav_contact',
       'heading_about', 'heading_whatido', 'heading_gallery', 'heading_dates',
       'whatido_subtitle', 'gallery_note', 'instagram_text',
       'book_birthday_title', 'book_bachelorette_title', 'book_workshop_title',

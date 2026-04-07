@@ -27,6 +27,9 @@
       <a href="#gallery" class="tab" data-tab="gallery">
         <span class="tab-label"><!-- INJECT:nav_gallery -->Meine&nbsp;Werke<!-- /INJECT:nav_gallery --></span>
       </a>
+      <a href="#dates" class="tab" data-tab="dates">
+        <span class="tab-label"><!-- INJECT:nav_dates -->Public&nbsp;Events<!-- /INJECT:nav_dates --></span>
+      </a>
       <a href="#booking" class="tab" data-tab="booking">
         <span class="tab-label"><!-- INJECT:nav_contact -->Kontakt<!-- /INJECT:nav_contact --></span>
       </a>
@@ -555,7 +558,7 @@
     fadeEls.forEach(el => observer.observe(el));
 
     /* ---- Active tab tracking on scroll ---- */
-    const sections = document.querySelectorAll('#about, #events, .corkboard, .postcard-section');
+    const sections = document.querySelectorAll('#about, #events, .corkboard, #dates, .postcard-section');
     const tabs = document.querySelectorAll('.tab');
 
     const tabObserver = new IntersectionObserver((entries) => {

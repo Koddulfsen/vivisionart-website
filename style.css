@@ -1701,7 +1701,21 @@ a {
   color: var(--accent-alt);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 480px) and (max-width: 768px) {
+  .dates-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 500px;
+  }
+
+  .date-card {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 479px) {
   .dates-list {
     flex-direction: column;
     align-items: center;
@@ -4156,12 +4170,21 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .tab-strip {
     gap: 3px;
     padding-top: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tab-strip::-webkit-scrollbar {
+    display: none;
   }
 
   .tab {
     font-size: 1rem;
     padding: 10px 12px 8px;
     min-height: 44px; /* touch-friendly */
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .tab:hover {
