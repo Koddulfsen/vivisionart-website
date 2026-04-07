@@ -3896,7 +3896,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   z-index: 1;
 }
 
-/* --- Desktop scaling: book cover text 769–1050px --- */
+/* --- Desktop scaling: book cover text 769+ --- */
 @media (min-width: 769px) {
   .book__cover-front .event-spread__header h3 {
     font-size: clamp(1.1rem, 0.3rem + 1.5vw, 1.5rem);
@@ -3908,6 +3908,17 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .book__hint {
     font-size: clamp(0.8rem, 0.15rem + 1.2vw, 1.2rem);
+  }
+}
+
+/* --- Desktop scaling: book description text 769–1050px --- */
+@media (min-width: 769px) and (max-width: 1050px) {
+  .book__details-page .event-spread__desc {
+    font-size: clamp(0.75rem, -0.15rem + 1.15vw, 1.05rem) !important;
+  }
+
+  .book__details-page .event-spread__extra {
+    font-size: clamp(0.65rem, -0.2rem + 1.1vw, 0.95rem) !important;
   }
 }
 
