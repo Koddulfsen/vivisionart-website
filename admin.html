@@ -1254,7 +1254,7 @@
       }
     })();
 
-    let artDragSrc = null;
+    let artSwapSelected = null;
 
     function renderArtworks() {
       const board = document.getElementById('galleryBoard');
@@ -1276,7 +1276,7 @@
           const attach = attachments[i % attachments.length];
           const statusLabel = a.status === 'sold' ? 'verkauft' : 'zu verkaufen';
           return `
-            <article class="polaroid p${i + 1} fade-in visible" draggable="true" style="--rot: ${rot}; --x: ${x}; --y: ${y}; cursor: grab;" data-artwork-id="${a.id}" data-artwork-idx="${i}">
+            <article class="polaroid p${i + 1} fade-in visible" style="--rot: ${rot}; --x: ${x}; --y: ${y};" data-artwork-id="${a.id}" data-artwork-idx="${i}">
               <div class="${attach}"></div>
               <span class="art-sticker">${statusLabel}</span>
               <div class="polaroid-frame">
@@ -1284,42 +1284,40 @@
               </div>
               <p class="polaroid-caption">${a.title || ''}</p>
               <button class="edit-pencil" data-edit="artwork" data-artwork-id="${a.id}" title="Edit artwork">&#9998;</button>
+              <button class="edit-pencil" data-swap-idx="${i}" title="Swap position" style="top:4px;left:4px;right:auto;background:rgba(80,140,180,0.85);color:#fff;">&#8646;</button>
             </article>
           `;
         }).join('');
 
-      // Wire up drag & drop on each artwork
-      board.querySelectorAll('.polaroid[data-artwork-idx]').forEach(pol => {
-        const idx = parseInt(pol.dataset.artworkIdx);
+      // Tap-to-swap on artworks
+      board.querySelectorAll('button[data-swap-idx]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.swapIdx);
+          const pol = btn.closest('.polaroid');
 
-        pol.addEventListener('dragstart', (e) => {
-          artDragSrc = idx;
-          pol.style.opacity = '0.4';
-          e.dataTransfer.effectAllowed = 'move';
-        });
-        pol.addEventListener('dragend', () => { pol.style.opacity = '1'; artDragSrc = null; });
-        pol.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          e.dataTransfer.dropEffect = 'move';
-          pol.style.outline = '2px solid var(--accent, #80b8a0)';
-        });
-        pol.addEventListener('dragleave', () => { pol.style.outline = ''; });
-        pol.addEventListener('drop', (e) => {
-          e.preventDefault();
-          pol.style.outline = '';
-          if (artDragSrc !== null && artDragSrc !== idx) {
-            // Swap in artworksData
-            const temp = artworksData[artDragSrc];
-            artworksData[artDragSrc] = artworksData[idx];
+          if (artSwapSelected === null) {
+            // First selection
+            artSwapSelected = idx;
+            pol.style.outline = '3px solid var(--accent, #80b8a0)';
+            pol.style.outlineOffset = '4px';
+          } else if (artSwapSelected === idx) {
+            // Deselect
+            artSwapSelected = null;
+            pol.style.outline = '';
+            pol.style.outlineOffset = '';
+          } else {
+            // Swap
+            const temp = artworksData[artSwapSelected];
+            artworksData[artSwapSelected] = artworksData[idx];
             artworksData[idx] = temp;
 
-            // Save new sort_order for both
-            const a = artworksData[artDragSrc];
+            const a = artworksData[artSwapSelected];
             const b = artworksData[idx];
             Promise.all([
               fetch('/api/artworks/' + a.id, {
                 method: 'PUT', headers: authHeaders(),
-                body: JSON.stringify({ id: a.id, sort_order: artDragSrc + 1 })
+                body: JSON.stringify({ id: a.id, sort_order: artSwapSelected + 1 })
               }),
               fetch('/api/artworks/' + b.id, {
                 method: 'PUT', headers: authHeaders(),
@@ -1327,37 +1325,9 @@
               })
             ]);
 
+            artSwapSelected = null;
             renderArtworks();
           }
-        });
-
-        // Touch drag support
-        pol.addEventListener('touchstart', () => { artDragSrc = idx; }, { passive: true });
-        pol.addEventListener('touchend', (e) => {
-          if (artDragSrc === null) return;
-          const touch = e.changedTouches[0];
-          const target = document.elementFromPoint(touch.clientX, touch.clientY);
-          const targetPol = target && target.closest('.polaroid[data-artwork-idx]');
-          if (targetPol && targetPol !== pol) {
-            const targetIdx = parseInt(targetPol.dataset.artworkIdx);
-            const temp = artworksData[artDragSrc];
-            artworksData[artDragSrc] = artworksData[targetIdx];
-            artworksData[targetIdx] = temp;
-
-            Promise.all([
-              fetch('/api/artworks/' + artworksData[artDragSrc].id, {
-                method: 'PUT', headers: authHeaders(),
-                body: JSON.stringify({ id: artworksData[artDragSrc].id, sort_order: artDragSrc + 1 })
-              }),
-              fetch('/api/artworks/' + artworksData[targetIdx].id, {
-                method: 'PUT', headers: authHeaders(),
-                body: JSON.stringify({ id: artworksData[targetIdx].id, sort_order: targetIdx + 1 })
-              })
-            ]);
-
-            renderArtworks();
-          }
-          artDragSrc = null;
         });
       });
 
@@ -2260,7 +2230,7 @@
           return photos;
         }
 
-        let dragSrc = null;
+        let swapSelected = null;
 
         function render() {
           const photos = getPhotos();
@@ -2269,14 +2239,14 @@
           photos.forEach((photo, i) => {
             const pol = document.createElement('div');
             pol.className = 'scrapbook__polaroid';
-            pol.draggable = true;
-            pol.style.cssText = '--rot:' + rotations[i % rotations.length] + ';cursor:grab;';
+            pol.style.cssText = '--rot:' + rotations[i % rotations.length] + ';';
             pol.innerHTML =
               '<div class="' + attachCls[i % attachCls.length] + '"></div>' +
               '<div class="polaroid-frame"><img src="' + escHtml(photo.img) + '" alt="" loading="lazy"></div>' +
               (photo.caption ? '<p class="polaroid-caption">' + escHtml(photo.caption) + '</p>' : '') +
               '<button class="edit-pencil" title="Edit" style="top:4px;right:4px;">&#9998;</button>' +
-              '<button class="edit-pencil" title="Delete" style="top:4px;left:4px;right:auto;background:rgba(200,60,60,0.85);color:#fff;">&times;</button>';
+              '<button class="edit-pencil" title="Delete" style="top:4px;left:4px;right:auto;background:rgba(200,60,60,0.85);color:#fff;">&times;</button>' +
+              '<button class="edit-pencil" title="Swap" style="top:auto;bottom:4px;left:4px;right:auto;background:rgba(80,140,180,0.85);color:#fff;">&#8646;</button>';
 
             // Edit button
             pol.querySelector('button[title="Edit"]').addEventListener('click', (e) => {
@@ -2293,53 +2263,25 @@
               savePhotos(bookName, photos);
             });
 
-            // Drag
-            pol.addEventListener('dragstart', (e) => {
-              dragSrc = i;
-              pol.style.opacity = '0.4';
-              e.dataTransfer.effectAllowed = 'move';
-            });
-            pol.addEventListener('dragend', () => { pol.style.opacity = '1'; dragSrc = null; });
-            pol.addEventListener('dragover', (e) => {
-              e.preventDefault();
-              e.dataTransfer.dropEffect = 'move';
-              pol.style.outline = '2px solid var(--accent, #80b8a0)';
-            });
-            pol.addEventListener('dragleave', () => { pol.style.outline = ''; });
-            pol.addEventListener('drop', (e) => {
-              e.preventDefault();
-              pol.style.outline = '';
-              if (dragSrc !== null && dragSrc !== i) {
+            // Swap button
+            pol.querySelector('button[title="Swap"]').addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (swapSelected === null) {
+                swapSelected = i;
+                pol.style.outline = '3px solid var(--accent, #80b8a0)';
+                pol.style.outlineOffset = '4px';
+              } else if (swapSelected === i) {
+                swapSelected = null;
+                pol.style.outline = '';
+                pol.style.outlineOffset = '';
+              } else {
                 const photos = getPhotos();
-                const temp = photos[dragSrc];
-                photos[dragSrc] = photos[i];
+                const temp = photos[swapSelected];
+                photos[swapSelected] = photos[i];
                 photos[i] = temp;
+                swapSelected = null;
                 savePhotos(bookName, photos);
               }
-            });
-
-            // Touch drag support
-            let touchStartY = 0, touchClone = null;
-            pol.addEventListener('touchstart', (e) => {
-              const touch = e.touches[0];
-              touchStartY = touch.clientY;
-              dragSrc = i;
-            }, { passive: true });
-            pol.addEventListener('touchend', (e) => {
-              if (dragSrc === null) return;
-              const touch = e.changedTouches[0];
-              const target = document.elementFromPoint(touch.clientX, touch.clientY);
-              const targetPol = target && target.closest('.scrapbook__polaroid');
-              if (targetPol && targetPol !== pol) {
-                const targetIdx = Array.from(cluster.children).indexOf(targetPol);
-                if (targetIdx >= 0 && targetIdx < getPhotos().length) {
-                  const photos = getPhotos();
-                  const moved = photos.splice(dragSrc, 1)[0];
-                  photos.splice(targetIdx, 0, moved);
-                  savePhotos(bookName, photos);
-                }
-              }
-              dragSrc = null;
             });
 
             cluster.appendChild(pol);
