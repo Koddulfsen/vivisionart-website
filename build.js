@@ -187,7 +187,7 @@ async function build() {
     }
 
     // Artworks gallery
-    const rotations = ['-4deg', '3deg', '-2deg', '5deg', '-3deg', '2deg', '-1deg', '4deg'];
+    const rotations = ['-2deg', '1.5deg', '-1deg', '2.5deg', '-1.5deg', '1deg', '-0.5deg', '2deg'];
     const xPos = ['2%', '34%', '66%', '8%', '40%', '72%', '16%', '50%'];
     const yPos = ['0', '2%', '-1%', '0', '1%', '0', '2%', '-1%'];
     const attachments = ['polaroid-pin', 'tape-corner'];
