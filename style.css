@@ -3937,6 +3937,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .book__page:not(.book__page--cover) .cover-polaroid {
+    margin-top: 0px;
     margin-bottom: 5px;
   }
 }
