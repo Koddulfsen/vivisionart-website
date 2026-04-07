@@ -4246,10 +4246,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .board {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 20px;
-    max-width: 360px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+    max-width: 500px;
     margin: 0 auto;
   }
 
@@ -4257,12 +4257,8 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     grid-column: span 1 !important;
   }
 
-  .polaroid {
-    transform: rotate(0deg) !important;
-  }
-
   .polaroid:hover {
-    transform: scale(1.02) !important;
+    transform: rotate(var(--rot, 0deg)) scale(1.02);
   }
 
   .polaroid-frame {
@@ -4531,10 +4527,10 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .board {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
-    max-width: 320px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+    max-width: 400px;
     margin: 0 auto;
   }
 
