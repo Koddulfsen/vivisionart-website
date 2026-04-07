@@ -3919,6 +3919,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
   .book__page .book__details-page .event-spread__extra {
     font-size: clamp(0.65rem, -0.12rem + 1.55vw, 0.95rem) !important;
+    line-height: 1.3;
   }
 }
 
