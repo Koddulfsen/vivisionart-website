@@ -769,7 +769,7 @@ a {
 .tab-strip {
   display: flex;
   gap: 0;
-  max-width: 500px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
