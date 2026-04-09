@@ -1280,7 +1280,7 @@ a {
   text-align: center;
   background: var(--polaroid-bg);
   margin: 0;
-  padding: 4px 12px 8px;
+  padding: 2px 12px 6px;
   position: relative;
   z-index: 2;
 }
@@ -1415,7 +1415,7 @@ a {
   text-align: center;
   background: var(--polaroid-bg);
   margin: 0;
-  padding: 4px 12px 8px;
+  padding: 2px 12px 6px;
   position: relative;
   z-index: 2;
 }
@@ -3829,7 +3829,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   text-align: center;
   background: var(--polaroid-bg, #faf7f2);
   margin: 0;
-  padding: 2px 8px 4px;
+  padding: 0 8px 2px;
   position: relative;
   z-index: 2;
 }
