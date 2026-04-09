@@ -3812,6 +3812,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   padding: 8px;
   box-shadow: 2px 3px 10px var(--shadow, rgba(44,36,32,0.2));
   border-radius: 2px;
+  overflow: hidden;
 }
 
 .scrapbook__polaroid .polaroid-frame img {
