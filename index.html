@@ -27,11 +27,11 @@
       <a href="#gallery" class="tab" data-tab="gallery">
         <span class="tab-label"><!-- INJECT:nav_gallery -->Meine&nbsp;Werke<!-- /INJECT:nav_gallery --></span>
       </a>
-      <a href="#booking" class="tab" data-tab="booking">
-        <span class="tab-label"><!-- INJECT:nav_contact -->Kontakt<!-- /INJECT:nav_contact --></span>
-      </a>
       <a href="#dates" class="tab" data-tab="dates">
         <span class="tab-label"><!-- INJECT:nav_dates -->Public&nbsp;Events<!-- /INJECT:nav_dates --></span>
+      </a>
+      <a href="#booking" class="tab" data-tab="booking">
+        <span class="tab-label"><!-- INJECT:nav_contact -->Kontakt<!-- /INJECT:nav_contact --></span>
       </a>
     </div>
   </nav>
@@ -411,6 +411,21 @@
     </div>
   </div>
 
+  <!-- ============ OFFENE TERMINE ============ -->
+  <!-- ============ OFFENE TERMINE ============ -->
+  <section class="dates-section" id="dates">
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      <!-- INJECT:heading_dates -->Komm vorbei<!-- /INJECT:heading_dates -->
+    </h2>
+
+    <div class="dates-list" id="datesList">
+      <!-- INJECT:events -->
+      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>
+      <!-- /INJECT:events -->
+    </div>
+  </section>
+
   <!-- ============ KONTAKTFORMULAR ============ -->
   <section class="postcard-section" id="booking">
     <h2 class="section-heading fade-in">
@@ -520,21 +535,6 @@
         <p class="form-submitted__text">Vielen Dank &mdash; ich melde mich bald bei dir.</p>
         <button class="form-submitted__back" onclick="window.history.replaceState({}, '', window.location.pathname + '#booking'); document.querySelector('.letter-form').removeAttribute('hidden'); document.querySelector('.form-submitted').hidden = true;">Noch eine Anfrage senden</button>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ OFFENE TERMINE ============ -->
-  <!-- ============ OFFENE TERMINE ============ -->
-  <section class="dates-section" id="dates">
-    <h2 class="section-heading fade-in">
-      <span class="heading-tape"></span>
-      <!-- INJECT:heading_dates -->Komm vorbei<!-- /INJECT:heading_dates -->
-    </h2>
-
-    <div class="dates-list" id="datesList">
-      <!-- INJECT:events -->
-      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>
-      <!-- /INJECT:events -->
     </div>
   </section>
 
