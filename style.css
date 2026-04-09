@@ -790,6 +790,9 @@ a {
   text-align: center;
   text-decoration: none;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tab::after {
