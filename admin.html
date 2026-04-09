@@ -2425,11 +2425,10 @@
             }
             addBkPhUploading = true;
             try {
-              const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
-              const data = await res.json();
-              addBkPhHidden.value = data.url;
+              const url = await uploadImage(file);
+              addBkPhHidden.value = url;
               addBkPhUploading = false;
-            } catch (err) { showToast('Upload failed'); addBkPhUploading = false; }
+            } catch (err) { showToast(err.message || 'Upload failed'); addBkPhUploading = false; }
           });
           pop.querySelector('#addBkPhHasCap').addEventListener('change', function() {
             pop.querySelector('#addBkPhCapWrap').style.display = this.checked ? 'block' : 'none';
@@ -2481,11 +2480,10 @@
             cropTool.setImage(URL.createObjectURL(file));
             bkPhUploading = true;
             try {
-              const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
-              const data = await res.json();
-              bkPhHidden.value = data.url;
+              const url = await uploadImage(file);
+              bkPhHidden.value = url;
               bkPhUploading = false;
-            } catch (err) { showToast('Upload failed'); bkPhUploading = false; }
+            } catch (err) { showToast(err.message || 'Upload failed'); bkPhUploading = false; }
           });
           pop.querySelector('#editBkPhHasCap').addEventListener('change', function() {
             pop.querySelector('#editBkPhCapWrap').style.display = this.checked ? 'block' : 'none';
