@@ -491,13 +491,13 @@
         <span class="tab-label" id="navGallery">Meine&nbsp;Werke</span>
         <button class="edit-pencil" data-edit="text" data-key="nav_gallery" data-target="navGallery" data-label="Nav: Meine Werke" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
-      <a href="#booking" class="tab" data-tab="booking" style="position: relative;">
-        <span class="tab-label" id="navContact">Kontakt</span>
-        <button class="edit-pencil" data-edit="text" data-key="nav_contact" data-target="navContact" data-label="Nav: Kontakt" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
-      </a>
       <a href="#dates" class="tab" data-tab="dates" style="position: relative;">
         <span class="tab-label" id="navDates">Public&nbsp;Events</span>
         <button class="edit-pencil" data-edit="text" data-key="nav_dates" data-target="navDates" data-label="Nav: Public Events" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
+      </a>
+      <a href="#booking" class="tab" data-tab="booking" style="position: relative;">
+        <span class="tab-label" id="navContact">Kontakt</span>
+        <button class="edit-pencil" data-edit="text" data-key="nav_contact" data-target="navContact" data-label="Nav: Kontakt" title="Edit" style="top: 2px; right: 2px; width: 18px; height: 18px; font-size: 9px;">&#9998;</button>
       </a>
     </div>
   </nav>
@@ -1390,15 +1390,36 @@
     fadeEls.forEach(el => observer.observe(el));
 
     /* ---- Active tab tracking on scroll ---- */
-    const sections = document.querySelectorAll('#about, #events, .corkboard, .postcard-section');
+    const sections = document.querySelectorAll('#about, #events, .corkboard, #dates, .postcard-section');
     const tabs = document.querySelectorAll('.tab');
+    const tabStrip = document.querySelector('.tab-strip');
+    const tabArr = Array.from(tabs);
+
+    function updateTabMask(activeTab) {
+      if (!tabStrip) return;
+      var idx = tabArr.indexOf(activeTab);
+      var isFirst = idx === 0;
+      var isLast = idx === tabArr.length - 1;
+      var left = isFirst ? 'black' : 'transparent, black 12%';
+      var right = isLast ? 'black' : 'black 88%, transparent';
+      var mask = 'linear-gradient(to right, ' + left + ', ' + right + ')';
+      tabStrip.style.setProperty('--tab-mask', mask);
+    }
 
     const tabObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = entry.target.id;
           tabs.forEach(t => {
-            t.classList.toggle('active', t.dataset.tab === id);
+            const isActive = t.dataset.tab === id;
+            t.classList.toggle('active', isActive);
+            if (isActive && tabStrip) {
+              var tabLeft = t.offsetLeft;
+              var tabWidth = t.offsetWidth;
+              var stripWidth = tabStrip.offsetWidth;
+              tabStrip.scrollTo({ left: tabLeft - (stripWidth / 2) + (tabWidth / 2), behavior: 'smooth' });
+              updateTabMask(t);
+            }
           });
         }
       });

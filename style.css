@@ -769,7 +769,6 @@ a {
 .tab-strip {
   display: flex;
   gap: 0;
-  justify-content: center;
 }
 
 .tab {
@@ -4687,6 +4686,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   .tab-strip {
     mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
     -webkit-mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
+  }
+}
+
+@media (min-width: 769px) {
+  .tab-strip {
+    justify-content: center;
   }
 }
 
