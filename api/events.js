@@ -17,9 +17,11 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Ensure time columns exist
+  // Ensure columns exist
   try { await db.execute('ALTER TABLE events ADD COLUMN time_start TEXT DEFAULT ""'); } catch(e) {}
   try { await db.execute('ALTER TABLE events ADD COLUMN time_end TEXT DEFAULT ""'); } catch(e) {}
+  try { await db.execute('ALTER TABLE events ADD COLUMN link_title TEXT DEFAULT ""'); } catch(e) {}
+  try { await db.execute('ALTER TABLE events ADD COLUMN link_url TEXT DEFAULT ""'); } catch(e) {}
 
   // GET — public, no auth needed
   if (req.method === 'GET') {
@@ -39,14 +41,14 @@ export default async function handler(req, res) {
 
   // POST — add event
   if (req.method === 'POST') {
-    const { title, date, location, time_start, time_end } = req.body;
+    const { title, date, location, time_start, time_end, link_title, link_url } = req.body;
     if (!title || !date) {
       return res.status(400).json({ error: 'Title and date are required' });
     }
     try {
       await db.execute({
-        sql: 'INSERT INTO events (title, date, location, time_start, time_end) VALUES (?, ?, ?, ?, ?)',
-        args: [title, date, location || '', time_start || '', time_end || ''],
+        sql: 'INSERT INTO events (title, date, location, time_start, time_end, link_title, link_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        args: [title, date, location || '', time_start || '', time_end || '', link_title || '', link_url || ''],
       });
       return res.status(201).json({ success: true });
     } catch (err) {
@@ -68,6 +70,8 @@ export default async function handler(req, res) {
       if (location !== undefined) { fields.push('location = ?'); args.push(location); }
       if (req.body.time_start !== undefined) { fields.push('time_start = ?'); args.push(req.body.time_start); }
       if (req.body.time_end !== undefined) { fields.push('time_end = ?'); args.push(req.body.time_end); }
+      if (req.body.link_title !== undefined) { fields.push('link_title = ?'); args.push(req.body.link_title); }
+      if (req.body.link_url !== undefined) { fields.push('link_url = ?'); args.push(req.body.link_url); }
       if (fields.length === 0) {
         return res.status(400).json({ error: 'No fields to update' });
       }

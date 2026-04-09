@@ -248,10 +248,11 @@ async function build() {
       ? '\n      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>\n      '
       : '\n      ' + events.map((e, i) => {
         const timeStr = e.time_start ? `\n        <span class="date-card__time">${escapeHtml(e.time_start)}${e.time_end ? ' – ' + escapeHtml(e.time_end) : ''}</span>` : '';
+        const linkStr = e.link_url ? `\n        <a class="date-card__link" href="${escapeHtml(e.link_url)}" target="_blank" rel="noopener">${escapeHtml(e.link_title || e.link_url)}</a>` : '';
         return `<div class="date-card fade-in" style="--rot: ${eventRots[i % eventRots.length]};">
         <span class="date-card__date">${escapeHtml(formatDate(e.date))}</span>${timeStr}
         <span class="date-card__what">${escapeHtml(e.title)}</span>
-        <span class="date-card__where">${escapeHtml(e.location || '')}</span>
+        <span class="date-card__where">${escapeHtml(e.location || '')}</span>${linkStr}
       </div>`;
       }).join('\n      ') + '\n      ';
 

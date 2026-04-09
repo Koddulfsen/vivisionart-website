@@ -1357,6 +1357,7 @@
               ${e.time_start ? '<span class="date-card__time">' + escHtml(e.time_start) + (e.time_end ? ' – ' + escHtml(e.time_end) : '') + '</span>' : ''}
               <span class="date-card__what">${e.title}</span>
               <span class="date-card__where">${e.location || ''}</span>
+              ${e.link_url ? `<a class="date-card__link" href="${escHtml(e.link_url)}" target="_blank" rel="noopener">${escHtml(e.link_title || e.link_url)}</a>` : ''}
               <button class="edit-pencil" data-edit="event" data-event-id="${e.id}" title="Edit event">&#9998;</button>
             </div>
           `).join('');
@@ -2858,6 +2859,10 @@
         <input type="text" id="editEvTitle" value="${escHtml(event.title || '')}">
         <label>Location</label>
         <input type="text" id="editEvLocation" value="${escHtml(event.location || '')}">
+        <label>Link title <span style="font-weight:normal;font-size:0.85rem;color:#999;">(optional)</span></label>
+        <input type="text" id="editEvLinkTitle" value="${escHtml(event.link_title || '')}" placeholder="e.g. Register here">
+        <label>Link URL <span style="font-weight:normal;font-size:0.85rem;color:#999;">(optional)</span></label>
+        <input type="url" id="editEvLinkUrl" value="${escHtml(event.link_url || '')}" placeholder="https://...">
         <div class="btn-row">
           <button class="btn-delete" id="deleteEvBtn">Delete</button>
           <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
@@ -2871,12 +2876,14 @@
         const time_end = getTimePickerVal(pop, 'editEvEnd');
         const title = pop.querySelector('#editEvTitle').value.trim();
         const location = pop.querySelector('#editEvLocation').value.trim();
+        const link_title = pop.querySelector('#editEvLinkTitle').value.trim();
+        const link_url = pop.querySelector('#editEvLinkUrl').value.trim();
         const done = setSaving(pop.querySelector('#saveEvBtn'));
         try {
           await fetch('/api/events', {
             method: 'PUT',
             headers: authHeaders(),
-            body: JSON.stringify({ id, date, title, location, time_start, time_end })
+            body: JSON.stringify({ id, date, title, location, time_start, time_end, link_title, link_url })
           });
           showToast('Event updated');
           closeAllPopovers();
@@ -2964,6 +2971,10 @@
           <input type="text" id="newEvTitle" placeholder="Event title">
           <label>Location</label>
           <input type="text" id="newEvLocation" placeholder="Location">
+          <label>Link title <span style="font-weight:normal;font-size:0.85rem;color:#999;">(optional)</span></label>
+          <input type="text" id="newEvLinkTitle" placeholder="e.g. Register here">
+          <label>Link URL <span style="font-weight:normal;font-size:0.85rem;color:#999;">(optional)</span></label>
+          <input type="url" id="newEvLinkUrl" placeholder="https://...">
           <div class="btn-row">
             <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
             <button class="btn-save" id="createEvBtn">Add</button>
@@ -2975,13 +2986,15 @@
           const time_end = getTimePickerVal(pop, 'newEvEnd');
           const title = pop.querySelector('#newEvTitle').value.trim();
           const loc = pop.querySelector('#newEvLocation').value.trim();
+          const link_title = pop.querySelector('#newEvLinkTitle').value.trim();
+          const link_url = pop.querySelector('#newEvLinkUrl').value.trim();
           if (!date || !title) { showToast('Date and title required'); return; }
           const done = setSaving(pop.querySelector('#createEvBtn'), 'Adding...');
           try {
             await fetch('/api/events', {
               method: 'POST',
               headers: authHeaders(),
-              body: JSON.stringify({ date, title, location: loc, time_start, time_end })
+              body: JSON.stringify({ date, title, location: loc, time_start, time_end, link_title, link_url })
             });
             showToast('Event added');
             closeAllPopovers();
