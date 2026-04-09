@@ -1280,7 +1280,7 @@ a {
   text-align: center;
   background: var(--polaroid-bg);
   margin: 0;
-  padding: 6px 12px 10px;
+  padding: 4px 12px 8px;
   position: relative;
   z-index: 2;
 }
@@ -1415,7 +1415,7 @@ a {
   text-align: center;
   background: var(--polaroid-bg);
   margin: 0;
-  padding: 6px 12px 10px;
+  padding: 4px 12px 8px;
   position: relative;
   z-index: 2;
 }
@@ -3790,7 +3790,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 /* --- Individual polaroid in scrapbook --- */
 .scrapbook__polaroid {
   position: relative;
-  width: 42%;
+  width: 38%;
   max-width: 260px;
 }
 
@@ -3829,7 +3829,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   text-align: center;
   background: var(--polaroid-bg, #faf7f2);
   margin: 0;
-  padding: 4px 8px 6px;
+  padding: 2px 8px 4px;
   position: relative;
   z-index: 2;
 }
@@ -4097,7 +4097,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 42%;
+    width: 38%;
   }
 
   .scrapbook__polaroid .polaroid-frame {
@@ -4124,6 +4124,9 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 @media (max-width: 420px) {
   .scrapbook__photo-cluster {
     margin-top: 0;
+  }
+  .scrapbook__polaroid {
+    width: 42%;
   }
 }
 
@@ -4165,7 +4168,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid {
-    width: 42%;
+    width: 38%;
   }
 
   .scrapbook__photo-cluster {
