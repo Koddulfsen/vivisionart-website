@@ -4135,7 +4135,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 @media (min-width: 769px) and (max-width: 930px) {
   .scrapbook__photo-cluster {
-    margin-top: 5px;
+    margin-top: -10px;
   }
 }
 
