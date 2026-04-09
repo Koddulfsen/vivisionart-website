@@ -207,7 +207,7 @@ async function build() {
           return `
             <div class="scrapbook__polaroid" style="--rot: ${rot};">
               <div class="${attach}"></div>
-              <div class="polaroid-frame"><img src="${p.img}" alt="" loading="lazy"${pCropStyle}></div>${captionHtml}
+              <div class="polaroid-frame"><div class="polaroid-img-wrap"><img src="${p.img}" alt="" loading="lazy"${pCropStyle}></div></div>${captionHtml}
             </div>`;
         }).join('');
         html = inject(html, photosKey, photosHtml + '\n          ');
