@@ -3972,6 +3972,18 @@ html[data-cover-tex="suede"] .book__cover-front::after {
     line-height: 1.4;
   }
 
+  .polaroid-frame {
+    padding: 9px;
+  }
+
+  .about-polaroid .polaroid-frame {
+    padding: 9px;
+  }
+
+  .scrapbook__polaroid .polaroid-frame {
+    padding: 5px;
+  }
+
 }
 
 /* --- Mid-width: shrink books that get too tall --- */
