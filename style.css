@@ -745,8 +745,8 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
-  max-width: 45vw;
+  width: 180px;
+  max-width: 28vw;
   opacity: 0.055;
   mix-blend-mode: multiply;
   pointer-events: none;
@@ -4683,7 +4683,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 }
 
-@media (max-width: 554px) {
+@media (max-width: 768px) {
   .tab-strip {
     mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
     -webkit-mask-image: var(--tab-mask, linear-gradient(to right, transparent, black 12%, black 88%, transparent));
