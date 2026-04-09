@@ -1375,6 +1375,7 @@ a {
   border-radius: 2px;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .polaroid-frame::after {
@@ -3824,6 +3825,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   border-radius: 2px;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .scrapbook__polaroid .polaroid-frame::after {
