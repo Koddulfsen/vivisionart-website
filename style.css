@@ -4147,7 +4147,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 @media (min-width: 650px) and (max-width: 768px) {
   .scrapbook__polaroid {
-    width: 32%;
+    width: 29%;
   }
 }
 
