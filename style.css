@@ -769,12 +769,11 @@ a {
 .tab-strip {
   display: flex;
   gap: 0;
-  max-width: 650px;
-  margin: 0 auto;
+  justify-content: center;
 }
 
 .tab {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -791,8 +790,6 @@ a {
   text-decoration: none;
   position: relative;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .tab::after {
