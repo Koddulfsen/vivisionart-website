@@ -1275,7 +1275,7 @@ a {
 
 .about-polaroid .polaroid-caption {
   font-family: var(--font-handwriting);
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--text);
   text-align: center;
   background: var(--polaroid-bg);
@@ -1410,7 +1410,7 @@ a {
 
 .polaroid-caption {
   font-family: var(--font-handwriting);
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text);
   text-align: center;
   background: var(--polaroid-bg);
@@ -3824,7 +3824,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
 
 .scrapbook__polaroid .polaroid-caption {
   font-family: var(--font-handwriting);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text, #2c2420);
   text-align: center;
   background: var(--polaroid-bg, #faf7f2);
@@ -4105,7 +4105,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .scrapbook__polaroid .polaroid-caption {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
 
   /* Book cover: tighten header-to-image gap, reduce bottom margin */
@@ -4413,7 +4413,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .polaroid-caption {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   /* ---- Events — stack, no rotation ---- */
@@ -4696,7 +4696,7 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 
   .polaroid-caption {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   /* ---- Events ---- */

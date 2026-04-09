@@ -2366,33 +2366,59 @@
 
         function addBookPhoto(bookName) {
           const pop = createPopover(cluster, `
-            <label>New Photo</label>
-            ${makeUploadFieldHtml('', 'addBookPhoto')}
+            <label>Image <span style="font-weight:normal;font-size:0.85rem;color:#999;">(tap to upload)</span></label>
+            <input type="file" id="addBkPhFile" accept="image/*" style="margin-bottom:8px;">
+            <input type="hidden" id="addBkPh" value="">
+            <label id="addBkPhCropLabel" style="display:none;">Crop &amp; Zoom</label>
+            <div id="addBkPhCropWrap" style="margin-bottom:10px;display:none;"></div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <input type="checkbox" id="addBookPhotoHasCap" style="width:auto;margin:0;">
-              <label for="addBookPhotoHasCap" style="margin:0;cursor:pointer;font-weight:normal;">Add caption</label>
+              <input type="checkbox" id="addBkPhHasCap" style="width:auto;margin:0;">
+              <label for="addBkPhHasCap" style="margin:0;cursor:pointer;font-weight:normal;">Add caption</label>
             </div>
-            <div id="addBookPhotoCaptionWrap" style="display:none;">
+            <div id="addBkPhCapWrap" style="display:none;">
               <label>Caption</label>
-              <input type="text" id="addBookPhotoCaption">
+              <input type="text" id="addBkPhCap">
             </div>
             <div class="btn-row">
               <button class="btn-cancel" onclick="closeAllPopovers()">Cancel</button>
-              <button class="btn-save" id="addBookPhotoSave">Add</button>
+              <button class="btn-save" id="addBkPhSave">Add</button>
             </div>
           `);
-          const uploader = wireUploadField(pop, 'addBookPhoto');
-          pop.querySelector('#addBookPhotoHasCap').addEventListener('change', function() {
-            pop.querySelector('#addBookPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
+          let cropTool = null;
+          let addBkPhUploading = false;
+          const addBkPhFile = pop.querySelector('#addBkPhFile');
+          const addBkPhHidden = pop.querySelector('#addBkPh');
+          const cropWrap = pop.querySelector('#addBkPhCropWrap');
+          addBkPhFile.addEventListener('change', async () => {
+            const file = addBkPhFile.files[0];
+            if (!file) return;
+            const objectUrl = URL.createObjectURL(file);
+            pop.querySelector('#addBkPhCropLabel').style.display = '';
+            cropWrap.style.display = 'block';
+            if (!cropTool) {
+              cropTool = buildCropTool(cropWrap, objectUrl, null, '4/3');
+            } else {
+              cropTool.setImage(objectUrl);
+            }
+            addBkPhUploading = true;
+            try {
+              const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
+              const data = await res.json();
+              addBkPhHidden.value = data.url;
+              addBkPhUploading = false;
+            } catch (err) { showToast('Upload failed'); addBkPhUploading = false; }
           });
-          pop.querySelector('#addBookPhotoSave').addEventListener('click', async () => {
-            if (uploader.isUploading()) { showToast('Image still uploading — please wait'); return; }
-            const img = pop.querySelector('#addBookPhoto').value.trim();
+          pop.querySelector('#addBkPhHasCap').addEventListener('change', function() {
+            pop.querySelector('#addBkPhCapWrap').style.display = this.checked ? 'block' : 'none';
+          });
+          pop.querySelector('#addBkPhSave').addEventListener('click', () => {
+            if (addBkPhUploading) { showToast('Image still uploading — please wait'); return; }
+            const img = addBkPhHidden.value.trim();
             if (!img) { showToast('Please upload an image'); return; }
-            const hasCap = pop.querySelector('#addBookPhotoHasCap').checked;
-            const caption = hasCap ? pop.querySelector('#addBookPhotoCaption').value.trim() : '';
+            const hasCap = pop.querySelector('#addBkPhHasCap').checked;
+            const caption = hasCap ? pop.querySelector('#addBkPhCap').value.trim() : '';
             const photos = getPhotos();
-            photos.push({ img, caption });
+            photos.push({ img, caption, crop: cropTool ? cropTool.getCrop() : { x: 50, y: 50, scale: 1 } });
             closeAllPopovers();
             savePhotos(bookName, photos);
           });
