@@ -4121,6 +4121,12 @@ html[data-cover-tex="suede"] .book__cover-front::after {
   }
 }
 
+@media (min-width: 500px) and (max-width: 768px) {
+  .scrapbook__polaroid {
+    width: 35%;
+  }
+}
+
 @media (min-width: 451px) and (max-width: 500px) {
   .scrapbook__photo-cluster {
     margin-top: 5px;
