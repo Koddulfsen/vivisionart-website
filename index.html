@@ -45,11 +45,11 @@
       <a href="#events" class="tab" data-tab="events">
         <span class="tab-label"><!-- INJECT:nav_whatido -->What&nbsp;I&nbsp;Do<!-- /INJECT:nav_whatido --></span>
       </a>
-      <a href="#gallery" class="tab" data-tab="gallery">
-        <span class="tab-label"><!-- INJECT:nav_gallery -->Meine&nbsp;Werke<!-- /INJECT:nav_gallery --></span>
-      </a>
       <a href="#dates" class="tab" data-tab="dates">
         <span class="tab-label"><!-- INJECT:nav_dates -->Public&nbsp;Events<!-- /INJECT:nav_dates --></span>
+      </a>
+      <a href="#gallery" class="tab" data-tab="gallery">
+        <span class="tab-label"><!-- INJECT:nav_gallery -->Meine&nbsp;Werke<!-- /INJECT:nav_gallery --></span>
       </a>
       <a href="#booking" class="tab" data-tab="booking">
         <span class="tab-label"><!-- INJECT:nav_contact -->Kontakt<!-- /INJECT:nav_contact --></span>
@@ -404,6 +404,21 @@
     </div><!-- /event-grid -->
   </section>
 
+  <!-- ============ OFFENE TERMINE ============ -->
+  <!-- ============ OFFENE TERMINE ============ -->
+  <section class="dates-section" id="dates">
+    <h2 class="section-heading fade-in">
+      <span class="heading-tape"></span>
+      <!-- INJECT:heading_dates -->Komm vorbei<!-- /INJECT:heading_dates -->
+    </h2>
+
+    <div class="dates-list" id="datesList">
+      <!-- INJECT:events -->
+      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>
+      <!-- /INJECT:events -->
+    </div>
+  </section>
+
   <!-- ============ GALLERY — CORKBOARD / SCRAPBOOK ============ -->
   <section class="corkboard" id="gallery">
     <h2 class="section-heading fade-in">
@@ -431,21 +446,6 @@
       <p class="lightbox__caption"></p>
     </div>
   </div>
-
-  <!-- ============ OFFENE TERMINE ============ -->
-  <!-- ============ OFFENE TERMINE ============ -->
-  <section class="dates-section" id="dates">
-    <h2 class="section-heading fade-in">
-      <span class="heading-tape"></span>
-      <!-- INJECT:heading_dates -->Komm vorbei<!-- /INJECT:heading_dates -->
-    </h2>
-
-    <div class="dates-list" id="datesList">
-      <!-- INJECT:events -->
-      <p style="color: var(--text-light); font-family: var(--font-handwriting);">Aktuell keine Termine</p>
-      <!-- /INJECT:events -->
-    </div>
-  </section>
 
   <!-- ============ KONTAKTFORMULAR ============ -->
   <section class="postcard-section" id="booking">
@@ -798,7 +798,7 @@
     fadeEls.forEach(el => observer.observe(el));
 
     /* ---- Active tab tracking on scroll ---- */
-    const sections = document.querySelectorAll('#about, #events, .corkboard, #dates, .postcard-section');
+    const sections = document.querySelectorAll('#about, #events, #dates, .corkboard, .postcard-section');
     const tabs = document.querySelectorAll('.tab');
 
     const tabStrip = document.querySelector('.tab-strip');
