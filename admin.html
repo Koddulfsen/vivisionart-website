@@ -1587,6 +1587,20 @@
           openLightbox(i);
         });
       });
+
+      // Scrapbook photos on last book pages
+      document.querySelectorAll('.scrapbook__photo-cluster .scrapbook__polaroid').forEach(pol => {
+        pol.style.cursor = 'pointer';
+        pol.addEventListener('click', (e) => {
+          if (e.target.closest('.edit-pencil')) return;
+          e.stopPropagation(); // prevent book page flip
+          const cluster = pol.closest('.scrapbook__photo-cluster');
+          const siblings = Array.from(cluster.querySelectorAll('.scrapbook__polaroid'));
+          lbPolaroids = siblings;
+          currentIdx = siblings.indexOf(pol);
+          openLightbox(currentIdx);
+        });
+      });
     }
 
     function openLightbox(idx) {
@@ -1605,6 +1619,8 @@
     function closeLightbox() {
       lightbox.hidden = true;
       document.body.style.overflow = '';
+      // Restore gallery polaroids as the default set
+      lbPolaroids = document.querySelectorAll('.board .polaroid');
     }
 
     function showPrev() {
