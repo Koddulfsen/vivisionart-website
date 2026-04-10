@@ -3188,43 +3188,38 @@
       });
     }
 
-    /* ---- Utility: format ISO date (YYYY-MM-DD) → "15. April 2026" ---- */
+    /* ---- Utility: format ISO date (YYYY-MM-DD) → "15. April" ---- */
     function formatDate(dateStr) {
       if (!dateStr) return '';
       if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
         const [y, m, d] = dateStr.split('-').map(Number);
         const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-        return `${d}. ${months[m - 1]} ${y}`;
+        return `${d}. ${months[m - 1]}`;
       }
       return dateStr;
     }
 
-    // Custom date picker (DD . Monat . YYYY) — returns YYYY-MM-DD
+    // Custom date picker (DD . Monat) — returns YYYY-MM-DD (year auto-filled)
     function makeDatePickerHtml(prefix, dateStr) {
-      var d = '', m = '', y = '';
+      var d = '', m = '';
       if (dateStr && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
         var parts = dateStr.split('-');
-        y = parts[0]; m = parts[1]; d = parts[2];
+        m = parts[1]; d = parts[2];
       }
       var months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
       var dayOpts = '<option value="">Tag</option>';
       for (var i = 1; i <= 31; i++) dayOpts += '<option value="' + String(i).padStart(2,'0') + '"' + (d === String(i).padStart(2,'0') ? ' selected' : '') + '>' + i + '</option>';
       var monOpts = '<option value="">Monat</option>';
       for (var i = 0; i < 12; i++) monOpts += '<option value="' + String(i+1).padStart(2,'0') + '"' + (m === String(i+1).padStart(2,'0') ? ' selected' : '') + '>' + months[i] + '</option>';
-      var yrOpts = '<option value="">Jahr</option>';
-      var curYear = new Date().getFullYear();
-      for (var i = curYear; i <= curYear + 3; i++) yrOpts += '<option value="' + i + '"' + (y === String(i) ? ' selected' : '') + '>' + i + '</option>';
       return '<div style="display:flex;gap:6px;margin-bottom:8px;">' +
         '<select id="' + prefix + 'Day" style="flex:1;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + dayOpts + '</select>' +
         '<select id="' + prefix + 'Mon" style="flex:2;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + monOpts + '</select>' +
-        '<select id="' + prefix + 'Yr" style="flex:1;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;">' + yrOpts + '</select>' +
         '</div>';
     }
     function getDatePickerVal(pop, prefix) {
       var d = pop.querySelector('#' + prefix + 'Day').value;
       var m = pop.querySelector('#' + prefix + 'Mon').value;
-      var y = pop.querySelector('#' + prefix + 'Yr').value;
-      if (d && m && y) return y + '-' + m + '-' + d;
+      if (d && m) return new Date().getFullYear() + '-' + m + '-' + d;
       return '';
     }
 

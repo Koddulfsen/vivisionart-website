@@ -15,7 +15,7 @@ function formatDate(dateStr) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
     const [y, m, d] = dateStr.split('-').map(Number);
     const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-    return `${d}. ${months[m - 1]} ${y}`;
+    return `${d}. ${months[m - 1]}`;
   }
   return dateStr;
 }
