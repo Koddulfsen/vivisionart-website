@@ -2486,6 +2486,7 @@ a {
 .stamp-btn {
   align-self: flex-end;
   margin-top: 15px;
+  margin-bottom: 5px;
   border: none;
   background: var(--stamp-bg);
   cursor: pointer;
