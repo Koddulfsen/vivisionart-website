@@ -9,6 +9,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;700&display=block" rel="stylesheet">
+  <script>
+    // Blocking color fetch to prevent flash of wrong background
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', '/api/settings', false); // synchronous
+      x.send();
+      if (x.status === 200) {
+        var _s = JSON.parse(x.responseText);
+        if (_s.bg_primary) document.documentElement.style.setProperty('--bg-primary', _s.bg_primary);
+        if (_s.accent_primary) {
+          document.documentElement.style.setProperty('--accent', _s.accent_primary);
+          document.documentElement.style.setProperty('--accent-alt', _s.accent_primary);
+          document.documentElement.style.setProperty('--pin-color', _s.accent_primary);
+          document.documentElement.style.setProperty('--stamp-bg', _s.accent_primary);
+          document.documentElement.style.setProperty('--heading-bg', _s.accent_primary);
+        }
+        window._preloadedSettings = _s;
+      }
+    } catch(e) {}
+  </script>
 </head>
 <body>
 
@@ -545,6 +565,227 @@
   </footer>
 
   <script>
+    /* ---- Load saved settings from API ---- */
+    (async function loadSettings() {
+      try {
+        let s;
+        if (window._preloadedSettings) {
+          s = window._preloadedSettings;
+        } else {
+          const res = await fetch('/api/settings');
+          if (!res.ok) return;
+          s = await res.json();
+        }
+        const html = document.documentElement;
+
+        // Style attributes
+        if (s.heading_font) html.setAttribute('data-heading-font', s.heading_font);
+        if (s.body_font) html.setAttribute('data-body-font', s.body_font);
+        if (s.bg_color) html.setAttribute('data-site-bg', s.bg_color);
+        if (s.accent_color) html.setAttribute('data-accent', s.accent_color);
+        if (s.cover_texture) html.setAttribute('data-cover-tex', s.cover_texture);
+
+        // Custom colors override presets
+        if (s.bg_primary) html.style.setProperty('--bg-primary', s.bg_primary);
+        if (s.accent_primary) {
+          html.style.setProperty('--accent', s.accent_primary);
+          html.style.setProperty('--accent-alt', s.accent_primary);
+          html.style.setProperty('--pin-color', s.accent_primary);
+          html.style.setProperty('--stamp-bg', s.accent_primary);
+          html.style.setProperty('--heading-bg', s.accent_primary);
+        }
+
+        // Cover colors
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const color = s['cover_color_' + name];
+          if (!color) return;
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (book) {
+            const cover = book.querySelector('.book__page--cover .book__page-front');
+            if (cover) cover.style.background = color;
+            book.style.setProperty('--cover-bg', color);
+          }
+        });
+
+        // About content
+        if (s.about_name) {
+          const nameEl = document.querySelector('.about-name');
+          if (nameEl) nameEl.textContent = s.about_name;
+        }
+        if (s.about_bio) {
+          const bioWrap = document.querySelector('.about-bio-wrap');
+          if (bioWrap) {
+            const paras = s.about_bio.split(/\n\s*\n/);
+            bioWrap.querySelectorAll('.about-bio').forEach(el => el.remove());
+            paras.forEach(p => {
+              if (!p.trim()) return;
+              const el = document.createElement('p');
+              el.className = 'about-bio';
+              el.textContent = p.trim();
+              bioWrap.appendChild(el);
+            });
+          }
+        }
+
+        // Instagram
+        if (s.instagram_url) {
+          const igLink = document.querySelector('.about-instagram__link');
+          if (igLink) igLink.href = s.instagram_url;
+        }
+        if (s.instagram_text) {
+          const igText = document.querySelector('.about-instagram__link span');
+          if (igText) igText.textContent = s.instagram_text;
+        }
+
+        // Footer
+        if (s.footer_text) {
+          const footerP = document.querySelector('.retro-footer p');
+          if (footerP) {
+            const link = footerP.querySelector('.footer-link');
+            if (link) {
+              footerP.innerHTML = '';
+              footerP.appendChild(link);
+              footerP.append(' \u00a0|\u00a0 \u00a9 ' + s.footer_text);
+            }
+          }
+        }
+
+        // CTA buttons
+        if (s.cta_book) {
+          document.querySelectorAll('.inner-cta').forEach(btn => btn.textContent = s.cta_book);
+          const tornCta = document.querySelector('.event-spread__cta-btn');
+          if (tornCta) tornCta.innerHTML = s.cta_book + ' &rarr;';
+        }
+
+        // Book content
+        ['birthday', 'bachelorette', 'workshop'].forEach(name => {
+          const book = document.querySelector('[data-book="' + name + '"]');
+          if (!book) return;
+
+          // Checkmarks
+          const checksKey = 'book_' + name + '_checks';
+          if (s[checksKey]) {
+            const ul = book.querySelector('.event-spread__includes');
+            if (ul) ul.innerHTML = s[checksKey].split('\n').filter(l => l.trim()).map(l => '<li>' + l.trim() + '</li>').join('');
+          }
+
+          // Description
+          const descKey = 'book_' + name + '_desc';
+          if (s[descKey]) {
+            const paras = s[descKey].split(/\n\s*\n/).filter(p => p.trim());
+            const descPage = book.querySelector('.event-spread__desc')
+              ? book.querySelector('.event-spread__desc').closest('.book__details-page')
+              : null;
+            if (descPage) {
+              const extraEl = descPage.querySelector('.event-spread__extra');
+              const ctaEl = descPage.querySelector('.inner-cta-wrap');
+              descPage.querySelectorAll('.event-spread__desc').forEach(el => el.remove());
+              const insertBefore = extraEl || ctaEl;
+              paras.forEach(p => {
+                const el = document.createElement('p');
+                el.className = 'event-spread__desc';
+                el.textContent = p.trim();
+                if (insertBefore) descPage.insertBefore(el, insertBefore);
+                else descPage.appendChild(el);
+              });
+            }
+          }
+
+          // Extra text
+          const extraKey = 'book_' + name + '_extra';
+          if (s[extraKey]) {
+            const extraEl = book.querySelector('.event-spread__extra');
+            if (extraEl) extraEl.textContent = s[extraKey];
+          }
+
+          // Images and captions
+          ['cover', 'details', 'photo1', 'photo2', 'photo3'].forEach(slot => {
+            const imgKey = 'book_' + name + '_' + slot + '_img';
+            const captionKey = 'book_' + name + '_' + slot + '_caption';
+            const imgEl = book.querySelector('img[data-img-key="' + imgKey + '"]');
+            if (imgEl) {
+              if (s[imgKey]) imgEl.src = s[imgKey];
+              if (captionKey in s) {
+                const container = imgEl.closest('.scrapbook__polaroid, .cover-polaroid');
+                if (container) {
+                  let captionEl = container.querySelector('.polaroid-caption');
+                  if (s[captionKey]) {
+                    if (!captionEl) {
+                      captionEl = document.createElement('p');
+                      captionEl.className = 'polaroid-caption';
+                      container.appendChild(captionEl);
+                    }
+                    captionEl.textContent = s[captionKey];
+                  } else if (captionEl) {
+                    captionEl.remove();
+                  }
+                }
+              }
+            }
+          });
+        });
+
+        // About photo
+        if (s.about_photo) {
+          const img = document.querySelector('.about-polaroid img');
+          if (img) img.src = s.about_photo;
+        }
+        if ('about_photo_caption' in s) {
+          const polaroid = document.querySelector('.about-polaroid');
+          if (polaroid) {
+            let captionEl = polaroid.querySelector('.polaroid-caption');
+            if (s.about_photo_caption) {
+              if (!captionEl) {
+                captionEl = document.createElement('p');
+                captionEl.className = 'polaroid-caption';
+                polaroid.appendChild(captionEl);
+              }
+              captionEl.textContent = s.about_photo_caption;
+            } else if (captionEl) {
+              captionEl.remove();
+            }
+          }
+        }
+
+        // Inline colors (torn page, postcard, date cards)
+        if (s.torn_page_color) {
+          const el = document.getElementById('tornPage');
+          if (el) el.style.background = s.torn_page_color;
+        }
+        if (s.postcard_color) {
+          const el = document.getElementById('postcardEl');
+          if (el) el.style.background = s.postcard_color;
+        }
+        if (s.date_card_color) {
+          document.querySelectorAll('.date-card').forEach(card => {
+            card.style.background = s.date_card_color;
+          });
+        }
+
+        // Nav labels and headings
+        var textFields = {
+          'heading_about': '.section-heading',
+          'heading_whatido': '#events .section-heading',
+          'heading_gallery': '#galleryHeading',
+          'heading_dates': '#datesHeading',
+          'booking_greeting': '.letter-greeting',
+          'booking_intro': '.letter-intro',
+          'torn_title': '.torn-page__title',
+          'torn_desc': '.torn-page__desc',
+          'whatido_subtitle': '.whatido-subtitle',
+          'gallery_note': '.gallery-note',
+        };
+        Object.keys(textFields).forEach(function(key) {
+          if (!s[key]) return;
+          var el = document.querySelector(textFields[key]);
+          if (el) el.textContent = s[key];
+        });
+
+      } catch (err) {
+        // Settings load failed — use defaults from HTML
+      }
+    })();
+
     /* ---- Scroll-triggered fade-in ---- */
     const fadeEls = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {

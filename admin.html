@@ -10,6 +10,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
+  <script>
+    // Blocking color fetch to prevent flash of wrong background
+    try {
+      var x = new XMLHttpRequest();
+      x.open('GET', '/api/settings', false); // synchronous
+      x.send();
+      if (x.status === 200) {
+        var _s = JSON.parse(x.responseText);
+        if (_s.bg_primary) document.documentElement.style.setProperty('--bg-primary', _s.bg_primary);
+        if (_s.accent_primary) {
+          document.documentElement.style.setProperty('--accent', _s.accent_primary);
+          document.documentElement.style.setProperty('--accent-alt', _s.accent_primary);
+          document.documentElement.style.setProperty('--pin-color', _s.accent_primary);
+          document.documentElement.style.setProperty('--stamp-bg', _s.accent_primary);
+          document.documentElement.style.setProperty('--heading-bg', _s.accent_primary);
+        }
+        window._preloadedSettings = _s;
+      }
+    } catch(e) {}
+  </script>
   <style>
     /* ============================================================
        ADMIN-ONLY CSS — Login overlay, pencils, popovers, drawer
@@ -1034,9 +1054,14 @@
     /* ---- Load settings from API and apply to DOM ---- */
     (async function loadAndApplySettings() {
       try {
-        const res = await fetch('/api/settings');
-        if (!res.ok) return;
-        const s = await res.json();
+        let s;
+        if (window._preloadedSettings) {
+          s = window._preloadedSettings;
+        } else {
+          const res = await fetch('/api/settings');
+          if (!res.ok) return;
+          s = await res.json();
+        }
         const html = document.documentElement;
 
         // Style settings
