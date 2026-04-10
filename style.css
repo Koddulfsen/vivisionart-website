@@ -745,8 +745,8 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 180px;
-  max-width: 28vw;
+  width: 420px;
+  max-width: 55vw;
   opacity: 0.055;
   mix-blend-mode: multiply;
   pointer-events: none;

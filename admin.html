@@ -600,6 +600,7 @@
             <p class="event-spread__extra"><!-- INJECT:book_birthday_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r das Geburtstagskind &amp; Gestaltung individuell passend zum Motto: Dschungel, Regenbogen, Universum, Natur, Sommer, Pferde u.v.m.<!-- /INJECT:book_birthday_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_birthday_extra" data-label="Extra Info" data-format="text" title="Edit extra info" style="top:auto;bottom:64px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Im &Uuml;berblick</span>
         </div>
@@ -682,6 +683,7 @@
             <p class="event-spread__extra"><!-- INJECT:book_bachelorette_extra -->Zus&auml;tzlich: Pers&ouml;nliches Geschenk f&uuml;r die Braut &amp; Ideen &amp; Umsetzung individuell abgestimmt auf eure W&uuml;nsche oder ein Motto.<!-- /INJECT:book_bachelorette_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_bachelorette_extra" data-label="Extra Info" data-format="text" title="Edit extra info" style="top:auto;bottom:64px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Im &Uuml;berblick</span>
         </div>
@@ -766,6 +768,7 @@
             <p class="event-spread__extra"><!-- INJECT:book_workshop_extra -->Zus&auml;tzlich: Raum f&uuml;r Austausch, Experimentierfreude und neue Perspektiven. Optional: thematisch abgestimmte Workshops (z.B. Team-Values, Vision-Boards, Inspirationsprojekte).<!-- /INJECT:book_workshop_extra --></p>
             <div class="inner-cta-wrap"><a href="#booking" class="inner-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a></div>
             <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_desc" data-label="Description" data-format="paragraphs" title="Edit description">&#9998;</button>
+            <button class="edit-pencil" data-edit="book-text" data-setting-key="book_workshop_extra" data-label="Extra Info" data-format="text" title="Edit extra info" style="top:auto;bottom:64px;">&#9998;</button>
           </div>
           <span class="book__hint book__hint--left">&larr;</span><span class="book__hint">&rarr;<br>Im &Uuml;berblick</span>
         </div>
@@ -1124,7 +1127,7 @@
 
         // Footer
         if (s.footer_text) {
-          const footer = document.querySelector('.retro-footer p');
+          const footer = document.getElementById('footerText');
           if (footer) footer.innerHTML = '&copy; ' + s.footer_text;
         }
 
