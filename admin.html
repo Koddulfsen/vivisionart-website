@@ -313,7 +313,7 @@
       transition: max-width 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
     }
     .admin-colors-bar.open .admin-colors-panel {
-      max-width: 400px;
+      max-width: 560px;
       opacity: 1;
       padding: 8px 14px;
       pointer-events: auto;
@@ -346,6 +346,16 @@
       cursor: pointer;
       padding: 2px;
       background: white;
+    }
+    .admin-color-item input[type="text"] {
+      width: 68px;
+      padding: 3px 6px;
+      border: 1px solid #e0d8d0;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: #4a4a4a;
+      background: #faf8f5;
     }
     .admin-colors-save {
       padding: 6px 12px;
@@ -583,7 +593,7 @@
                 <!-- INJECT:book_birthday_cover_caption --><!-- /INJECT:book_birthday_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_birthday_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
+
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -666,7 +676,7 @@
                 <!-- INJECT:book_bachelorette_cover_caption --><!-- /INJECT:book_bachelorette_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_bachelorette_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
+
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -750,7 +760,7 @@
                 <!-- INJECT:book_workshop_cover_caption --><!-- /INJECT:book_workshop_cover_caption -->
                 <button class="edit-pencil" data-edit="book-image" data-img-key="book_workshop_cover_img" title="Edit image">&#9998;</button>
               </div>
-              <a href="#booking" class="cover-cta"><!-- INJECT:cta_book -->Buche jetzt dein Event<!-- /INJECT:cta_book --></a>
+
             </div>
           </div>
           <span class="book__hint">&rarr;<br>Mehr Infos &amp; Bilder</span>
@@ -1005,10 +1015,12 @@
       <div class="admin-color-item">
         <label>Background</label>
         <input type="color" id="colorBgPrimary" value="#f0ebe0">
+        <input type="text" id="hexBgPrimary" value="#f0ebe0" maxlength="7" spellcheck="false">
       </div>
       <div class="admin-color-item">
         <label>Accent</label>
         <input type="color" id="colorAccent" value="#80b8a0">
+        <input type="text" id="hexAccent" value="#80b8a0" maxlength="7" spellcheck="false">
       </div>
       <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
     </div>
@@ -3030,18 +3042,24 @@
     function initColorPickers() {
       const html = document.documentElement;
       const bgPrimary = document.getElementById('colorBgPrimary');
+      const hexBg = document.getElementById('hexBgPrimary');
       const accentColor = document.getElementById('colorAccent');
+      const hexAccent = document.getElementById('hexAccent');
 
       // Load current computed values
       const cs = getComputedStyle(html);
       bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
       accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
+      hexBg.value = bgPrimary.value;
+      hexAccent.value = accentColor.value;
 
-      // Live preview
+      // Live preview — color picker → hex input
       bgPrimary.addEventListener('input', () => {
+        hexBg.value = bgPrimary.value;
         html.style.setProperty('--bg-primary', bgPrimary.value);
       });
       accentColor.addEventListener('input', () => {
+        hexAccent.value = accentColor.value;
         html.style.setProperty('--accent', accentColor.value);
         html.style.setProperty('--accent-alt', accentColor.value);
         html.style.setProperty('--pin-color', accentColor.value);
@@ -3049,11 +3067,31 @@
         html.style.setProperty('--heading-bg', accentColor.value);
       });
 
+      // Live preview — hex input → color picker
+      hexBg.addEventListener('input', () => {
+        const v = hexBg.value;
+        if (/^#[0-9a-f]{6}$/i.test(v)) {
+          bgPrimary.value = v;
+          html.style.setProperty('--bg-primary', v);
+        }
+      });
+      hexAccent.addEventListener('input', () => {
+        const v = hexAccent.value;
+        if (/^#[0-9a-f]{6}$/i.test(v)) {
+          accentColor.value = v;
+          html.style.setProperty('--accent', v);
+          html.style.setProperty('--accent-alt', v);
+          html.style.setProperty('--pin-color', v);
+          html.style.setProperty('--stamp-bg', v);
+          html.style.setProperty('--heading-bg', v);
+        }
+      });
+
       // Load saved values into pickers
       if (window._siteSettings) {
         const s = window._siteSettings;
-        if (s.bg_primary) bgPrimary.value = s.bg_primary;
-        if (s.accent_primary) accentColor.value = s.accent_primary;
+        if (s.bg_primary) { bgPrimary.value = s.bg_primary; hexBg.value = s.bg_primary; }
+        if (s.accent_primary) { accentColor.value = s.accent_primary; hexAccent.value = s.accent_primary; }
       }
 
       // Save button
