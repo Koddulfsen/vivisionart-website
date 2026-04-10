@@ -2207,7 +2207,7 @@ a {
   max-width: 900px;
   margin: 0 auto;
   background: var(--card-surface);
-  border: 3px solid var(--line-color);
+  border: none;
   border-radius: 8px;
   box-shadow: 4px 6px 20px var(--shadow);
   overflow: hidden;
