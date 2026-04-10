@@ -25,6 +25,7 @@
           document.documentElement.style.setProperty('--stamp-bg', _s.accent_primary);
           document.documentElement.style.setProperty('--heading-bg', _s.accent_primary);
         }
+        if (_s.card_surface) document.documentElement.style.setProperty('--card-surface', _s.card_surface);
         window._preloadedSettings = _s;
       }
     } catch(e) {}
@@ -594,6 +595,7 @@
           html.style.setProperty('--stamp-bg', s.accent_primary);
           html.style.setProperty('--heading-bg', s.accent_primary);
         }
+        if (s.card_surface) html.style.setProperty('--card-surface', s.card_surface);
 
         // Cover colors
         ['birthday', 'bachelorette', 'workshop'].forEach(name => {

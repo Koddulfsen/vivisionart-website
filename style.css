@@ -1649,7 +1649,7 @@ a {
 }
 
 .date-card {
-  background: var(--surface);
+  background: var(--card-surface);
   padding: 20px 24px;
   min-width: 200px;
   max-width: 260px;
@@ -2206,7 +2206,7 @@ a {
 .postcard {
   max-width: 900px;
   margin: 0 auto;
-  background: var(--surface);
+  background: var(--card-surface);
   border: 3px solid var(--line-color);
   border-radius: 8px;
   box-shadow: 4px 6px 20px var(--shadow);
@@ -2752,6 +2752,7 @@ a {
   --book-surface-alt: var(--surface-alt);
   --book-text: var(--text);
   --book-text-light: var(--text-light);
+  --card-surface: var(--surface);
 }
 
 /* --- 8 background color options --- */

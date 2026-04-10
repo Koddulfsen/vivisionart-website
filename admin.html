@@ -26,6 +26,7 @@
           document.documentElement.style.setProperty('--stamp-bg', _s.accent_primary);
           document.documentElement.style.setProperty('--heading-bg', _s.accent_primary);
         }
+        if (_s.card_surface) document.documentElement.style.setProperty('--card-surface', _s.card_surface);
         window._preloadedSettings = _s;
       }
     } catch(e) {}
@@ -1043,6 +1044,11 @@
         <input type="color" id="colorAccent" value="#80b8a0">
         <input type="text" id="hexAccent" value="#80b8a0" maxlength="7" spellcheck="false">
       </div>
+      <div class="admin-color-item">
+        <label>Cards</label>
+        <input type="color" id="colorCardSurface" value="#f8f4ee">
+        <input type="text" id="hexCardSurface" value="#f8f4ee" maxlength="7" spellcheck="false">
+      </div>
       <button class="admin-colors-save" id="colorsSaveBtn">Save</button>
     </div>
   </div>
@@ -1082,6 +1088,9 @@
           html.style.setProperty('--pin-color', s.accent_primary);
           html.style.setProperty('--stamp-bg', s.accent_primary);
           html.style.setProperty('--heading-bg', s.accent_primary);
+        }
+        if (s.card_surface) {
+          html.style.setProperty('--card-surface', s.card_surface);
         }
 
         // Cover colors
@@ -3088,13 +3097,17 @@
       const hexBg = document.getElementById('hexBgPrimary');
       const accentColor = document.getElementById('colorAccent');
       const hexAccent = document.getElementById('hexAccent');
+      const cardSurface = document.getElementById('colorCardSurface');
+      const hexCard = document.getElementById('hexCardSurface');
 
       // Load current computed values
       const cs = getComputedStyle(html);
       bgPrimary.value = rgbToHex(cs.getPropertyValue('--bg-primary').trim()) || '#f0ebe0';
       accentColor.value = rgbToHex(cs.getPropertyValue('--accent').trim()) || '#80b8a0';
+      cardSurface.value = rgbToHex(cs.getPropertyValue('--card-surface').trim()) || '#f8f4ee';
       hexBg.value = bgPrimary.value;
       hexAccent.value = accentColor.value;
+      hexCard.value = cardSurface.value;
 
       // Live preview — color picker → hex input
       bgPrimary.addEventListener('input', () => {
@@ -3108,6 +3121,10 @@
         html.style.setProperty('--pin-color', accentColor.value);
         html.style.setProperty('--stamp-bg', accentColor.value);
         html.style.setProperty('--heading-bg', accentColor.value);
+      });
+      cardSurface.addEventListener('input', () => {
+        hexCard.value = cardSurface.value;
+        html.style.setProperty('--card-surface', cardSurface.value);
       });
 
       // Live preview — hex input → color picker
@@ -3129,12 +3146,20 @@
           html.style.setProperty('--heading-bg', v);
         }
       });
+      hexCard.addEventListener('input', () => {
+        const v = hexCard.value;
+        if (/^#[0-9a-f]{6}$/i.test(v)) {
+          cardSurface.value = v;
+          html.style.setProperty('--card-surface', v);
+        }
+      });
 
       // Load saved values into pickers
       if (window._siteSettings) {
         const s = window._siteSettings;
         if (s.bg_primary) { bgPrimary.value = s.bg_primary; hexBg.value = s.bg_primary; }
         if (s.accent_primary) { accentColor.value = s.accent_primary; hexAccent.value = s.accent_primary; }
+        if (s.card_surface) { cardSurface.value = s.card_surface; hexCard.value = s.card_surface; }
       }
 
       // Save button
@@ -3145,6 +3170,7 @@
           await Promise.all([
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'bg_primary', value: bgPrimary.value }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'accent_primary', value: accentColor.value }) }),
+            fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'card_surface', value: cardSurface.value }) }),
           ]);
           showToast('Colors saved');
           done();
