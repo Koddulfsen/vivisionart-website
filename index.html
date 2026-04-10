@@ -747,11 +747,7 @@
           }
         }
 
-        // Inline colors (torn page, postcard, date cards)
-        if (s.torn_page_color) {
-          const el = document.getElementById('tornPage');
-          if (el) el.style.background = s.torn_page_color;
-        }
+        // Inline colors (postcard, date cards)
         if (s.postcard_color) {
           const el = document.getElementById('postcardEl');
           if (el) el.style.background = s.postcard_color;

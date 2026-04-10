@@ -1008,7 +1008,7 @@
         <button type="submit" class="stamp-btn">
           <span class="stamp-btn-inner">ANFRAGE SENDEN</span>
         </button>
-        <p class="form-success">Vielen Dank! Ich melde mich bald bei dir.</p>
+
       </form>
     </div>
   </section>
@@ -3281,12 +3281,6 @@
 
     // Load saved inline colors from settings
     function applyInlineColors(settings) {
-      if (settings.torn_page_color) {
-        const el = document.getElementById('tornPage');
-        if (el) el.style.background = settings.torn_page_color;
-        const pick = document.querySelector('[data-setting="torn_page_color"] input');
-        if (pick) pick.value = settings.torn_page_color;
-      }
       if (settings.postcard_color) {
         const el = document.getElementById('postcardEl');
         if (el) el.style.background = settings.postcard_color;
