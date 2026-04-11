@@ -2061,17 +2061,20 @@
       const photoFileInput = pop.querySelector('#editPhotoFile');
       const photoHiddenInput = pop.querySelector('#editPhotoUrl');
       let photoUploading = false;
+      let photoLocalUrl = null;
       photoFileInput.addEventListener('change', async () => {
         const file = photoFileInput.files[0];
         if (!file) return;
-        cropTool.setImage(URL.createObjectURL(file));
+        photoLocalUrl = URL.createObjectURL(file);
+        cropTool.setImage(photoLocalUrl);
         photoUploading = true;
         try {
           const res = await fetch('/api/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + ADMIN.token, 'X-Filename': file.name }, body: file });
           const data = await res.json();
+          if (!res.ok || !data.url) { console.error('[admin] about-photo upload failed', res.status, data); showToast('Upload failed: ' + (data.error || res.status)); photoUploading = false; return; }
           photoHiddenInput.value = data.url;
           photoUploading = false;
-        } catch (err) { showToast('Upload failed'); photoUploading = false; }
+        } catch (err) { console.error('[admin] about-photo upload error', err); showToast('Upload failed'); photoUploading = false; }
       });
       pop.querySelector('#editPhotoHasCaption').addEventListener('change', function() {
         pop.querySelector('#editPhotoCaptionWrap').style.display = this.checked ? 'block' : 'none';
@@ -2079,7 +2082,8 @@
       pop.querySelector('#savePhotoBtn').addEventListener('click', async () => {
         if (photoUploading) { showToast('Image still uploading — please wait'); return; }
         const val = photoHiddenInput.value.trim();
-        if (!val) return;
+        console.log('[admin] about-photo save', { val, photoLocalUrl });
+        if (!val) { console.warn('[admin] about-photo val empty, aborting'); return; }
         const hasCaption = pop.querySelector('#editPhotoHasCaption').checked;
         const captionText = hasCaption ? pop.querySelector('#editPhotoCaption').value.trim() : '';
         const cropData = JSON.stringify(cropTool.getCrop());
@@ -2090,14 +2094,15 @@
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_caption', value: captionText }) }),
             fetch('/api/settings', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key: 'about_photo_crop', value: cropData }) })
           ]);
-          if (!results[0].ok || !results[2].ok) throw new Error('Save failed');
-          const localUrl = photoUpload.getLocalUrl();
-          img.src = localUrl || val;
+          if (!results[0].ok) { const e = await results[0].text(); console.error('[admin] about_photo save failed', results[0].status, e); throw new Error('Save failed (' + results[0].status + ')'); }
+          if (!results[2].ok) { const e = await results[2].text(); console.error('[admin] about_photo_crop save failed', results[2].status, e); throw new Error('Save failed (' + results[2].status + ')'); }
+          console.log('[admin] about-photo API save OK', { val });
+          img.src = photoLocalUrl || val;
           const c = cropTool.getCrop();
           img.style.objectPosition = c.x + '% ' + c.y + '%';
           img.style.transformOrigin = c.x + '% ' + c.y + '%';
           img.style.transform = 'scale(' + c.scale + ')';
-          if (localUrl && val !== current) {
+          if (photoLocalUrl && val !== current) {
             const preloader = new Image();
             preloader.onload = () => { img.src = val; };
             preloader.src = val;
@@ -2121,7 +2126,7 @@
           }
           showToast('Photo updated');
           closeAllPopovers();
-        } catch (err) { done('Error saving'); }
+        } catch (err) { console.error('[admin] about-photo save error', err); done('Error saving: ' + err.message); }
       });
     }
 
