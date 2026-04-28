@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vi.Vision ART</title>
   <link rel="icon" type="image/png" href="images/favicon-easel.png">
-  <link rel="stylesheet" href="style.css?v=7">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime&family=Shadows+Into+Light&family=Patrick+Hand&family=Indie+Flower&family=Coming+Soon&family=Quicksand:wght@400;600&family=Nunito:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@400;700&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="fonts/fonts.css">
   <script>
     // Blocking color fetch to prevent flash of wrong background
     try {
@@ -545,6 +543,10 @@
           <input type="tel" id="contact-tel" name="contact-tel" class="form-input">
         </div>
 
+        <p class="form-privacy-note">
+          Mit dem Absenden bist du einverstanden, dass deine Angaben zur Bearbeitung deiner Anfrage verarbeitet werden. Mehr dazu in der <a href="/impressum#datenschutz">Datenschutzerkl&auml;rung</a>.
+        </p>
+
         <button type="submit" class="stamp-btn">
           <span class="stamp-btn-inner">ANFRAGE SENDEN</span>
         </button>
@@ -561,7 +563,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="retro-footer">
-    <p><a href="/impressum" class="footer-link">Impressum</a> &nbsp;|&nbsp; <!-- INJECT:footer_text -->&copy; 2026 Vi.Vision ART<!-- /INJECT:footer_text --></p>
+    <p><a href="/impressum" class="footer-link">Impressum</a> &nbsp;|&nbsp; <a href="/impressum#datenschutz" class="footer-link">Datenschutz</a> &nbsp;|&nbsp; <!-- INJECT:footer_text -->&copy; 2026 Vi.Vision ART<!-- /INJECT:footer_text --></p>
     <p class="footer-credit">Website by: hello@studiorocinante.com</p>
   </footer>
 
@@ -643,10 +645,13 @@
         if (s.footer_text) {
           const footerP = document.querySelector('.retro-footer p');
           if (footerP) {
-            const link = footerP.querySelector('.footer-link');
-            if (link) {
+            const links = footerP.querySelectorAll('.footer-link');
+            if (links.length) {
               footerP.innerHTML = '';
-              footerP.appendChild(link);
+              links.forEach((link, i) => {
+                if (i > 0) footerP.append(' \u00a0|\u00a0 ');
+                footerP.appendChild(link);
+              });
               footerP.append(' \u00a0|\u00a0 \u00a9 ' + s.footer_text);
             }
           }

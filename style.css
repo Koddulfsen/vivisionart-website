@@ -2368,6 +2368,25 @@ a {
   margin: -2px 0 6px;
 }
 
+.form-privacy-note {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-light);
+  margin: 18px 0 12px;
+  opacity: 0.85;
+}
+
+.form-privacy-note a {
+  color: inherit;
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+}
+
+.form-privacy-note a:hover {
+  opacity: 0.7;
+}
+
 .form-input {
   width: 100%;
   background: transparent;
