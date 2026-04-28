@@ -35,14 +35,18 @@ function extractTargets(value) {
   const out = [];
   const visit = (v) => {
     if (typeof v === 'string') {
-      if (isBlobUrl(v) && !isAlreadyWebp(v)) out.push(v);
-      else if (v.startsWith('[') || v.startsWith('{')) {
+      // Try JSON parse first — a settings value may be a JSON-encoded array of
+      // {img,caption,...} objects. Without this, the whole JSON string trips
+      // isBlobUrl() because it *contains* a blob host substring.
+      if (v.startsWith('[') || v.startsWith('{')) {
         try {
           visit(JSON.parse(v));
+          return;
         } catch {
-          /* not JSON */
+          /* not JSON, fall through */
         }
       }
+      if (isBlobUrl(v) && !isAlreadyWebp(v)) out.push(v);
     } else if (Array.isArray(v)) {
       v.forEach(visit);
     } else if (v && typeof v === 'object') {
